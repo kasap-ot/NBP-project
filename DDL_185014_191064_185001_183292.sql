@@ -5,7 +5,6 @@ alter schema NBP_PROJECT owner to nbp_user;
 
 
 -- DOMAINS
-
 create domain email as varchar(255) check ( VALUE ~ '^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$' ); -- one matching format is: yyyyyy@xxxx.xxx
 create domain phone as varchar(9) check ( VALUE ~ '[0-9]{9}'); -- Exactly 9 digits.
 create domain address as varchar(255);
@@ -21,15 +20,12 @@ create domain grade as integer check ( VALUE >=0 and VALUE <=10);
 --WARNING: uncomment following line only when you must to delete and drop the schema.
 --drop schema nbp_project cascade ;
 
-
-
-
 --TABLES
 create table COUNTRY(
-    id      serial     PRIMARY KEY,
-    name    varchar(50) UNIQUE    NOT NULL
+    id      serial      PRIMARY KEY,
+    name    varchar(50) UNIQUE    NOT NULL,
+    code    varchar(10) UNIQUE
 );
-
 create table END_USER(
     id              serial         PRIMARY KEY,
     username        varchar(20)     UNIQUE,
@@ -44,19 +40,16 @@ create table END_USER(
     FOREIGN KEY (country_id) REFERENCES COUNTRY (id)
                      ON DELETE SET NULL ON UPDATE CASCADE
 );
-
 create table STUDENT(
     id      integer     PRIMARY KEY,
     FOREIGN KEY (id) REFERENCES END_USER(id)
                     ON  DELETE CASCADE ON UPDATE CASCADE
 );
-
 create table MEMBER(
     id      integer     PRIMARY KEY,
     FOREIGN KEY (id) REFERENCES END_USER(id)
                     ON  DELETE CASCADE ON UPDATE CASCADE
 );
-
 create table EXPERIENCE(
     id                  serial         PRIMARY KEY,
     type_of_job         job,
@@ -67,7 +60,6 @@ create table EXPERIENCE(
     FOREIGN KEY (student_id) REFERENCES STUDENT(id)
                     ON DELETE CASCADE ON UPDATE CASCADE
 );
-
 create table CERTIFICATE(
     id                  serial     PRIMARY KEY,
     name                varchar(30),
@@ -78,7 +70,6 @@ create table CERTIFICATE(
     FOREIGN KEY (student_id) REFERENCES STUDENT(id)
                     ON DELETE CASCADE ON UPDATE CASCADE
 );
-
 create table PROJECT(
     id                  serial         PRIMARY KEY,
     name                varchar(50),
@@ -88,12 +79,10 @@ create table PROJECT(
     FOREIGN KEY (student_id) REFERENCES STUDENT(id)
                     ON DELETE CASCADE ON UPDATE CASCADE
 );
-
 create table LANGUAGE(
     id      serial     PRIMARY KEY,
     name    varchar(30) NOT NULL
 );
-
 create table KNOWS_LANGUAGE(
     student_id  integer,
     lang_id     integer,
@@ -105,7 +94,6 @@ create table KNOWS_LANGUAGE(
                     ON DELETE CASCADE ON UPDATE CASCADE
 
 );
-
 create table EDUCATIONAL_INSTITUTE(
     id              serial     PRIMARY KEY,
     name            varchar(50),
@@ -119,7 +107,6 @@ create table EDUCATIONAL_INSTITUTE(
     FOREIGN KEY (country_id) REFERENCES COUNTRY(id)
                                   ON DELETE SET NULL ON UPDATE CASCADE
 );
-
 create table STUDIES(
     faculty_id          integer,
     student_id          integer,
@@ -135,7 +122,6 @@ create table STUDIES(
 
 
 );
-
 create table COMPANY(
     id                      serial     PRIMARY KEY,
     name                    varchar(30),
@@ -148,7 +134,6 @@ create table COMPANY(
                           ON DELETE SET NULL ON UPDATE CASCADE
 
 );
-
 create table OFFER(
     id                  serial     PRIMARY KEY,
     requirements        varchar(500),
@@ -165,7 +150,6 @@ create table OFFER(
     FOREIGN KEY (company_id) REFERENCES COMPANY(id)
                 ON DELETE SET NULL ON UPDATE CASCADE
 );
-
 create table ACCOMMODATION(
     id          serial     PRIMARY KEY ,
     phone_number            phone,
@@ -183,22 +167,6 @@ create table ACCOMMODATION(
                           ON DELETE SET NULL ON UPDATE CASCADE,
     CHECK (start_date < end_date)
 );
-
-create table INTERNSHIP(
-    id      serial     PRIMARY KEY ,
-    grade_work  grade,
-    grade_accommodation grade,
-    grade_student       grade,
-    comment_student     varchar(500),
-    comment_company     varchar(500),
-    duration_in_weeks   pos_int,
-    salary              pos_int,
-    bonus_pay           pos_int,
-    applies_for_id      integer,
-    FOREIGN KEY (applies_for_id) REFERENCES APPLIES_FOR (student_id,offer_id)
-                                ON DELETE SET NULL ON UPDATE CASCADE
-);
-
 create table APPLIES_FOR(
     student_id                      integer,
     offer_id                        integer,
@@ -211,7 +179,21 @@ create table APPLIES_FOR(
                         ON DELETE SET NULL  ON UPDATE CASCADE
 
 );
-
+create table INTERNSHIP(
+    id      serial     PRIMARY KEY ,
+    grade_work  grade,
+    grade_accommodation     grade,
+    grade_student           grade,
+    comment_student         varchar(500),
+    comment_company         varchar(500),
+    duration_in_weeks       pos_int,
+    salary                  pos_int,
+    bonus_pay               pos_int,
+    applies_for_student_id  integer,
+    applies_for_offer_id    integer,
+    FOREIGN KEY (applies_for_student_id,applies_for_offer_id) REFERENCES APPLIES_FOR (student_id,offer_id)
+                                ON DELETE SET NULL ON UPDATE CASCADE
+);
 create table ORGANIZATION (
     id              serial     PRIMARY KEY,
     name            varchar(50),
@@ -222,7 +204,6 @@ create table ORGANIZATION (
     FOREIGN KEY (country_id) REFERENCES COUNTRY(id)
                           ON DELETE SET NULL ON UPDATE CASCADE
 );
-
 create table COMMITTEE(
     id              serial     PRIMARY KEY,
     phone_number    phone,
@@ -235,7 +216,6 @@ create table COMMITTEE(
     FOREIGN KEY (org_id) REFERENCES ORGANIZATION(id)
 
 );
-
 create table MEMBER_OF(
    member_id        integer,
    committee_id     integer,
@@ -247,7 +227,6 @@ create table MEMBER_OF(
 
 
 );
-
 create table EVENT(
     id              serial     PRIMARY KEY,
     name            varchar(50),
@@ -265,7 +244,6 @@ create table EVENT(
                           ON DELETE SET NULL ON UPDATE CASCADE,
     CHECK (start_date < end_date)
 );
-
 create table TRAINING(
     id                  integer         PRIMARY KEY,
     curriculum          varchar(500),
@@ -273,14 +251,12 @@ create table TRAINING(
     FOREIGN KEY (id)    REFERENCES EVENT(id)
                             ON DELETE CASCADE ON UPDATE CASCADE
 );
-
 create table COMPETITION(
     id                  integer         PRIMARY KEY,
     rules               varchar(500),
     FOREIGN KEY (id) REFERENCES  EVENT(id)
                         ON DELETE CASCADE ON UPDATE CASCADE
 );
-
 create table PARTICIPATES_IN(
     student_id  integer,
     training_id integer,
@@ -290,7 +266,6 @@ create table PARTICIPATES_IN(
     FOREIGN KEY (training_id) REFERENCES TRAINING(id)
                             ON DELETE CASCADE ON UPDATE CASCADE
 );
-
 create table WON_PRIZE(
     student_id      integer,
     competition_id  integer,
@@ -301,9 +276,6 @@ create table WON_PRIZE(
     FOREIGN KEY (competition_id) REFERENCES  COMPETITION(id)
                       ON DELETE CASCADE ON UPDATE CASCADE
 );
-
-
-
 
 
 
