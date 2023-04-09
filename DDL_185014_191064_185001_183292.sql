@@ -18,13 +18,12 @@ create domain app_status as varchar(20) check ( VALUE ~ '^(ACCEPTED|REJECTED)$' 
 create domain grade as integer check ( VALUE >=0 and VALUE <=10);
 
 --WARNING: uncomment following line only when you must to delete and drop the schema.
---drop schema nbp_project cascade ;
+-- drop schema nbp_project cascade ;
 
 --TABLES
 create table COUNTRY(
     id      serial      PRIMARY KEY,
-    name    varchar(50) UNIQUE    NOT NULL,
-    code    varchar(10) UNIQUE
+    name    varchar(50) UNIQUE    NOT NULL
 );
 create table END_USER(
     id              serial         PRIMARY KEY,
@@ -81,7 +80,8 @@ create table PROJECT(
 );
 create table LANGUAGE(
     id      serial     PRIMARY KEY,
-    name    varchar(30) NOT NULL
+    name    varchar(30) NOT NULL,
+    code    varchar(10) NOT NULL
 );
 create table KNOWS_LANGUAGE(
     student_id  integer,
