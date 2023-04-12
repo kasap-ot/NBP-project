@@ -19,7 +19,7 @@ if __name__ == '__main__':
                 password = utils.random_alphanumeric_sequence_with_random_length(8,15)
                 name = utils.random_name()
                 surname = utils.random_surname()
-                date_of_birth = utils.random_date_of_birth(1995,2001)
+                date_of_birth = utils.random_date(1995,2001)
                 address = utils.random_address()
                 phone_number = utils.random_phone_number()
                 email_address = utils.random_email()
