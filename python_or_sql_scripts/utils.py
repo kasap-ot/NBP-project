@@ -124,7 +124,7 @@ def random_name():
 def random_surname():
     return surnames[random.randint(0, len(names)-1)]
 
-def random_date_of_birth(from_year,to_year):
+def random_date(from_year,to_year):
     start_date = date(from_year, 1, 1)
     end_date = date(to_year, 12, 31)
 
