@@ -25,6 +25,7 @@ syllables = ['wuh','mi','vin','hi','um','ku','in','ha','weh','la',
              'hic','gis','ufi','al','muf','ufu','jo','tet','umu','ji',
              'bop','evi','giz','vil','ro','bon','oza','emi','fis','pav',
 ]
+
 surnames = ['Fowlie' ,'Franklin' ,'Gair' ,'Gammie' ,'Gifford' ,'Gold' ,'Greenan' ,'Hanley' ,
             'Hare' ,'Hetherington' ,'Hind' ,'Hoggan' ,'Hollywood' ,'Hoy' ,'Islam' ,'Izatt' ,
             'Kavanagh' ,'Keay' ,'Keddie' ,'Kellock' ,'Keogh' ,'Laurenson' ,'Laverty' ,
@@ -51,6 +52,7 @@ surnames = ['Fowlie' ,'Franklin' ,'Gair' ,'Gammie' ,'Gifford' ,'Gold' ,'Greenan'
             'Sillars' ,'Spowart' ,'Stanners' ,'Stirrat' ,'Storrie' ,'Suttie' ,'Swanston' ,
             'Symon' ,'Tariq' ,'Terry' ,'Tinney' ,'Tran' ,'Twaddle' ,'Vaughan' ,'Wallis' ,'Warden' ,
             'Wardle' ,'Ware' ,'Wilkins' ,'Wynn' ,'Yeats' ,'Younger']
+
 names = ['Oliver' ,'Noah' ,'Henry' ,'William' ,'Theodore' ,'Hudson' ,'Jack' ,'Charlie' ,'Elijah' ,
          'Leo' ,'Thomas' ,'Archie' ,'Harrison' ,'Archer' ,'Levi' ,'Lucas' ,'James' ,'Luca' ,
          'George' ,'Harry' ,'Hunter' ,'Mason' ,'Oscar' ,'Arlo' ,'Arthur' ,'Cooper' ,'Harvey' ,
@@ -74,7 +76,6 @@ names = ['Oliver' ,'Noah' ,'Henry' ,'William' ,'Theodore' ,'Hudson' ,'Jack' ,'Ch
          'Claire' ,'Zara' ,'Quinn' ,'Hallie' ,'Thea' ,'Pippa' ,'Jasmine' ,'Adeline' ,'Lyla' ,
          'Eva' ,'Rosie' ,'Lilly' ,'Indiana' ,'Octavia' ,'Maeve' ,'Eden' ,'Gracie' ,'Aaliyah' ,
          'Brooklyn' ,'Heidi' ,'Aubrey' ,'Lillian' ,'Maggie' ,'Rose']
-
 
 
 def random_alphabetic_sequence_with_random_length(min_length, max_length):
