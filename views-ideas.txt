@@ -1,0 +1,17 @@
+- за студент (studies, certificates, project, experience, training, knows language)
+- корисник (end user country)
+- active offers
+- completed offers
+- all offers with accommodation and company info
+- student & completed internships (number)
+- top tier completed interships (by grade)
+- committees by country
+- members by organization
+- offers by company
+- events by type
+- students by faculty type
+- students by average grade on internship
+- companies by average grade on internship
+- companies and number of offers
+- committees with the most offers exchanged
+- committees with best offers (on average)
