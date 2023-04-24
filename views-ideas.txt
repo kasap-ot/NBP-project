@@ -1,17 +1,26 @@
-- за студент (studies, certificates, project, experience, training, knows language)
-- корисник (end user country)
-- active offers
-- completed offers
-- all offers with accommodation and company info
-- student & completed internships (number)
-- top tier completed interships (by grade)
-- committees by country
-- members by organization
-- offers by company
-- events by type
+The views we discussed on labs, but just devided on team members:
+
+Касапинов:
+- student with his qualifications
+- end user with county
+- student and number of internships completed
 - students by faculty type
 - students by average grade on internship
-- companies by average grade on internship
-- companies and number of offers
-- committees with the most offers exchanged
-- committees with best offers (on average)
+
+Христијан:
+- active offers
+- completed offers
+- offers with accommodation and company info
+- completed internships sorted by combined average grade
+
+Евица:
+- committees with number of offers created
+- committees with average grade of all of its offers
+- committess with its country
+- members by organization
+
+Бране:
+- offers by company
+- events by type
+- companies with average grade on its internships
+- companies with its number of offers
