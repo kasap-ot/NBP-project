@@ -1,0 +1,26 @@
+The views we discussed on labs, but just devided on team members:
+
+Касапинов:
+- student with his qualifications
+- end user with county
+- student and number of internships completed
+- students by faculty type
+- students by average grade on internship
+
+Христијан:
+- active offers
+- completed offers
+- offers with accommodation and company info
+- completed internships sorted by combined average grade
+
+Евица:
+- committees with number of offers created
+- committees with average grade of all of its offers
+- committess with its country
+- members by organization
+
+Бране:
+- offers by company
+- events by type
+- companies with average grade on its internships
+- companies with its number of offers
