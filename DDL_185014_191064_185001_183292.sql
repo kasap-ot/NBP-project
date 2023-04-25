@@ -17,6 +17,11 @@ create domain gpa   as float check ( VALUE >= 6 and VALUE <=10); -- [6,10]
 create domain app_status as varchar(20) check ( VALUE ~ '^(ACCEPTED|REJECTED)$' ); --ACCEPTED or REJECTED
 create domain grade as integer check ( VALUE >=0 and VALUE <=10);
 
+--Alter domains
+alter domain nbp_project.app_status drop constraint app_status_check;
+alter domain nbp_project.app_status add constraint app_status_check
+    check ((VALUE)::text ~'^(APPLIED|ACCEPTED|REJECTED|ONGOING|COMPLETED)$'::text);
+    
 --WARNING: uncomment following line only when you must to delete and drop the schema.
 -- drop schema nbp_project cascade ;
 
