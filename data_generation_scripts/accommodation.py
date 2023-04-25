@@ -18,12 +18,12 @@ with open('csv_files/accommodation.csv', 'w', newline='') as file:
         phone_number = utils.random_phone_number()
         email = utils.random_email()
         address = utils.random_address()
-        country_id = 1          # TODO: Set to be random country id
-        start_date = utils.random_date(2023, 2024)
-        end_date = ...          # TODO: We should change this to be a duration
+        country_id = random.randint(1, 193) # There are 193 rows in country.csv
+        start_date = utils.random_date('2023-01-01', '2024-12-31')
+        end_date = utils.random_date(start_date, '2024-12-31')
         type = accommodation_types[random.randint(0, len(accommodation_types)-1)]
         description = utils.random_word_sequence(15)
-        offer_id = 1            # TODO: Se to be random offer id
+        offer_id = random.randint(1, 10_000) # TODO: Change if we add more offers
 
         new_row = [
             phone_number,
@@ -37,7 +37,7 @@ with open('csv_files/accommodation.csv', 'w', newline='') as file:
             offer_id,
         ]
     
-        # writer.writerow(new_row)
+        writer.writerow(new_row)
 
         print(new_row)
 
