@@ -7,38 +7,46 @@ start_time = time.time()
 
 status_types = ['applied', 'accepted', 'rejected', 'ongoing', 'completed']
 
-total_rows = 10_000
+# _________________________________________________________________
+
+# For assigning the foreign key of the row in the applies_for table
+
+student_ids = list()
+
+with open('csv_files/student.csv', 'r') as student_file:
+    reader = csv.reader(student_file)
+    for row in reader:
+        for item in row:
+            student_ids.append(int(item))
+
+# _________________________________________________________________
+
+number_of_offers = 96_500
+applications_per_offer = 100
+total_rows = number_of_offers * applications_per_offer
 
 with open('csv_files/applies_for.csv', 'w', newline='') as file:
     writer = csv.writer(file)
 
     for i in range(0, total_rows):
-        acceptance_status = status_types[random.randint(0, len(status_types)-1)]
+        student_id = random.choice(student_ids)
+        offer_id = random.randint(1, number_of_offers)
+        acceptance_status = random.choice(status_types)
         
-        #TODO: Find a way to assure that the date of application will be before the start-date of the offer
-        date_of_submission = utils.random_date(2023, 2024)
-        
-        # TODO: Change to be a random student id
-        student_id = 1
-
-        # TODO: Change to be a random offer id
-        offer_id = 1
+        # NOTE: The date of submission must be before the starting date of the internship
+        date_of_submission = utils.random_date('2023-01-01', '2023-12-31')
 
         new_row = [
-            acceptance_status,
-            date_of_submission,
             student_id,
             offer_id,
+            acceptance_status,
+            date_of_submission,
         ]
 
-        # writer.writerow(new_row)
-
-        print(new_row)
+        writer.writerow(new_row)
+        # print(i, ' - ', new_row)
 
 end_time = time.time()
 
 duration = end_time - start_time
 print(duration)
-
-# NOTE: Approximately 4 seconds for 10,000 rows
-# This table should theoretically have the most rows - this is the point of the application

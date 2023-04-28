@@ -16,7 +16,7 @@ The views we discussed on labs, but just devided on team members:
 Евица:
 - committees with number of offers created
 - committees with average grade of all of its offers
-- committess with its country
+- committees with its country
 - members by organization
 
 Бране:

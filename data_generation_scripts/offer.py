@@ -21,12 +21,11 @@ with open(members_file_path, 'r') as members_file:
         for item in row:
             member_ids.append(int(item))
 
-member_ids_length = len(member_ids)
-
 # ____________________________________________________________________
 
-# NOTE: We should define this. For 1000 rows it takes about 1 sec.
-total_rows = 100_000
+num_companies = 9650
+offers_per_company = 10
+total_rows = num_companies * offers_per_company
 
 with open('csv_files/offer.csv', 'w', newline='') as file:
     writer = csv.writer(file)
@@ -37,33 +36,24 @@ with open('csv_files/offer.csv', 'w', newline='') as file:
         benefits = utils.random_word_sequence(15)
         salary = random.randint(500, 5000)
         field = utils.random_word_sequence(3)
-        start_date = utils.random_date('2023-01-01', '2024-12-31')
+        start_date = utils.random_date('2024-01-01', '2024-12-31')
         duration_in_weeks = random.randint(4, 52)
-        
-        member_id = member_ids[random.randint(0, member_ids_length-1)]
-        company_id = random.randint(1, 1000) # There are 1000 rows in company.csv
+        member_id = random.choice(member_ids)
+        company_id = random.randint(1, num_companies) # There are 1000 rows in company.csv
 
-        # NOTE: Uncomment when we decide to run this script
-        writer.writerow([requirements,
-                         responsibilities,
-                         benefits,
-                         salary,
-                         field,
-                         start_date,
-                         duration_in_weeks,
-                         member_id,
-                         company_id
-                        ])
+        new_row = [requirements,
+                    responsibilities,
+                    benefits,
+                    salary,
+                    field,
+                    start_date,
+                    duration_in_weeks,
+                    member_id,
+                    company_id
+                ]
         
-        print([requirements,
-                responsibilities,
-                benefits,
-                salary,
-                field,
-                start_date,
-                duration_in_weeks,
-                member_id,
-                company_id])
+        # writer.writerow(new_row)
+        print(i, ' ---- ', new_row)
         
 end_time = time.time()
 
