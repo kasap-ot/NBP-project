@@ -20,7 +20,7 @@ create domain grade as integer check ( VALUE >=0 and VALUE <=10);
 --Alter domains
 alter domain nbp_project.app_status drop constraint app_status_check;
 alter domain nbp_project.app_status add constraint app_status_check
-    check ((VALUE)::text ~'^(APPLIED|ACCEPTED|REJECTED|ONGOING|COMPLETED)$'::text);
+    check ((VALUE)::text ~'^(applied|accepted|rejected|ongoing|completed)$'::text);
     
 --WARNING: uncomment following line only when you must to delete and drop the schema.
 -- drop schema nbp_project cascade ;
