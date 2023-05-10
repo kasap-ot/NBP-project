@@ -1,0 +1,9 @@
+
+TO DO:
+- create at least 1 million rows for 'offers'
+- create at approximately 10 million rows for 'applies_for'
+- fix randomly generated data (define which tables and columns)
+- create indexes (define in more detail)
+
+- finish the UIs for the project (?)
+    
