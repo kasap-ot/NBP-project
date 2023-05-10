@@ -1,9 +1,14 @@
 
 TO DO:
-- create at least 1 million rows for 'offers'
 - create at approximately 10 million rows for 'applies_for'
 - fix randomly generated data (define which tables and columns)
 - create indexes (define in more detail)
+- import new data for offers, accommodation, applies_for, and internship (reset id counter!)
 
 - finish the UIs for the project (?)
     
+FINISHED:
+- create at least 1 million rows for 'offers' (exactly 1.003.600 rows, each with shorted descriptions)
+- create at least 1 million rows for 'accommodation' (just like 'offers' - 1.003.600, 1-to-1)
+- create 10.036.000 rows for 'applies_for' (10 per each offer)
+- create 2.005.389 rows for 'internship' (the completed offers from 'applies_for')

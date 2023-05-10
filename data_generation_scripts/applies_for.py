@@ -21,8 +21,8 @@ with open('csv_files/student.csv', 'r') as student_file:
 
 # _________________________________________________________________
 
-number_of_offers = 96_500
-applications_per_offer = 100
+number_of_offers = 1_003_600
+applications_per_offer = 10
 total_rows = number_of_offers * applications_per_offer
 
 with open('csv_files/applies_for.csv', 'w', newline='') as file:
