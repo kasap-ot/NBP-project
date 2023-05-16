@@ -52,8 +52,10 @@
 			color: #4CAF50;
 		}
 	</style>
+	<link rel="stylesheet" href="navbar-style.css">
 </head>
 <body>
+	<?php include('navbar.php'); ?>
 	<div class="container">
 		<div class="offer-info">
 			<h2>Internship Offer</h2>

@@ -7,6 +7,6 @@
 - members should be able to see the statistics we will have e.g. students and their number of applications / internships
 - both students and members should be able to click on the company and see more information about item
 - members should be able to click on button 'create offer' and create it with the appropriate information
-- members should have separate sections to view different types of application
+- members should have separate sections to view different types of applications
 - students can view their own profile (and possibly edit it to insert their qualifications?)
 - members can also view the profiles of students (and possibly edit certain parts of their profile?)

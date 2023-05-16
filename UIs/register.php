@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Login Form</title>
+	<title>User Registration Form</title>
 	<style>
 		body {
 			font-family: Arial, sans-serif;
@@ -10,7 +10,7 @@
 			max-width: 500px;
 			margin: auto;
 		}
-		input[type=text], input[type=password] {
+		input[type=text], input[type=password], input[type=email] {
 			width: 100%;
 			padding: 12px 20px;
 			margin: 8px 0;
@@ -33,17 +33,22 @@
 			background-color: #45a049;
 		}
 	</style>
+	<link rel="stylesheet" href="navbar-style.css">
 </head>
 <body>
+	<?php include('navbar.php'); ?>
 	<form>
-		<h2>Login Form</h2>
+		<h2>User Registration Form</h2>
 		<label for="username">Username</label>
 		<input type="text" id="username" name="username" required>
+
+		<label for="email">Email</label>
+		<input type="email" id="email" name="email" required>
 
 		<label for="password">Password</label>
 		<input type="password" id="password" name="password" required>
 
-		<button type="submit">Login</button>
+		<button type="submit">Register</button>
 	</form>
 </body>
 </html>

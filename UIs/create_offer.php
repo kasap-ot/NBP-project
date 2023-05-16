@@ -60,39 +60,47 @@
 			text-align: center;
 		}
 	</style>
+	<link rel="stylesheet" href="navbar-style.css">
 </head>
 <body>
+	<?php include('navbar.php'); ?>
 	<h1>Create an offer</h1>
 	<form>
+		<!-- 
+			Form for offer should have:
+			- field
+			- requirements
+			- responsibilities
+			- benefits
+			- salary
+			- start date
+			- duration in weeks
+			- select company
+		 -->
 		<label for="field1">Field of study:</label>
 		<input type="text" id="field1" name="field1">
-
-		<label for="field2">Company name:</label>
+				
+		<label for="field2">Requirements:</label>
 		<input type="text" id="field2" name="field2">
-
-		<label for="field3">Address of company:</label>
+				
+		<label for="field3">Responsibilities:</label>
 		<input type="text" id="field3" name="field3">
-
-		<label for="field4">Work offered:</label>
+				
+		<label for="field4">Benefits:</label>
 		<input type="text" id="field4" name="field4">
-
-		<label for="field5">Requirements:</label>
+				
+		<label for="field5">Salary:</label>
 		<input type="text" id="field5" name="field5">
-
-		<label for="field6">Salary:</label>
+				
+		<label for="field6">Start date:</label>
 		<input type="text" id="field6" name="field6">
-
-		<label for="field7">Start date:</label>
+				
+		<label for="field7">Duration (in weeks):</label>
 		<input type="text" id="field7" name="field7">
-
-		<label for="field8">Length in weeks:</label>
+				
+		<label for="field8">Select company:</label>
 		<input type="text" id="field8" name="field8">
-
-		<label for="field9">Accommodation type:</label>
-		<input type="text" id="field9" name="field9">
-
-		<label for="field10">Deadline:</label>
-		<input type="text" id="field10" name="field10">
+				
 
 		<button type="submit">Create</button>
 	</form>

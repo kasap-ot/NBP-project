@@ -5,7 +5,6 @@
 	<style>
 		body {
 			font-family: Arial, sans-serif;
-			text-align: center;
 		}
 		h1 {
 			margin-top: 50px;
@@ -25,8 +24,10 @@
 			background-color: #45a049;
 		}
 	</style>
+	<link rel="stylesheet" href="navbar-style.css">
 </head>
 <body>
+	<?php include('navbar.php'); ?>
 	<h1>Welcome to APLIPRAKSA!</h1>
 	<p>Please select an option below to continue:</p>
 	<button onclick="window.location.href='register.html'">Register</button>
