@@ -19,7 +19,7 @@
     <li class="nav-item"><a class="nav-link" href="one_offer.php">View offer</a></li>
     <li class="nav-item"><a class="nav-link" href="edit_profile.php">Edit profile</a></li>
     <li class="nav-item"><a class="nav-link" href="#">Apply</a></li>
-    <li class="nav-item"><a class="nav-link" href="edit_offers.php">Assign/edit offers</a></li>
+    <li class="nav-item"><a class="nav-link" href="applications.php">Applications</a></li>
     <li class="nav-item"><a class="nav-link" href="one_company.php">View company</a></li>
     <li class="nav-item"><a class="nav-link" href="#">Grade</a></li>
     <li class="nav-item"><a class="nav-link" href="statistics.php">Statistics</a></li>
