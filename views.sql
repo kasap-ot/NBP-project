@@ -12,23 +12,27 @@ where acceptance_status = 'ACTIVE';
 
 
 create view COMPLETED_OFFER as
-select *
-from applies_for
-where acceptance_status = 'COMPLETED';
+select A.acceptance_status,A.date_of_app_submission,O.salary,O.field,O.start_date,O.duration_in_weeks,E.name,E.surname
+from applies_for as A
+    join offer as O on A.offer_id = O.id
+    join end_user as E on E.id = A.student_id
+where A.acceptance_status = 'completed';
 
 
 create view OFFER_ACCOMMODATION_COMPANY as
-select  *
-from (ACCOMMODATION as AC(acc_id,acc_phone_number,acc_email_address,acc_address,acc_country_id,acc_start_date,acc_end_date,type,description,offer_id)
-        natural join OFFER as OF(offer_id,requirements,responsibilities,benefits,salary,field,off_start_date,duration_in_weeks,member_id,company_id)
-     )as OF_AC
-        natural join company as CO(company_id,name,co_phone_number,co_email_address,co_address,co_country_id,number_of_employees)
-order by acc_id;
+select  A.phone_number,A.email_address,A.address,A.start_date as acc_start_date,A.end_date,A.type,O.salary,O.field,O.start_date as offer_start_date,O.duration_in_weeks,C.name,C.number_of_employees
+from accommodation as A
+    join offer as O on A.offer_id = O.id
+    join company as C on O.company_id = C.id
+order by A.id;
 
 create view COMPLETED_INTERNSHIP as
-select id as internship_id, grade_work, grade_accommodation,grade_student,((grade_student+grade_accommodation+grade_work)/3) as average_grade, comment_student, comment_company,duration_in_weeks,salary,bonus_pay,student_id,offer_id,acceptance_status,date_of_app_submission
-from INTERNSHIP join COMPLETED_OFFER on (offer_id = applies_for_offer_id and student_id = applies_for_student_id)
-order by average_grade desc ;
+select I.grade_work,I.grade_accommodation,I.grade_student,((grade_student+grade_accommodation+grade_work)/3) as average_grade,A.acceptance_status,A.date_of_app_submission,O.salary,O.field,O.start_date,O.duration_in_weeks,E.name,E.surname
+from internship as I
+    join applies_for as A on I.applies_for_student_id = A.student_id and I.applies_for_offer_id = A.offer_id
+    join offer as O on  A.offer_id = O.id
+    join end_user as E on E.id = A.student_id
+where A.acceptance_status = 'completed';
 
 
 ----------------- Kasap's views -----------------
@@ -48,11 +52,6 @@ from end_user as u
 inner join country on u.country_id = country.id;
 
 
--- Student with his qualifications - will have to many columns?
-
--- Students ordered by faculty type - we don't yet have the faculty type column...
-
--- Students by average grade on internship - challenging
 
 
 ----------------- Brane's views -----------------
