@@ -2,50 +2,28 @@
 <html>
 <head>
 	<title>Login Form</title>
-	<style>
-		body {
-			font-family: Arial, sans-serif;
-		}
-		form {
-			max-width: 500px;
-			margin: auto;
-		}
-		input[type=text], input[type=password] {
-			width: 100%;
-			padding: 12px 20px;
-			margin: 8px 0;
-			display: inline-block;
-			border: 1px solid #ccc;
-			border-radius: 4px;
-			box-sizing: border-box;
-		}
-		button {
-			background-color: #4CAF50;
-			color: white;
-			padding: 14px 20px;
-			margin: 8px 0;
-			border: none;
-			border-radius: 4px;
-			cursor: pointer;
-			width: 100%;
-		}
-		button:hover {
-			background-color: #45a049;
-		}
-	</style>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="navbar-style.css">
 </head>
 <body>
 	<?php include('navbar.php'); ?>
-	<form>
-		<h2>Login Form</h2>
-		<label for="username">Username</label>
-		<input type="text" id="username" name="username" required>
+	<div class="container">
+		<form>
+			<br>
+			<h2 class="text-center">Login Form</h2>
+			<div class="form-group">
+				<label for="username">Username</label>
+				<input type="text" id="username" name="username" class="form-control" required>
+			</div>
 
-		<label for="password">Password</label>
-		<input type="password" id="password" name="password" required>
+			<div class="form-group">
+				<label for="password">Password</label>
+				<input type="password" id="password" name="password" class="form-control" required>
+			</div>
 
-		<button type="submit">Login</button>
-	</form>
+			<button type="submit" class="btn btn-primary">Login</button>
+		</form>
+	</div>
 </body>
 </html>

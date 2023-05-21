@@ -1,36 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+	
 <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Welcome to My Website</title>
-	<style>
-		body {
-			font-family: Arial, sans-serif;
-		}
-		h1 {
-			margin-top: 50px;
-		}
-		button {
-			background-color: #4CAF50;
-			color: white;
-			padding: 14px 20px;
-			margin: 8px 0;
-			border: none;
-			border-radius: 4px;
-			cursor: pointer;
-			width: 200px;
-			font-size: 20px;
-		}
-		button:hover {
-			background-color: #45a049;
-		}
-	</style>
-	<link rel="stylesheet" href="navbar-style.css">
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
+
 <body>
 	<?php include('navbar.php'); ?>
-	<h1>Welcome to APLIPRAKSA!</h1>
-	<p>Please select an option below to continue:</p>
-	<button onclick="window.location.href='register.html'">Register</button>
-	<button onclick="window.location.href='login.html'">Login</button>
+	<div class="container text-center">
+		<br>	
+		<h1>Welcome to My Website</h1>
+		<p class="lead">Thank you for visiting!</p>
+		<div class="d-grid gap-2 col-6 mx-auto">
+		<a href="register.php" class="btn btn-primary">Register</a>
+		<a href="login.php" class="btn btn-success">Login</a>
+		</div>
+	</div>
 </body>
+
 </html>

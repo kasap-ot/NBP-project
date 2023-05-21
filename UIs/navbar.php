@@ -1,10 +1,10 @@
 <!-- navbar.php -->
-<nav class="main-nav">
-  <ul class="main-nav">
-    <li class="main-nav"><a class="main-nav" href="welcome.php">Welcome</a></li>
-    <li class="main-nav"><a class="main-nav" href="register.php">Register</a></li>
-    <li class="main-nav"><a class="main-nav" href="login.php">Log in</a></li>
-    <li class="main-nav"><a class="main-nav" href="offers.php">All offers</a></li>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <ul class="navbar-nav">
+    <li class="nav-item"><a class="nav-link" href="welcome.php">Welcome</a></li>
+    <li class="nav-item"><a class="nav-link" href="register.php">Register</a></li>
+    <li class="nav-item"><a class="nav-link" href="login.php">Log in</a></li>
+    <li class="nav-item"><a class="nav-link" href="offers.php">All offers</a></li>
     
     <!-- 
         There will also be subtypes of offers
@@ -13,18 +13,17 @@
         different section.
     -->
 
-    <li class="main-nav"><a class="main-nav" href="companies.php">All companies</a></li>
-    <li class="main-nav"><a class="main-nav" href="users.php">All users</a></li>
-    <li class="main-nav"><a class="main-nav" href="create_offer.php">Create offer</a></li>
-    <li class="main-nav"><a class="main-nav" href="one_offer.php">View offer</a></li>
-    <li class="main-nav"><a class="main-nav" href="edit_profile.php">Edit profile</a></li>
-    <li class="main-nav"><a class="main-nav" href="#">Apply</a></li>
-    <li class="main-nav"><a class="main-nav" href="edit_offers.php">Assign/edit offers</a></li>
-    <li class="main-nav"><a class="main-nav" href="one_company.php">View company</a></li>
-    <li class="main-nav"><a class="main-nav" href="#">Grade</a></li>
-    <li class="main-nav"><a class="main-nav" href="statistics.php">Statistics</a></li>
+    <li class="nav-item"><a class="nav-link" href="companies.php">All companies</a></li>
+    <li class="nav-item"><a class="nav-link" href="users.php">All users</a></li>
+    <li class="nav-item"><a class="nav-link" href="create_offer.php">Create offer</a></li>
+    <li class="nav-item"><a class="nav-link" href="one_offer.php">View offer</a></li>
+    <li class="nav-item"><a class="nav-link" href="edit_profile.php">Edit profile</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Apply</a></li>
+    <li class="nav-item"><a class="nav-link" href="edit_offers.php">Assign/edit offers</a></li>
+    <li class="nav-item"><a class="nav-link" href="one_company.php">View company</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Grade</a></li>
+    <li class="nav-item"><a class="nav-link" href="statistics.php">Statistics</a></li>
     
     <!-- Perhaps there will be more pages for statistics? -->
-
   </ul>
 </nav>

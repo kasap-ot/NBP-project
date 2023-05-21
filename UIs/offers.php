@@ -2,76 +2,36 @@
 <html>
 <head>
 	<title>Internship Offers</title>
-	<style>
-		body {
-			font-family: Arial, sans-serif;
-			padding: 20px;
-		}
-		.container {
-			max-width: 800px;
-			margin: 0 auto;
-		}
-		.navbar {
-			background-color: #f5f5f5;
-			padding: 10px;
-		}
-		.navbar ul {
-			list-style-type: none;
-			margin: 0;
-			padding: 0;
-			display: flex;
-		}
-		.navbar li {
-			margin-right: 10px;
-		}
-		.navbar li a {
-			text-decoration: none;
-			color: #333;
-			padding: 5px 10px;
-			border-radius: 5px;
-		}
-		.navbar li a:hover {
-			background-color: #ddd;
-		}
-		table {
-			border-collapse: collapse;
-			width: 100%;
-			margin-top: 50px;
-		}
-		th, td {
-			text-align: left;
-			padding: 8px;
-			border-bottom: 1px solid #ddd;
-		}
-		tr:hover {
-			background-color: #f5f5f5;
-		}
-		th {
-			background-color: #4CAF50;
-			color: white;
-		}
-		h1 {
-			margin-top: 50px;
-		}
-	</style>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="navbar-style.css">
 </head>
 <body>
 	<?php include('navbar.php'); ?>
 	<br>
 	<div class="container">
-		<div class="navbar">
-			<ul>
-				<li><a href="#insertpagename">Availble offers</a></li>
-				<li><a href="#insertpagename">Waiting for response</a></li>
-				<li><a href="#insertpagename">Accepted</a></li>
-				<li><a href="#insertpagename">Ongoing</a></li>
-				<li><a href="#insertpagename">Completed</a></li>
+		<nav class="navbar navbar-light bg-light">
+			<ul class="nav">
+				<li class="nav-item">
+					<a class="nav-link" href="available_offers.php">Available offers</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#insertpagename">Waiting for response</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#insertpagename">Accepted</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#insertpagename">Ongoing</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#insertpagename">Completed</a>
+				</li>
 			</ul>
-		</div>
-		<h1>Internship Offers</h1>
-		<table id="offers">
-			<thead>
+		</nav>
+		<h1 class="mt-5">Internship Offers</h1>
+		<table class="table mt-4" id="offers">
+			<thead class="thead-dark">
 				<tr>
 					<th>Country</th>
 					<th>Field of Study</th>
@@ -171,4 +131,3 @@
 	</div>
 </body>
 </html>
-
