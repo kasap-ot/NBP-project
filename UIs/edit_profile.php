@@ -13,44 +13,28 @@
     <div class="container">
         <br><br>
         <h1>Edit Profile</h1>
-        <!-- 
-            The users (students) should be able to edit their profiles
-            and basically be able to change their credentials. The fields
-            in the form are:
-            - username
-            - password
-            - address
-            - phone number
-            - email
-            - country
-            - studies at (add/remove/edit, multiple fields)
-            - experience (add/remove/edit, multiple fields)
-            - certificate (add/remove/edit, multiple fields)
-            - project (add/remove/edit, multiple fields)
-            - language knowledge (add/remove/edit, multiple fields)
-        -->
         <form>
-        <div class="form-group">
+        <div class="form-group py-2">
             <label for="username">Username</label>
             <input type="text" class="form-control" id="username" placeholder="Enter your username">
         </div>
-        <div class="form-group">
+        <div class="form-group py-2">
             <label for="password">Password</label>
             <input type="password" class="form-control" id="password" placeholder="Enter your password">
         </div>
-        <div class="form-group">
+        <div class="form-group py-2">
             <label for="address">Address</label>
             <input type="text" class="form-control" id="address" placeholder="Enter your address">
         </div>
-        <div class="form-group">
+        <div class="form-group py-2">
             <label for="phone-number">Phone number</label>
             <input type="text" class="form-control" id="phone-number" placeholder="Enter your phone number">
         </div>
-        <div class="form-group">
+        <div class="form-group py-2">
             <label for="email">Email</label>
             <input type="email" class="form-control" id="email" placeholder="Enter your email">
         </div>
-        <div class="form-group">
+        <div class="form-group py-2">
             <label for="country">Country</label>
             <input type="text" class="form-control" id="country" placeholder="Enter your country">
         </div>

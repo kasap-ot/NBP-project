@@ -47,6 +47,54 @@
 					<td>Australia</td>
 					<td>200</td>
 				</tr>
+				<tr>
+					<td>Company A</td>
+					<td>123-456-7890</td>
+					<td>companya@example.com</td>
+					<td>123 Main St</td>
+					<td>USA</td>
+					<td>100</td>
+				</tr>
+				<tr>
+					<td>Company B</td>
+					<td>987-654-3210</td>
+					<td>companyb@example.com</td>
+					<td>456 Elm St</td>
+					<td>Canada</td>
+					<td>50</td>
+				</tr>
+				<tr>
+					<td>Company C</td>
+					<td>555-123-4567</td>
+					<td>companyc@example.com</td>
+					<td>789 Oak St</td>
+					<td>Australia</td>
+					<td>200</td>
+				</tr>
+				<tr>
+					<td>Company A</td>
+					<td>123-456-7890</td>
+					<td>companya@example.com</td>
+					<td>123 Main St</td>
+					<td>USA</td>
+					<td>100</td>
+				</tr>
+				<tr>
+					<td>Company B</td>
+					<td>987-654-3210</td>
+					<td>companyb@example.com</td>
+					<td>456 Elm St</td>
+					<td>Canada</td>
+					<td>50</td>
+				</tr>
+				<tr>
+					<td>Company C</td>
+					<td>555-123-4567</td>
+					<td>companyc@example.com</td>
+					<td>789 Oak St</td>
+					<td>Australia</td>
+					<td>200</td>
+				</tr>
 			</tbody>
 		</table>
 	</div>

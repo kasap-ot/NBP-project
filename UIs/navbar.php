@@ -18,11 +18,11 @@
     <li class="nav-item"><a class="nav-link" href="create_offer.php">Create offer</a></li>
     <li class="nav-item"><a class="nav-link" href="one_offer.php">View offer</a></li>
     <li class="nav-item"><a class="nav-link" href="edit_profile.php">Edit profile</a></li>
-    <li class="nav-item"><a class="nav-link" href="#">Apply</a></li>
     <li class="nav-item"><a class="nav-link" href="applications.php">Applications</a></li>
     <li class="nav-item"><a class="nav-link" href="one_company.php">View company</a></li>
-    <li class="nav-item"><a class="nav-link" href="#">Grade</a></li>
-    <li class="nav-item"><a class="nav-link" href="statistics.php">Statistics</a></li>
+    <li class="nav-item"><a class="nav-link text-danger" href="#">Apply</a></li>
+    <li class="nav-item"><a class="nav-link text-danger" href="#">Grade</a></li>
+    <li class="nav-item"><a class="nav-link text-danger" href="#">Statistics</a></li>
     
     <!-- Perhaps there will be more pages for statistics? -->
   </ul>
