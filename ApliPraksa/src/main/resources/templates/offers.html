@@ -1,0 +1,68 @@
+<div class="container">
+  <h1 class="mt-5">Internship Offers</h1>
+  <th:block sec:authorize="hasRole('ROLE_STUDENT')">
+    <a class="btn btn-danger p-3" href="/add-offer">Add offer</a>
+  </th:block>
+  <table class="table mt-4" id="offers">
+    <thead class="thead-dark">
+    <tr>
+      <th>Country</th>
+      <th>Field of Study</th>
+      <th>Starting Date</th>
+      <th>Length (in weeks)</th>
+      <th>Company Name</th>
+      <th>Action</th>
+      <th:block sec:authorize="hasRole('ROLE_MEMBER')">
+        <th>Number of applications</th>
+      </th:block>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Offer rows -->
+    <tr>
+      <td>USA</td>
+      <td>Computer Science</td>
+      <td>June 1, 2023</td>
+      <td>10</td>
+      <td>ABC Company</td>
+    </tr>
+    <tr>
+      <td>France</td>
+      <td>Business Administration</td>
+      <td>July 15, 2023</td>
+      <td>8</td>
+      <td>XYZ Corporation</td>
+<!--    </tr>-->
+<!--    <tr th:each="offer : ${offers}">-->
+<!--      <td th:text="${offer.getName()}"></td>-->
+<!--      <td th:text="${offer.getPrice()}"></td>-->
+<!--      <td th:text="${offer.getManufacturer() != null}-->
+<!--                            ? ${product.getManufacturer().getName()} : 'No Manufacturer'"></td>-->
+<!--      <td th:text="${product.getCategory() != null}-->
+<!--                            ? ${product.getCategory().getName()} : 'No Category'"></td>-->
+      <td class="text-right">
+        <th:block sec:authorize="hasRole('ROLE_MEMBER')">
+<!--          <form th:action="@{'/offers/delete/{id}' (id=${product.getId()})}">-->
+            <button type="submit" class="btn btn-sm btn-info"><i class="fa fa-trash">Edit</i></button>
+<!--          </form>-->
+        </th:block>
+        <th:block sec:authorize="hasRole('ROLE_MEMBER')">
+<!--          <a th:href="@{'/offers/edit-form/{id}' (id=${product.getId()})}" th:method="DELETE"-->
+             <a class="btn btn-sm btn-danger"><i class="fa fa-trash">Delete</i></a>
+        </th:block>
+        <th:block sec:authorize="hasRole('ROLE_STUDENT')">
+          <!--          <a th:href="@{'/offers/edit-form/{id}' (id=${product.getId()})}" th:method="DELETE"-->
+          <a class="btn btn-sm btn-success" href="#"><i class="fa fa-trash">Apply</i></a>
+          <a class="btn btn-sm btn-info" href="#"><i class="fa fa-trash">View offer</i></a>
+        </th:block>
+      </td>
+      <th:block sec:authorize="hasRole('ROLE_MEMBER')">
+        <!--          <a th:href="@{'/offers/edit-form/{id}' (id=${product.getId()})}" th:method="DELETE"-->
+<!--        KOJ APLICIRAL TUKA DA SE POKAZE HREF KOPCE -->
+        <td class="text-center"><a href="/home">50</a></td>
+      </th:block>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
