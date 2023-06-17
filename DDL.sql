@@ -21,11 +21,55 @@ create domain grade as integer check ( VALUE >=0 and VALUE <=10);
 alter domain nbp_project.app_status drop constraint app_status_check;
 alter domain nbp_project.app_status add constraint app_status_check
     check ((VALUE)::text ~'^(applied|accepted|rejected|ongoing|completed)$'::text);
-    
 --WARNING: uncomment following line only when you must to delete and drop the schema.
 -- drop schema nbp_project cascade ;
 
+--Alter tables
+alter table applies_for drop column acceptance_status;
+alter table applies_for add column acceptance_status integer;
+alter table applies_for add constraint foreign_key1
+    foreign key (acceptance_status) references acceptance_status(id)
+            on delete set null on update cascade;
+alter table educational_institute drop column phone_number;
+alter table educational_institute drop column email_address;
+alter table educational_institute drop column address;
+alter table educational_institute drop column country_id;
+alter table student add column study_level nbp_project.study;
+alter table student add column gpa nbp_project.gpa;
+alter table student add column start_year date;
+alter table student add column ects_credits integer;
+alter table student add column major_id integer;
+alter table student add constraint major_fk
+    foreign key (major_id)  references major(id)
+        on delete set null on update cascade;
+alter table student add column educational_institute_id integer;
+alter table student add constraint edu_institute_fk
+    foreign key (educational_institute_id) references educational_institute(id)
+        on delete set null on update cascade;
+
 --TABLES
+
+
+--delete
+drop table PARTICIPATES_IN;
+drop table WON_PRIZE;
+drop table TRAINING ;
+drop table COMPETITION;
+drop table EVENT;
+drop table acceptance_status;
+drop table studies;
+
+
+create table major(
+    id  int     primary key ,
+    major varchar(50)
+);
+
+create table acceptance_status (
+    id      int         primary key,
+    status  varchar(20)
+);
+
 create table COUNTRY(
     id      serial      PRIMARY KEY,
     name    varchar(50) UNIQUE    NOT NULL
@@ -184,6 +228,7 @@ create table APPLIES_FOR(
                         ON DELETE SET NULL  ON UPDATE CASCADE
 
 );
+
 create table INTERNSHIP(
     id      serial     PRIMARY KEY ,
     grade_work  grade,
