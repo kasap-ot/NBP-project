@@ -1,0 +1,47 @@
+<div class="container p-2">
+    <h1>My Profile</h1>
+    <th:block sec:authorize="hasRole('ROLE_STUDENT')">
+        <!--    th:href="@{'/profile/{id}' (id=${student.getId()})}">-->
+        <a type="submit" class="btn btn-sm btn-info" href="/profile/{id}/edit"><i class="fa fa-trash">Edit</i></a>
+    </th:block>
+    <hr>
+    <div class="profile-section">
+        <h2>About Me</h2>
+        <p>Name: John</p>
+        <p>Surname: Doe</p>
+        <p>Age: 25</p>
+        <p>Country: Country</p>
+    </div>
+    <hr>
+    <div class="profile-section">
+        <h2>Education</h2>
+        <p>Degree: Bachelor of Science in Computer Science</p>
+        <p>University: Example University</p>
+        <p>Graduation Year: 2020</p>
+    </div>
+    <hr>
+    <div class="profile-section">
+        <h2>Experience</h2>
+        <a class="btn btn-xs btn-info" href="/profile/{id}/add-experience">+</a>
+        <!--  TODO: for each -->
+        <p>Company: ABC Solutions</p>
+        <p>Position: Web Developer</p>
+        <p>Duration: 2019 - Present</p>
+        <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a felis non odio tincidunt scelerisque. Mauris eget turpis magna.</p>
+    </div>
+    <hr>
+    <div class="profile-section">
+        <h2>Projects</h2>
+        <a class="btn btn-xs btn-info" href="/profile/{id}/add-project">+</a>
+        <p>Project 1: Example Project</p>
+        <p>Project 2: Another Project</p>
+        <p>Project 3: Personal Portfolio Website</p>
+    </div>
+    <hr>
+    <div class="profile-section">
+        <h2>Certificate</h2>
+        <a class="btn btn-xs btn-info" href="/profile/{id}/add-certificate">+</a>
+        <p>Certificate 1</p>
+    </div>
+</div>
+

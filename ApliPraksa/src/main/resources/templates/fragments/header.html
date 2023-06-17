@@ -1,56 +1,59 @@
 <header xmlns:th="http://www.w3.org/1999/html">
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand" href="/">ApliPraksa</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-              aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">ApliPraksa</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+                    aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-      <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
-        <ul class="navbar-nav m-auto">
-          <li class="nav-item m-auto">
-            <a class="nav-link active" href="/home">Home</a>
-          </li>
-            <th:block sec:authorize="hasRole('ROLE_STUDENT')">
-<!--                <form th:action="@{'/offers'}" th:method="DELETE">-->
-<!--                    <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash">Delete</i></button>-->
-<!--                </form>-->
-                <li class="nav-link">
-                    <a class="nav-link" href="/offers">Offers</a>
-                </li>
-            </th:block>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
+                <ul class="navbar-nav m-auto">
+                    <li class="nav-item m-auto">
+                        <a class="nav-link active" href="/home">Home</a>
+                    </li>
+                    <th:block sec:authorize="hasRole('ROLE_STUDENT')">
+                        <!--                <form th:action="@{'/offers'}" th:method="DELETE">-->
+                        <!--                    <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash">Delete</i></button>-->
+                        <!--                </form>-->
+                        <li class="nav-link">
+                            <a class="nav-link" href="/offers">Offers</a>
+                        </li>
+                    </th:block>
 
-            <th:block sec:authorize="hasRole('ROLE_MEMBER')">
-                <!--                <form th:action="@{'/offers'}" th:method="DELETE">-->
-                <!--                    <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash">Delete</i></button>-->
-                <!--                </form>-->
-                <li class="nav-link">
-                    <a class="nav-link" href="/students">Students</a>
-                </li>
-                <li class="nav-link">
-                    <a class="nav-link" href="/companies">Companies</a>
-                </li>
-            </th:block>
+                    <th:block sec:authorize="hasRole('ROLE_MEMBER')">
+                        <!--                <form th:action="@{'/offers'}" th:method="DELETE">-->
+                        <!--                    <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash">Delete</i></button>-->
+                        <!--                </form>-->
+                        <li class="nav-link">
+                            <a class="nav-link" href="/applications">My Applications</a>
+                        </li>
+                        <li class="nav-link">
+                            <a class="nav-link" href="/companies">Companies</a>
+                        </li>
+                    </th:block>
 
-            <li class="nav-item m-auto">
-                <a class="nav-link active" href="/about-us">About Us</a>
-            </li>
-        </ul>
+                    <li class="nav-item m-auto">
+                        <a class="nav-link active" href="/about-us">About Us</a>
+                    </li>
+                </ul>
 
-        <form class="form-inline my-2 my-lg-0">
-<!--          <a class="nav-link" href="#">-->
-<!--            <th:block th:if="${#request.getRemoteUser()!=null}"-->
-<!--                      th:text="${#request.getRemoteUser()}"/>-->
-<!--          </a>-->
-          <a class="btn btn-success btn-sm ml-3" href="/login">
-            <i class="fa fa-shopping-cart"></i> Login
-          </a>
-          <a class="btn btn-primary btn-sm ml-3" href="/register">
-            <i class="fa fa-shopping-cart"></i> Register
-          </a>
-        </form>
-      </div>
-    </div>
-  </nav>
+                <form class="form-inline my-2 my-lg-0">
+                    <!--          <a class="nav-link" href="#">-->
+                    <!--            <th:block th:if="${#request.getRemoteUser()!=null}"-->
+                    <!--                      th:text="${#request.getRemoteUser()}"/>-->
+                    <!--          </a>-->
+                    <a class="btn btn-success btn-sm ml-3" href="/profile/{id}">
+                        <i class="fa fa-shopping-cart"></i> Profile
+                    </a>
+                    <a class="btn btn-success btn-sm ml-3" href="/login">
+                        <i class="fa fa-shopping-cart"></i> Login
+                    </a>
+                    <a class="btn btn-primary btn-sm ml-3" href="/register">
+                        <i class="fa fa-shopping-cart"></i> Register
+                    </a>
+                </form>
+            </div>
+        </div>
+    </nav>
 </header>
