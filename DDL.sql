@@ -46,6 +46,12 @@ alter table student add column educational_institute_id integer;
 alter table student add constraint edu_institute_fk
     foreign key (educational_institute_id) references educational_institute(id)
         on delete set null on update cascade;
+alter table organization drop column country_id;
+alter table member add column committee_id integer;
+alter table member add constraint committee_fk
+    foreign key (committee_id) references committee
+        on delete set null on update cascade;
+
 
 --TABLES
 
@@ -58,6 +64,7 @@ drop table COMPETITION;
 drop table EVENT;
 drop table acceptance_status;
 drop table studies;
+drop table member_of;
 
 
 create table major(
