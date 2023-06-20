@@ -1,0 +1,33 @@
+<div class="container p-3">
+  <h3>Companies</h3>
+  <table class="table mt-4" id="offers">
+    <thead class="thead-dark">
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th>Country</th>
+      <th>Employees Count</th>
+      <th>Offers Count</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Offer rows -->
+    <tr>
+      <td>Lainmomomwid</td>
+      <td>city: ercotnazuwji street: vinbiifetetzuf number: 0251</td>
+      <td>Macedonia</td>
+      <td>240</td>
+      <td>10</td>
+      <td>
+        <th:block sec:authorize="hasRole('ROLE_MEMBER')">
+          <!--          <a th:href="@{'/offers/delete/{id}' (id=${product.getId()})}" th:method="DELETE"
+          todo: ID-to na company
+          -->
+          <a class="btn btn-sm btn-info" href="/companies/3/add-offer"><i class="fa fa-trash">Add offer</i></a>
+        </th:block>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
