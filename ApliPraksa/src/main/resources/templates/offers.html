@@ -1,7 +1,7 @@
 <div class="container">
     <h1 class="mt-5">Internship Offers</h1>
-    <th:block sec:authorize="hasRole('ROLE_STUDENT')">
-        <a class="btn btn-xs btn-danger p-2" href="/offers/add-offer">Add offer</a>
+    <th:block sec:authorize="hasRole('ROLE_MEMBER')">
+        <a class="btn btn-xs btn-info p-2" href="/companies">Add offer</a>
     </th:block>
     <table class="table mt-4" id="offers">
         <thead class="thead-dark">
@@ -60,7 +60,7 @@
             <th:block sec:authorize="hasRole('ROLE_MEMBER')">
                 <!--          <a th:href="@{'/offers/{id}/edit-offer' (id=${product.getId()})}" th:method="DELETE"-->
                 <!--        todo:KOJ APLICIRAL TUKA DA SE POKAZE HREF KOPCE -->
-                <td class="text-center"><a href="/home">50</a></td>
+                <td class="text-center"><a href="/offers/3/applications">50</a></td>
             </th:block>
         </tr>
         </tbody>
