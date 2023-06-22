@@ -26,6 +26,17 @@ from accommodation as A
     join company as C on O.company_id = C.id
 order by A.id;
 
+create view offer_view as 
+select cou.name as country_name, o.field, o.start_date,o.duration_in_weeks, com.name as company_name, count(*) as number_of_applications
+from offer as o
+join company as com on o.company_id= com.id
+join country as cou on com.country_id = cou.id
+join applies_for as app on app.offer_id = o.id
+join acceptance_status as acc on acc.id = app.acceptance_status
+group by country_name, o.field, o.start_date,o.duration_in_weeks, company_name
+
+
+
 create view COMPLETED_INTERNSHIP as
 select I.grade_work,I.grade_accommodation,I.grade_student,((grade_student+grade_accommodation+grade_work)/3) as average_grade,A.acceptance_status,A.date_of_app_submission,O.salary,O.field,O.start_date,O.duration_in_weeks,E.name,E.surname
 from internship as I

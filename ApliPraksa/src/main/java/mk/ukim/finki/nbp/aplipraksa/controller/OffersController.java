@@ -1,5 +1,8 @@
 package mk.ukim.finki.nbp.aplipraksa.controller;
 
+import mk.ukim.finki.nbp.aplipraksa.model.OfferView;
+import mk.ukim.finki.nbp.aplipraksa.repository.OfferRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/offers")
 public class OffersController {
-
     @GetMapping
+
     public String offersPage(Model model) {
         model.addAttribute("bodyContent", "offers");
         return "master-template";

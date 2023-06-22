@@ -1,0 +1,133 @@
+package mk.ukim.finki.nbp.aplipraksa.repository;
+
+import mk.ukim.finki.nbp.aplipraksa.model.*;
+import mk.ukim.finki.nbp.aplipraksa.model.enumerations.JobType;
+import mk.ukim.finki.nbp.aplipraksa.model.enumerations.LangLevel;
+import mk.ukim.finki.nbp.aplipraksa.model.enumerations.StudyType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+@Repository
+public class StudentRepository {
+    public JdbcTemplate jdbc;
+
+    @Autowired
+    public StudentRepository(JdbcTemplate jdbcTemplate){
+        this.jdbc=jdbcTemplate;
+    }
+
+    public void createStudent(String username,
+                              String password,
+                              String name,
+                              String surname,
+                              LocalDateTime dateOfBirth,
+                              String address,
+                              String phoneNumber,
+                              String emailAddress,
+                              Integer countryId,
+                              StudyType studyType,
+                              Float gpa,
+                              Integer ectsCredits,
+                              Integer majorId,
+                              Integer educationalInstituteId,
+                              Integer startYear){
+        jdbc.update("call nbp_project.insert_end_user_student(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                username,password,name,surname,dateOfBirth,address,phoneNumber,emailAddress,countryId
+                ,studyType.toString(),gpa,ectsCredits,majorId,educationalInstituteId,startYear);
+    }
+
+    public void updateStudent(Integer studentId,
+                              String username,
+                              String password,
+                              String name,
+                              String surname,
+                              LocalDateTime dateOfBirth,
+                              String address,
+                              String phoneNumber,
+                              String emailAddress,
+                              Integer countryId,
+                              StudyType studyType,
+                              Integer gpa,
+                              Integer ectsCredits,
+                              Integer majorId,
+                              Integer educationalInstituteId,
+                              Integer startYear){
+        jdbc.update("call nbp_project.update_end_user_student(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                studentId,username,password,name,surname,dateOfBirth,address,phoneNumber,emailAddress,countryId
+                ,studyType.toString(),gpa,ectsCredits,majorId,educationalInstituteId,startYear);
+    }
+
+    public void deleteStudent(Integer studentId){
+        jdbc.update("delete from nbp_project.end_user where id =?",studentId);
+    }
+    public Iterable<StudentProfileView> findProfileByStudentId(Integer studentId){
+        return jdbc.query("select * from nbp_project.student_profile_view(?)", StudentProfileView::mapRowToStudentProfileView,studentId);
+    }
+    public void addExperience(Integer studentId,
+                                 String jopType,
+                                 String descritpion,
+                                 LocalDate startYear,
+                                 Integer durationInWeeks
+                                 ){
+        jdbc.update("call nbp_project.insert_experience(?,?,?,?,?)",jopType,descritpion,startYear,durationInWeeks,studentId);
+    }
+    public Iterable<Experience>  findAllExperiencesByStudentId(Integer studentId){
+        return jdbc.query("select * from nbp_project.experience where student_id=?", Experience::mapRowToExperience,studentId);
+    }
+    public void deleteExperience(Integer experienceId){
+        jdbc.update("delete from nbp_project.experience where id=?",experienceId);
+    }
+
+    public void addCertificate(Integer studentId,
+                                  String name,
+                                  String description,
+                                  LocalDate dateOfIssue,
+                                  String publisher){
+        jdbc.update("call nbp_project.insert_or_update_certificate(?,?,?,?,?)",name,description,dateOfIssue,publisher,studentId);
+    }
+    public Iterable<Certificate>  findAllCertificatesByStudentId(Integer studentId){
+        return jdbc.query("select * from nbp_project.certificate where student_id=?", Certificate::mapRowToCertificate,studentId);
+    }
+    public void deleteCertificate(Integer certificationId){
+        jdbc.update("delete from nbp_project.certificate where id=?",certificationId);
+    }
+
+
+    public void addProject(Integer studentId,
+                              String name,
+                              String description,
+                              String completenessType){
+        jdbc.update("call nbp_project.insert_or_update_project(?,?,?,?)",name,description,completenessType,studentId);
+
+    }
+    public Iterable<Project> findAllProjectsByStudentId(Integer studentId){
+        return jdbc.query("select * from nbp_project.project where student_id=?", Project::mapRowToProject,studentId);
+    }
+
+    public void deleteProject(Integer projectId){
+        jdbc.update("delete from nbp_project.project where id=?",projectId);
+    }
+
+    public void addLanguage(Integer studentId,
+                            Integer languageId,
+                            String langLevel){
+        jdbc.update("call nbp_project.insert_or_update_knows_language(?,?,?)",studentId,languageId,langLevel);
+
+    }
+    public Iterable<LanguageView> findAllLanguagesByStudentId(Integer studentId){
+        return jdbc.query("select * from nbp_project.lang_known_by_student(?)", LanguageView::mapRowToLanguageView,studentId);
+    }
+    public void deleteLanguage(Integer languageId, Integer studentId){
+        jdbc.update("delete from nbp_project.knows_language where lang_id=? and student_id=?",languageId,studentId);
+    }
+
+
+    public Iterable<Language> findAllLanguages() {
+        return jdbc.query("select * from nbp_project.language",Language::mapRowToLanguage);
+    }
+}
