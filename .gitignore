@@ -1,7 +1,7 @@
 */__pycache__/
 */.idea/
 .idea/
-csv_files/
+*.csv
 .DS_Store
 .DS_Store/
 

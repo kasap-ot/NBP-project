@@ -1,3 +1,4 @@
+import csv
 import random
 import string
 from datetime import date, timedelta, datetime
@@ -25,6 +26,7 @@ syllables = ['wuh', 'mi', 'vin', 'hi', 'um', 'ku', 'in', 'ha', 'weh', 'la',
              'hic', 'gis', 'ufi', 'al', 'muf', 'ufu', 'jo', 'tet', 'umu', 'ji',
              'bop', 'evi', 'giz', 'vil', 'ro', 'bon', 'oza', 'emi', 'fis', 'pav',
              ]
+
 surnames = ['Fowlie', 'Franklin', 'Gair', 'Gammie', 'Gifford', 'Gold', 'Greenan', 'Hanley',
             'Hare', 'Hetherington', 'Hind', 'Hoggan', 'Hollywood', 'Hoy', 'Islam', 'Izatt',
             'Kavanagh', 'Keay', 'Keddie', 'Kellock', 'Keogh', 'Laurenson', 'Laverty',
@@ -51,6 +53,7 @@ surnames = ['Fowlie', 'Franklin', 'Gair', 'Gammie', 'Gifford', 'Gold', 'Greenan'
             'Sillars', 'Spowart', 'Stanners', 'Stirrat', 'Storrie', 'Suttie', 'Swanston',
             'Symon', 'Tariq', 'Terry', 'Tinney', 'Tran', 'Twaddle', 'Vaughan', 'Wallis', 'Warden',
             'Wardle', 'Ware', 'Wilkins', 'Wynn', 'Yeats', 'Younger']
+
 names = ['Oliver', 'Noah', 'Henry', 'William', 'Theodore', 'Hudson', 'Jack', 'Charlie', 'Elijah',
          'Leo', 'Thomas', 'Archie', 'Harrison', 'Archer', 'Levi', 'Lucas', 'James', 'Luca',
          'George', 'Harry', 'Hunter', 'Mason', 'Oscar', 'Arlo', 'Arthur', 'Cooper', 'Harvey',
@@ -76,7 +79,7 @@ names = ['Oliver', 'Noah', 'Henry', 'William', 'Theodore', 'Hudson', 'Jack', 'Ch
          'Brooklyn', 'Heidi', 'Aubrey', 'Lillian', 'Maggie', 'Rose']
 
 
-def random_alphabetic_sequence_with_random_length(min_length, max_length):
+def random_alphabetic_sequence_with_random_length(min_length: int, max_length: int) -> str:
     N = random.randint(min_length, max_length)
     sequence = ""
     for i in range(0, N):
@@ -84,7 +87,7 @@ def random_alphabetic_sequence_with_random_length(min_length, max_length):
     return sequence
 
 
-def random_alphanumeric_sequence_with_random_length(min_length, max_length):
+def random_alphanumeric_sequence(min_length: int, max_length: int) -> str:
     N = random.randint(min_length, max_length)
     sequence = ""
     for i in range(0, N):
@@ -92,14 +95,14 @@ def random_alphanumeric_sequence_with_random_length(min_length, max_length):
     return sequence
 
 
-def random_digits_sequence(length):
+def random_digits_sequence(length: int) -> str:
     sequence = ""
     for i in range(length):
         sequence = sequence + str(random.randint(0, 9))
     return sequence
 
 
-def random_word_sequence(length):
+def random_word_sequence(length: int) -> str:
     sequence = ""
     words_count = len(words)
 
@@ -110,72 +113,80 @@ def random_word_sequence(length):
     return sequence
 
 
-def random_syllable_sequence(length):
+def random_syllable_sequence(length: int) -> str:
     sequence = ""
-    syllables_count = len(syllables)
 
     for i in range(length):
-        random_syllable = syllables[random.randint(0, syllables_count - 1)]
+        random_syllable = random.choice(syllables)
         sequence += random_syllable
 
     return sequence
 
 
-def random_name():
-    return names[random.randint(0, len(names) - 1)]
+def random_name() -> str:
+    return random.choice(names)
 
 
-def random_surname():
-    return surnames[random.randint(0, len(names) - 1)]
+def random_surname() -> str:
+    return random.choice(surnames)
 
 
-def random_date_of_birth(from_year, to_year):
-    start_date = date(from_year, 1, 1)
-    end_date = date(to_year, 12, 31)
-
-    time_between_dates = end_date - start_date
-    days_between_dates = time_between_dates.days
-    random_number_of_days = random.randrange(days_between_dates)
-
-    random_date = start_date + timedelta(days=random_number_of_days)
-    return str(random_date)
+def random_address() -> str:
+    return  "c. "   + random_syllable_sequence(random.randint(2, 5)) + \
+            " st. " + random_syllable_sequence(random.randint(2, 5)) + \
+            " no. " + random_digits_sequence(3)
 
 
-def random_address():
-    return "city: " + random_syllable_sequence(random.randint(5, 10)) + \
-        " street: " + random_syllable_sequence(random.randint(3, 5)) + \
-        " number: " + random_digits_sequence(4)
-
-
-def random_phone_number():
+def random_phone_number() -> str:
     return random_digits_sequence(9)
 
 
-def random_email():
-    return random_syllable_sequence(random.randint(3, 5)) + "@" + \
-        random_syllable_sequence(random.randint(3, 5)) + "." + \
-        random_syllable_sequence(1)
+def random_email() -> str:
+    return random_syllable_sequence(random.randint(3, 5)) + "@"  +  \
+           random_syllable_sequence(random.randint(3, 5)) + "."  +  \
+           random_syllable_sequence(1)
 
 
-def random_gpa():
+def random_gpa() -> float:
     return round(random.uniform(6, 10), 2)
 
 
-def random_date(start, end):
+def random_date(start: str, end: str) -> str:
     format = '%Y-%m-%d'
+    
     start_date = datetime.strptime(start, format)
     end_date = datetime.strptime(end, format)
-    delta = end_date - start_date
-    days = delta.days
-    random_days = random.randrange(days)
+    
+    delta_date = end_date - start_date
+    delta_days = delta_date.days
+    random_days = random.randint(0, delta_days)
+    
     random_date = start_date + timedelta(days=random_days)
+    
     return random_date.date().isoformat()
 
 
-def random_percent():
+def random_percent() -> str:
     return format(random.uniform(0, 100), '.2f')
 
 
-def random_year():
+def random_year() -> int:
     current_year = datetime.now().year
     return random.randint(2010, current_year)
+
+
+def random_employee_num() -> int:
+    employee_nums = [
+        5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 
+        100, 120, 140, 160, 180, 200, 250, 300, 
+        350, 400, 450, 500, 600, 700, 800, 900, 1000,
+    ]
+    return random.choice(employee_nums)
+
+
+def num_rows_in_file(file_path: str) -> int:
+    with open(file_path, 'r') as file:
+        reader = csv.reader(file)
+        rows = list(reader)
+        num_rows = len(rows)
+        return num_rows
