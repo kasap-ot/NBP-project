@@ -53,6 +53,7 @@ alter table member add constraint committee_fk
         on delete set null on update cascade;
 alter table student drop column start_year;
 alter table student add column start_year integer;
+alter table offer add column is_active boolean;
 
 
 --TABLES
