@@ -77,6 +77,11 @@ public class ProfileController {
         this.studentRepository.updateStudent(id,password,name,surname,dateOfBirth,address,phoneNumber,email,countryId,typeOfStudy,gpa,credits,majorId,facultyId,startOfStudies);
         return "redirect:/profile/"+id.toString();
     }
+//    @GetMapping("/{id}/delete")
+//    public String deleteProfile(@PathVariable Integer id){
+//        this.studentRepository.deleteStudent(id);
+//        return "/home";
+//    }
 
     @GetMapping("/{id}/add-project")
     public String addProjectPage(@PathVariable String id, Model model) {

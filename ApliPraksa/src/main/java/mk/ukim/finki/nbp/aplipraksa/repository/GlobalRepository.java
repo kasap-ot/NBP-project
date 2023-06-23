@@ -3,6 +3,7 @@ package mk.ukim.finki.nbp.aplipraksa.repository;
 import mk.ukim.finki.nbp.aplipraksa.model.Country;
 import mk.ukim.finki.nbp.aplipraksa.model.Faculty;
 import mk.ukim.finki.nbp.aplipraksa.model.Major;
+import mk.ukim.finki.nbp.aplipraksa.model.OfferView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -26,5 +27,8 @@ public class GlobalRepository {
 
     public Iterable<Major> findAllMajors() {
         return jdbc.query("select * from nbp_project.major",Major::mapRowToMajor);
+    }
+    public Iterable<OfferView> findAllActiveOffers(Integer pageNumber){
+        return jdbc.query("select * from nbp_project.active_offers(?)",OfferView::mapRowToOfferView,pageNumber);
     }
 }

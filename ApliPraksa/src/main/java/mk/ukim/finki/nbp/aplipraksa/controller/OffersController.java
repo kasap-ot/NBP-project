@@ -1,7 +1,7 @@
 package mk.ukim.finki.nbp.aplipraksa.controller;
 
 import mk.ukim.finki.nbp.aplipraksa.model.OfferView;
-import mk.ukim.finki.nbp.aplipraksa.repository.OfferRepository;
+import mk.ukim.finki.nbp.aplipraksa.repository.GlobalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,10 +13,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/offers")
 public class OffersController {
-    @GetMapping
+    private final GlobalRepository globalRepository;
+    @Autowired
+    public OffersController(GlobalRepository globalRepository) {
+        this.globalRepository = globalRepository;
+    }
 
-    public String offersPage(Model model) {
+    @GetMapping(value={"","/{pageNumber}"})
+    public String offersPage(@PathVariable(required = false) Integer pageNumber, Model model) {
         model.addAttribute("bodyContent", "offers");
+        Iterable<OfferView> offerViews = this.globalRepository.findAllActiveOffers((pageNumber == null)?Integer.valueOf(1):pageNumber);
+        model.addAttribute("offerViews",offerViews);
+        model.addAttribute("pageNumber",(pageNumber == null)?Integer.valueOf(1):pageNumber);
         return "master-template";
     }
 

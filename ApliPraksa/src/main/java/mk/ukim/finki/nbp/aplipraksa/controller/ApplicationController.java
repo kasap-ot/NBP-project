@@ -1,5 +1,8 @@
 package mk.ukim.finki.nbp.aplipraksa.controller;
 
+import mk.ukim.finki.nbp.aplipraksa.model.StudentApplication;
+import mk.ukim.finki.nbp.aplipraksa.repository.StudentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,10 +14,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 //Preavtentifikacija, SAMO ZA STUDENT
 public class ApplicationController {
 
+    private final StudentRepository studentRepository;
+
+    @Autowired
+    public ApplicationController(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
+
     @GetMapping("/{id}/applications")
-    public String myAppliocationsPage(@PathVariable Long id, Model model) {
+    public String myAppliocationsPage(@PathVariable Integer id, Model model) {
         //id-to na student
         model.addAttribute("bodyContent", "my-applications");
+        Iterable<StudentApplication> studentApplications=this.studentRepository.findMyApplications(id);
         return "master-template";
     }
 

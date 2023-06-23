@@ -14,19 +14,19 @@ public class OfferView {
     private Integer offerId;
     private String countryName;
     private String fieldOfStudy;
-    private LocalDate startingDate;
-    private int lengthsInWeeks;
+    private String startingDate;
+    private String lengthsInWeeks;
     private String companyName;
-    private int numberOfApplications;
+    //private int numberOfApplications;
 
-    public OfferView(Integer offerId,String countryName, String fieldOfStudy, LocalDate startingDate, int lengthsInWeeks, String companyName, int numberOfApplications) {
+    public OfferView(Integer offerId,String countryName, String fieldOfStudy, String startingDate, String lengthsInWeeks, String companyName) {
         this.offerId = offerId;
         this.countryName = countryName;
         this.fieldOfStudy = fieldOfStudy;
         this.startingDate = startingDate;
         this.lengthsInWeeks = lengthsInWeeks;
         this.companyName = companyName;
-        this.numberOfApplications = numberOfApplications;
+//        this.numberOfApplications = numberOfApplications;
     }
 
     public static OfferView mapRowToOfferView(ResultSet resultSet, int rowNum) throws SQLException {
@@ -34,10 +34,10 @@ public class OfferView {
             Integer.parseInt(resultSet.getString("offer_id")),
             resultSet.getString("country_name"),
             resultSet.getString("field"),
-            Date.valueOf(resultSet.getString("start_date")).toLocalDate(),
-            Integer.parseInt(resultSet.getString("duration_in_weeks")),
-            resultSet.getString("company_name"),
-            Integer.parseInt(resultSet.getString("number_of_applications"))
+            resultSet.getString("start_date"),
+            resultSet.getString("duration_in_weeks"),
+            resultSet.getString("company_name")
+//           ,resultSet.getString("number_of_applications")
         );
     }
 

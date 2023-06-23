@@ -131,4 +131,8 @@ public class StudentRepository {
     }
 
 
+    public Iterable<StudentApplication> findMyApplications(Integer id) {
+        //TODO: Implement
+        return null;
+    }
 }
