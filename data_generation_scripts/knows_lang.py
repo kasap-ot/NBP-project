@@ -1,27 +1,38 @@
-#knows_lang
-import random
-import pandas as pd
+import utils as u
+import random as r
 import csv
 
-if __name__ == '__main__':
-    random.seed()
+# _________________________________________________________
 
-    students_dataframe = pd.read_csv('../../NBP-project dok/csv_files/student.csv')
-    student_ids = students_dataframe.iloc[:, 0].values
-    # student_id = random.choice(student_ids)
+student_ids = []
 
-    languages = pd.read_csv('../../NBP-project dok/csv_files/language.csv', header=None).shape[0]
+with open('csv_files/students.csv', 'r') as file:
+    reader = csv.reader(file)
+    for row in reader:
+        curr_id = int(row[0])
+        student_ids.append(curr_id)
 
-    total_rows = 3000
-    with open('../../NBP-project dok/csv_files/knows_language.csv', 'w', newline='') as file:
-        writer = csv.writer(file)
-        for i in range(0,total_rows):
+# _________________________________________________________
 
-            values = ["A1,A2,B1,B2,C1,C2"]
-            level = random.choice(values)
+num_languages = u.num_rows_in_file('csv_files/languages.csv')
+language_levels = [ 'A1', 'A2', 'B1', 'B2', 'C1', 'C2' ]
 
-            student_id = random.choice(student_ids)
+# _________________________________________________________
 
-            lang_id = str(random.randint(1,languages))
+num_knows_language = 20_000
 
-            writer.writerow([level,student_id,lang_id])
+with open('csv_files/knows_languages.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
+
+    for i in range(num_knows_language):
+        level = r.choice(language_levels)
+        student_id = r.choice(student_ids)
+        language_id = r.randint(1, num_languages)
+
+        writer.writerow([
+            level,
+            student_id,
+            language_id,
+        ])
+
+    print('END')

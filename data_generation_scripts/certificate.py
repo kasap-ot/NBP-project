@@ -1,36 +1,35 @@
-#certificate
-import random
-import pandas as pd
 import csv
-import utils
-from datetime import datetime, timedelta, date
+import random as r
+import utils as u
 
+student_ids = list()
+    
+with open('csv_files/students.csv', 'r') as file:
+    reader = csv.reader(file)
+    for row in reader:
+        curr_id = int(row[0])
+        student_ids.append(curr_id)
 
+# ________________________________________________________
 
-if __name__ == '__main__':
-    random.seed()
+num_certificates = 20_000
 
-    students_dataframe = pd.read_csv('../../NBP-project dok/csv_files/student.csv')
-    student_ids = students_dataframe.iloc[:, 0].values
-    # student_id = random.choice(student_ids)
+with open('csv_files/certificates.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
 
-    total = 3000
-    with open('../../NBP-project dok/csv_files/certificate.csv', 'w', newline='') as file:
-        writer = csv.writer(file)
-        for i in range(0,total):
+    for i in range(num_certificates):
+        name = u.random_word_sequence(2).capitalize()
+        description = u.random_word_sequence(5).capitalize()
+        date_of_issue = u.random_date('2015-01-01', '2023-05-31')
+        publisher = u.random_syllable_sequence(4).capitalize()
+        student_id = r.choice(student_ids)
 
-            name = "Certificate: " + utils.random_alphabetic_sequence_with_random_length(5,30-len("Certificate "))
+        writer.writerow([
+            name,
+            description,
+            date_of_issue,
+            publisher,
+            student_id,
+        ])
 
-            description = utils.random_alphabetic_sequence_with_random_length(20,30)
-
-            date_of_issue = utils.random_date("2018-1-1","2023-4-12")
-
-            publisher = "Publisher: "+utils.random_alphabetic_sequence_with_random_length(10,30-len("Publisher: "))
-
-            student_id = random.choice(student_ids)
-
-            writer.writerow([name,description,date_of_issue,publisher,student_id])
-
-
-
-
+    print('END')

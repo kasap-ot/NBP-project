@@ -103,12 +103,9 @@ def random_digits_sequence(length: int) -> str:
 
 
 def random_word_sequence(length: int) -> str:
-    sequence = ""
-    words_count = len(words)
-
-    for i in range(length):
-        random_word = words[random.randint(0, words_count - 1)]
-        sequence += (' ' + random_word)
+    random_words = random.sample(words, length)
+    separator = ' '
+    sequence = separator.join(random_words)
 
     return sequence
 

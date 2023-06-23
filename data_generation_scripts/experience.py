@@ -1,30 +1,35 @@
-#experience
-import random
-import pandas as pd
 import csv
-import utils
-from datetime import date
+import random as r
+import utils as u
 
-if __name__ == '__main__':
-    random.seed()
+student_ids = []
+    
+with open('csv_files/students.csv', 'r') as file:
+    reader = csv.reader(file)
+    for row in reader:
+        curr_id = int(row[0])
+        student_ids.append(curr_id)
 
-    students_dataframe = pd.read_csv('../../NBP-project dok/csv_files/student.csv')
-    student_ids = students_dataframe.iloc[:, 0].values
-    # student_id = random.choice(student_ids)
+# ________________________________________________________
 
-    total = 7000
-    with open('../../NBP-project dok/csv_files/experience.csv', 'w', newline='') as file:
-        writer = csv.writer(file)
-        for i in range(0,total):
-            values = ["employee", "internship"]
-            type_of_job = random.choice(values)
+num_experiences = 20_000
 
-            description = utils.random_alphabetic_sequence_with_random_length(20,30)
+with open('csv_files/experiences.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
 
-            start_date = utils.random_date("2016-1-1", "2023-3-31")
+    for i in range(num_experiences):
+        type_of_job = 'EMPLOYMENT' if r.randint(0, 1) == 1 else 'INTERNSHIP'
+        description = u.random_word_sequence(5).capitalize()
+        start_year = u.random_date('2015-01-01', '2022-01-01')
+        duration_in_weeks = r.randint(4, 52) # from 1 month to 1 years experience
+        student_id = r.choice(student_ids)
 
-            duration_in_weeks = random.randint(1, 105)
+        writer.writerow([
+            type_of_job,
+            description,
+            start_year,
+            duration_in_weeks,
+            student_id,
+        ])
 
-            student_id = random.choice(student_ids)
-
-            writer.writerow([type_of_job,description,start_date,duration_in_weeks,student_id])
+    print('END')

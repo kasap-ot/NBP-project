@@ -1,27 +1,37 @@
-#project
-import random
-import pandas as pd
 import csv
-import utils
+import utils as u
+import random as r
 
-if __name__ == '__main__':
-    random.seed()
 
-    students_dataframe = pd.read_csv('../../NBP-project dok/csv_files/student.csv')
-    student_ids = students_dataframe.iloc[:, 0].values
-    # student_id = random.choice(student_ids)
+student_ids = list()
+    
+with open('csv_files/students.csv', 'r') as file:
+    reader = csv.reader(file)
+    for row in reader:
+        curr_id = int(row[0])
+        student_ids.append(curr_id)
 
-    total = 5000
-    with open('../../NBP-project dok/csv_files/project.csv', 'w', newline='') as file:
-        writer = csv.writer(file)
-        for i in range(0,total):
+# __________________________________________________________________
 
-            name = "Project: " + utils.random_alphabetic_sequence_with_random_length(10,50-len("Certificate "))
 
-            description = utils.random_alphabetic_sequence_with_random_length(20,30)
+completeness_levels = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 
-            completeness = utils.random_percent()
+num_projects = 20_000
 
-            student_id = random.choice(student_ids)
+with open('csv_files/projects.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
 
-            writer.writerow([name,description,completeness,student_id])
+    for i in range(num_projects):
+        name = u.random_word_sequence(2).capitalize()
+        description = u.random_word_sequence(5).capitalize()
+        completeness = r.choice(completeness_levels)
+        student_id = r.choice(student_ids)
+
+        writer.writerow([
+            name,
+            description,
+            completeness,
+            student_id,
+        ])
+
+    print('END')

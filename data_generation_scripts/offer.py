@@ -3,59 +3,65 @@ import csv
 import utils
 import time
 
+
 start_time = time.time()
 
-random.seed()
+member_ids = []
 
-# ____________________________________________________________________
+with open('csv_files/members.csv', 'r') as file:
+    reader = csv.reader(file)
+    for row in reader:
+        curr_id = int(row[0])
+        member_ids.append(curr_id)
 
-# First we need to read the ids of the members 
-# so we can later insert them as foreign keys
+num_companies = utils.num_rows_in_file('csv_files/companies.csv')
 
-member_ids = list()
-members_file_path = 'csv_files/member.csv'
+# ______________________________________________________________________
 
-with open(members_file_path, 'r') as members_file:
-    csv_reader = csv.reader(members_file)
-    for row in csv_reader:
-        for item in row:
-            member_ids.append(int(item))
+salaries = [
+    500, 600, 700, 800, 900, 
+    1000, 1200, 1500, 1800, 2000, 
+    2200, 2500, 2800, 3000, 3200, 
+    3500, 3800, 4000, 4200, 4500, 
+    4800, 5000,
+]
 
-# ____________________________________________________________________
+# ______________________________________________________________________
 
-num_companies = 9650
-offers_per_company = 104
-total_rows = num_companies * offers_per_company
 
-with open('csv_files/offer.csv', 'w', newline='') as file:
+num_offers = 2_000_000
+
+with open('csv_files/offers.csv', 'w', newline='') as file:
     writer = csv.writer(file)
-    
-    for i in range(0, total_rows):
-        requirements = utils.random_word_sequence(3)
-        responsibilities = utils.random_word_sequence(3)
-        benefits = utils.random_word_sequence(3)
-        salary = random.randint(500, 5000)
-        field = utils.random_word_sequence(2)
-        start_date = utils.random_date('2024-01-01', '2024-12-31')
-        duration_in_weeks = random.randint(4, 52)
+
+    for i in range(num_offers):
+        requirements = utils.random_word_sequence(3).capitalize()
+        responsibilities = utils.random_word_sequence(3).capitalize()
+        benefits = utils.random_word_sequence(3).capitalize()
+        salary = random.choice(salaries)
+        field = utils.random_word_sequence(2).capitalize()
+        start_date = utils.random_date('2023-07-01', '2024-07-01')
+        duration_in_weeks = random.randint(4, 52) # From 1 month to 1 year
         member_id = random.choice(member_ids)
         company_id = random.randint(1, num_companies)
 
-        new_row = [requirements,
-                    responsibilities,
-                    benefits,
-                    salary,
-                    field,
-                    start_date,
-                    duration_in_weeks,
-                    member_id,
-                    company_id
-                ]
-        
-        writer.writerow(new_row)
-        # print(i, ' ---- ', new_row)
-        
-end_time = time.time()
+        # TODO: Need to add this in the big csv file!
+        is_active = 'true' if random.randint(0, 1) else 'false'
 
-duration = end_time - start_time
-print(duration)
+        writer.writerow([
+            requirements,
+            responsibilities,
+            benefits,
+            salary,
+            field,
+            start_date,
+            duration_in_weeks,
+            member_id,
+            company_id,
+            is_active,
+        ])
+
+# ______________________________________________________________________
+
+end_time = time.time()
+print(end_time - start_time)

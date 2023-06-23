@@ -28,3 +28,14 @@ with open('csv_files/members.csv', 'w', newline='') as file:
         ])
 
     print('END')
+
+"""
+
+NOTE:
+
+Only for the tables 'member' and 'student' should the primary key (the id) of the 
+rows should be manually added in the database. The ids are in the csv files 'members.csv'
+and 'students.csv'. We do it like this because the primary keys are also foreign keys to
+the 'end_user' table.
+ 
+"""
