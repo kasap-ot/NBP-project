@@ -1,57 +1,92 @@
 <div class="container p-2">
   <h1>Edit Profile</h1>
-  <form>
+  <th:block th:if="${profile!=null}">
+  <form method="post" th:action="@{'/profile/{id}/edit' (id=${profile.getStudentId()})}">
     <h3>About me</h3>
     <div class="form-group py-2">
-      <label for="username">Name</label>
-      <input type="text" class="form-control" id="name" placeholder="Enter your name">
+      <label for="name">Name</label>
+      <input type="text" class="form-control"name="name" id="name" th:value="${profile.getName()}" placeholder="Enter your name">
     </div>
     <div class="form-group py-2">
-      <label for="username">Surname</label>
-      <input type="text" class="form-control" id="surname" placeholder="Enter your surname">
+      <label for="surname">Surname</label>
+      <input type="text" class="form-control" id="surname" name="surname"  th:value="${profile.getSurname()}" placeholder="Enter your surname">
     </div>
     <div class="form-group py-2">
-      <label for="username">Username</label>
-      <input type="text" class="form-control" id="username" placeholder="Enter your username">
+      <label for="date-of-birth">Date of birth</label>
+      <input type="date" class="form-control" id="date-of-birth" name="date-of-birth"  th:value="${profile.getDateOfBirth()}" placeholder="Enter your surname">
+    </div>
+    <div class="form-group py-2">
+      <p th:text="'Username: '+${profile.getUsername()}"></p>
+      <!--      <label for="username">Username</label>-->
+      <!--      <input type="text" class="form-control" id="username" placeholder="Enter your username">-->
     </div>
     <div class="form-group py-2">
       <label for="password">Password</label>
-      <input type="password" class="form-control" id="password" placeholder="Enter your password">
+      <input type="password" class="form-control" id="password" name="password" th:value="${profile.getPassword()}" placeholder="Enter your password">
+    </div>
+    <div class="form-group py-2">
+      <label for="address">Address</label>
+      <input type="text"  class="form-control" id="address" name="address" th:value="${profile.getAddress()}" placeholder="Enter your gpa">
     </div>
     <div class="form-group py-2">
       <label for="phone-number">Phone number</label>
-      <input type="text" class="form-control" id="phone-number" placeholder="Enter your phone number">
+      <input type="text" class="form-control" id="phone-number" name="phone-number" th:value="${profile.getPhoneNumber()}" placeholder="Enter your phone number">
     </div>
     <div class="form-group py-2">
       <label for="email">Email</label>
-      <input type="email" class="form-control" id="email" placeholder="Enter your email">
+      <input type="email" class="form-control" id="email" name="email" th:value="${profile.getEmail()}" placeholder="Enter your email">
     </div>
     <div class="form-group py-2">
-      <label for="country">Country</label>
-      <input type="text" class="form-control" id="country" placeholder="Enter your country">
+      <label for="country-id">Country</label>
+      <!--      <input type="text" class="form-control" id="position" placeholder="Enter position name">-->
+      <select id="country-id" name="country-id" class="form-control">
+        <option th:each="country: ${countries}" th:value="${country.getId()}" th:text="${country.getName()}">country name</option>
+      </select>
     </div>
     <h3>Education</h3>
     <div class="form-group py-2">
-      <label for="degree">Degree</label>
-      <input type="text" class="form-control" id="degree" placeholder="Enter your degree">
+      <label for="type-of-study">Type of study</label>
+      <!--      <input type="text" class="form-control" id="position" placeholder="Enter position name">-->
+      <select id="type-of-study" name="type-of-study" class="form-control">
+        <option th:each="studyType: ${studyTypes}" th:value="${studyType.toString()}" th:text="${studyType.toString()}">study type name</option>
+      </select>
+    </div>
+<!--    <div class="form-group py-2">-->
+<!--      <label for="university">Faculty</label>-->
+<!--      <input type="text" class="form-control" id="university" placeholder="Enter your university">-->
+<!--    </div>-->
+    <div class="form-group py-2">
+      <label for="faculty-id">Faculty</label>
+      <!--      <input type="text" class="form-control" id="position" placeholder="Enter position name">-->
+      <select id="faculty-id" name="faculty-id" class="form-control">
+        <option th:each="faculty: ${faculties}" th:value="${faculty.getId()}" th:text="${faculty.getName()}">faculty name</option>
+      </select>
     </div>
     <div class="form-group py-2">
-      <label for="university">University</label>
-      <input type="text" class="form-control" id="university" placeholder="Enter your university">
+      <label for="major-id">Major</label>
+      <!--      <input type="text" class="form-control" id="position" placeholder="Enter position name">-->
+      <select id="major-id" name="major-id" class="form-control">
+        <option th:each="major: ${majors}" th:value="${major.getId()}" th:text="${major.getMajor()}">major name</option>
+      </select>
     </div>
     <div class="form-group py-2">
-      <label for="graduationYear">Graduation year</label>
-      <input type="text" class="form-control" id="graduationYear" placeholder="Enter your graduation year">
+      <label for="start-of-studies">Start of studies</label>
+      <input type="number" min="1970" class="form-control" id="start-of-studies" name="start-of-studies" th:value="${profile.getStartYear()}" placeholder="Enter your graduation year">
+    </div>
+    <div class="form-group py-2">
+      <label for="credits">ECTS Credits</label>
+      <input type="number" min="0" max="240" class="form-control" id="credits" name="credits" th:value="${profile.getEctsCredits()}" placeholder="Enter your gpa">
     </div>
     <div class="form-group py-2">
       <label for="gpa">GPA</label>
-      <input type="text" class="form-control" id="gpa" placeholder="Enter your gpa">
+      <input type="text"  class="form-control" id="gpa" name="gpa" th:value="${profile.getGpa()}" placeholder="Enter your gpa">
     </div>
     <br>
-    <a type="submit" class="btn btn-info" href="/profile/{id}"><- Back</a>
+    <a type="submit" class="btn btn-info" th:href="@{/profile/{id}(id=${profile.getStudentId()})}"><- Back</a>
     <button type="submit" class="btn btn-danger">Delete My Profile</button>
     <button type="submit" class="btn btn-success">Save</button>
   </form>
+  </th:block>
 </div>
 
 

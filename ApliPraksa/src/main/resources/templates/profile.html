@@ -1,5 +1,5 @@
 <div class="container p-2" xmlns:th="http://www.w3.org/1999/html">
-    <th:block th:each="profile: ${profiles}">
+    <th:block th:if="${profile!=null}">
     <h1>My Profile</h1>
     <th:block sec:authorize="hasRole('ROLE_STUDENT')">
         <!--    th:href="@{'/profile/{id}' (id=${student.getId()})}">-->

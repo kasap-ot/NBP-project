@@ -1,12 +1,12 @@
 package mk.ukim.finki.nbp.aplipraksa.controller;
 
-import ch.qos.logback.core.util.InvocationGate;
 import mk.ukim.finki.nbp.aplipraksa.model.*;
 import mk.ukim.finki.nbp.aplipraksa.model.enumerations.JobType;
 import mk.ukim.finki.nbp.aplipraksa.model.enumerations.LangLevel;
+import mk.ukim.finki.nbp.aplipraksa.model.enumerations.StudyType;
+import mk.ukim.finki.nbp.aplipraksa.repository.GlobalRepository;
 import mk.ukim.finki.nbp.aplipraksa.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.batch.BatchProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,22 +18,24 @@ import java.time.LocalDate;
 public class ProfileController {
 
     private final StudentRepository studentRepository;
+    private final GlobalRepository globalRepository;
 
     @Autowired
-    public ProfileController(StudentRepository studentRepository) {
+    public ProfileController(StudentRepository studentRepository, GlobalRepository globalRepository) {
         this.studentRepository = studentRepository;
+        this.globalRepository = globalRepository;
     }
 
     @GetMapping("/{id}")
     public String ProfilePage(@PathVariable String id, Model model) {
         model.addAttribute("bodyContent", "profile");
         Integer studentId = Integer.parseInt(id);
-        Iterable<StudentProfileView> studentProfileViews = this.studentRepository.findProfileByStudentId(studentId);
+        StudentProfileView studentProfileView = this.studentRepository.findProfileByStudentId(studentId);
         Iterable<Project> projects = this.studentRepository.findAllProjectsByStudentId(studentId);
         Iterable<Experience> experiences = this.studentRepository.findAllExperiencesByStudentId(studentId);
         Iterable<Certificate> certificates = this.studentRepository.findAllCertificatesByStudentId(studentId);
         Iterable<LanguageView> languages = this.studentRepository.findAllLanguagesByStudentId(studentId);
-        model.addAttribute("profiles",studentProfileViews);
+        model.addAttribute("profile",studentProfileView);
         model.addAttribute("projects",projects);
         model.addAttribute("experiences",experiences);
         model.addAttribute("certificates",certificates);
@@ -44,7 +46,36 @@ public class ProfileController {
     @GetMapping("/{id}/edit")
     public String editProfilePage(@PathVariable String id, Model model) {
         model.addAttribute("bodyContent", "edit-profile");
+        Integer studentId = Integer.parseInt(id);
+        StudentProfileEditView studentProfileEditView = this.studentRepository.findProfileEditByStudentId(studentId);
+        Iterable<Faculty> faculties = this.globalRepository.findAllFaculties();
+        Iterable<Country> countries = this.globalRepository.findAllCountries();
+        Iterable<Major> majors = this.globalRepository.findAllMajors();
+        model.addAttribute("profile",studentProfileEditView);
+        model.addAttribute("studyTypes", StudyType.values());
+        model.addAttribute("countries",countries);
+        model.addAttribute("faculties",faculties);
+        model.addAttribute("majors",majors);
         return "master-template";
+    }
+    @PostMapping("/{id}/edit")
+    public String editProfile(@PathVariable Integer id,
+                              @RequestParam String name,
+                              @RequestParam String surname,
+                              @RequestParam(name = "date-of-birth") LocalDate dateOfBirth,
+                              @RequestParam String password,
+                              @RequestParam String address,
+                              @RequestParam(name="phone-number") String phoneNumber,
+                              @RequestParam String email,
+                              @RequestParam(name="country-id") Integer countryId,
+                              @RequestParam(name="type-of-study") String typeOfStudy,
+                              @RequestParam (name="faculty-id") Integer facultyId,
+                              @RequestParam(name="major-id") Integer majorId,
+                              @RequestParam(name="start-of-studies") Integer startOfStudies,
+                              @RequestParam Float gpa,
+                              @RequestParam Integer credits, Model model){
+        this.studentRepository.updateStudent(id,password,name,surname,dateOfBirth,address,phoneNumber,email,countryId,typeOfStudy,gpa,credits,majorId,facultyId,startOfStudies);
+        return "redirect:/profile/"+id.toString();
     }
 
     @GetMapping("/{id}/add-project")

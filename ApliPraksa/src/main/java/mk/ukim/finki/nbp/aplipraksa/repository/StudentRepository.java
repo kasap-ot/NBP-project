@@ -1,11 +1,8 @@
 package mk.ukim.finki.nbp.aplipraksa.repository;
 
 import mk.ukim.finki.nbp.aplipraksa.model.*;
-import mk.ukim.finki.nbp.aplipraksa.model.enumerations.JobType;
-import mk.ukim.finki.nbp.aplipraksa.model.enumerations.LangLevel;
 import mk.ukim.finki.nbp.aplipraksa.model.enumerations.StudyType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -42,31 +39,33 @@ public class StudentRepository {
     }
 
     public void updateStudent(Integer studentId,
-                              String username,
                               String password,
                               String name,
                               String surname,
-                              LocalDateTime dateOfBirth,
+                              LocalDate dateOfBirth,
                               String address,
                               String phoneNumber,
                               String emailAddress,
                               Integer countryId,
-                              StudyType studyType,
-                              Integer gpa,
+                              String studyType,
+                              Float gpa,
                               Integer ectsCredits,
                               Integer majorId,
                               Integer educationalInstituteId,
                               Integer startYear){
-        jdbc.update("call nbp_project.update_end_user_student(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-                studentId,username,password,name,surname,dateOfBirth,address,phoneNumber,emailAddress,countryId
-                ,studyType.toString(),gpa,ectsCredits,majorId,educationalInstituteId,startYear);
+        jdbc.update("call nbp_project.update_end_user_student(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                studentId,password,name,surname,dateOfBirth,address,phoneNumber,emailAddress,countryId
+                ,studyType,gpa,ectsCredits,majorId,educationalInstituteId,startYear);
     }
 
     public void deleteStudent(Integer studentId){
         jdbc.update("delete from nbp_project.end_user where id =?",studentId);
     }
-    public Iterable<StudentProfileView> findProfileByStudentId(Integer studentId){
-        return jdbc.query("select * from nbp_project.student_profile_view(?)", StudentProfileView::mapRowToStudentProfileView,studentId);
+    public StudentProfileView findProfileByStudentId(Integer studentId){
+        return jdbc.queryForObject("select * from nbp_project.student_profile_view(?)", StudentProfileView::mapRowToStudentProfileView,studentId);
+    }
+    public StudentProfileEditView findProfileEditByStudentId(Integer studentId) {
+        return jdbc.queryForObject("select * from nbp_project.student_profile_edit_view(?)",StudentProfileEditView::mapRowToStudentProfileEditView,studentId);
     }
     public void addExperience(Integer studentId,
                                  String jopType,
@@ -130,4 +129,6 @@ public class StudentRepository {
     public Iterable<Language> findAllLanguages() {
         return jdbc.query("select * from nbp_project.language",Language::mapRowToLanguage);
     }
+
+
 }
