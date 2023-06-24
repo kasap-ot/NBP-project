@@ -1,21 +1,18 @@
 package mk.ukim.finki.nbp.aplipraksa.repository;
 
-import jakarta.annotation.PostConstruct;
-
 import mk.ukim.finki.nbp.aplipraksa.model.OfferView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 @Repository
-public class OfferRepository {
+public class MemberRepository {
     private JdbcTemplate jdbc;
 
     @Autowired
-    public OfferRepository(JdbcTemplate jdbc){
+    public MemberRepository(JdbcTemplate jdbc){
         this.jdbc=jdbc;
     }
 //    @PostConstruct
