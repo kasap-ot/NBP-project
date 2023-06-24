@@ -1,16 +1,12 @@
 package mk.ukim.finki.nbp.aplipraksa.model;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 @Data
-public class OfferView {
+public class OfferShortView {
     private Integer offerId;
     private String countryName;
     private String fieldOfStudy;
@@ -19,7 +15,7 @@ public class OfferView {
     private String companyName;
     //private int numberOfApplications;
 
-    public OfferView(Integer offerId,String countryName, String fieldOfStudy, String startingDate, String lengthsInWeeks, String companyName) {
+    public OfferShortView(Integer offerId, String countryName, String fieldOfStudy, String startingDate, String lengthsInWeeks, String companyName) {
         this.offerId = offerId;
         this.countryName = countryName;
         this.fieldOfStudy = fieldOfStudy;
@@ -29,8 +25,8 @@ public class OfferView {
 //        this.numberOfApplications = numberOfApplications;
     }
 
-    public static OfferView mapRowToOfferView(ResultSet resultSet, int rowNum) throws SQLException {
-        return new OfferView(
+    public static OfferShortView mapRowToOfferView(ResultSet resultSet, int rowNum) throws SQLException {
+        return new OfferShortView(
             Integer.parseInt(resultSet.getString("offer_id")),
             resultSet.getString("country_name"),
             resultSet.getString("field"),

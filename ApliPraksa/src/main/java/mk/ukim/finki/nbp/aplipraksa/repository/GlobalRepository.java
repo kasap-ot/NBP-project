@@ -25,8 +25,8 @@ public class GlobalRepository {
     public Iterable<Major> findAllMajors() {
         return jdbc.query("select * from nbp_project.major",Major::mapRowToMajor);
     }
-    public Iterable<OfferView> findAllActiveOffers(Integer pageNumber){
-        return jdbc.query("select * from nbp_project.active_offers(?)",OfferView::mapRowToOfferView,pageNumber);
+    public Iterable<OfferShortView> findAllActiveOffers(Integer pageNumber){
+        return jdbc.query("select * from nbp_project.active_offers(?)", OfferShortView::mapRowToOfferView,pageNumber);
     }
     public Iterable<CompanyView> findAllCompaniesViewOnPage(Integer pageNumber){
         return jdbc.query("select * from nbp_project.companies_view_on_page(?)",CompanyView::mapRowToCompanyView,pageNumber);

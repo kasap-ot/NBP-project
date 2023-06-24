@@ -1,6 +1,7 @@
 package mk.ukim.finki.nbp.aplipraksa.repository;
 
-import mk.ukim.finki.nbp.aplipraksa.model.OfferView;
+import mk.ukim.finki.nbp.aplipraksa.model.OfferEditView;
+import mk.ukim.finki.nbp.aplipraksa.model.OfferShortView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -45,12 +46,33 @@ public class MemberRepository {
                             Integer companyId){
         jdbc.update("call nbp_project.update_offer(?, ?,?,?,?,?,?,?,?,?)",offerId,requirements,responsibilities,benefits,salary,field,startDate,durationInWeeks,memberId,companyId);
     }
+    public void updateOfferAndAccommodation(
+            Integer offerId,
+            String requirements,
+            String responsibilities,
+            String benefits,
+            Integer salary,
+            String field,
+            LocalDate startDate,
+            Integer durationInWeeks,
+            String accPhone,
+            String accEmail,
+            String accAddress,
+            String accDescription){
+        jdbc.update("call nbp_project.update_offer_accommodation(?,?,?,?,?,?,?,?,?,?,?,?)",
+                offerId,requirements,responsibilities,benefits,salary,field,startDate,
+                durationInWeeks,accPhone,accEmail,accAddress,accDescription);
+    }
 //    @PostConstruct
 //    public void testReadOfferView(){
 //        Iterable<OfferView> offerViews = readOfferView();
 //        System.out.println(offerViews.iterator().next().toString());
 //    }
-    public Iterable<OfferView> readOfferView(){
-        return jdbc.query("select * from nbp_project.offer_view",OfferView::mapRowToOfferView);
+    public Iterable<OfferShortView> readOfferShortView(){
+        return jdbc.query("select * from nbp_project.offer_view", OfferShortView::mapRowToOfferView);
+    }
+
+    public OfferEditView findOfferEditView(Integer offerId){
+        return jdbc.queryForObject("select * from nbp_project.offer_edit_view(?)",OfferEditView::mapRowToOfferEditView,offerId);
     }
 }
