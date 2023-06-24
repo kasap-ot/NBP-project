@@ -15,7 +15,26 @@ $$ language plpgsql;
 --drop function nbp_project.lang_known_by_student(p_student_id integer);
 
 
-
+--function that returns a view for offer
+create or replace function nbp_project.offer_detail_view(p_offer_id integer)
+	returns table(offer_id integer,country_name varchar,company_name varchar,company_address varchar,
+    requirements varchar, responsibilities varchar, benefits varchar, salary nbp_project.pos_int,
+     field varchar, start_date date, duration_in_weeks nbp_project.pos_int, acc_phone nbp_project.phone,
+     acc_email nbp_project.email, acc_address nbp_project.address, acc_description varchar)
+as
+$$
+    begin
+        return query
+            select o.id, cn.name, c.name, c.address, o.requirements, o.responsibilities,
+                   o.benefits, o.salary, o.field, o.start_date, o.duration_in_weeks, c.phone_number,
+                   c.email_address, c.address, a.description
+            from nbp_project.offer o join member m on o.member_id = m.id
+                join company c on o.company_id = c.id
+                join country cn on c.country_id = cn.id
+                join accommodation a on a.offer_id = o.id
+			where o.id = p_offer_id;
+    end;
+$$ language plpgsql;
 
 --function that returns a view for a student's profile
 create or replace function nbp_project.student_profile_view(
@@ -123,7 +142,8 @@ $$
             from nbp_project.offer o join member m on o.member_id = m.id
                 join company c on o.company_id = c.id
                 join country cn on c.country_id = cn.id
-                join accommodation a on a.offer_id = o.id;
+                join accommodation a on a.offer_id = o.id
+			where o.id = p_offer_id;
     end;
 $$ language plpgsql;
 
