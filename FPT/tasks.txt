@@ -1,3 +1,0 @@
-- create offer and accommodation together
-- add student in all tables together
-- 
