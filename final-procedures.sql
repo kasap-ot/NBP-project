@@ -1,6 +1,3 @@
-
-
---create new offer
 create or replace procedure nbp_project.insert_offer (
     p_requirements varchar,
     p_responsibilities varchar,
@@ -14,16 +11,10 @@ create or replace procedure nbp_project.insert_offer (
 )
 AS $$
 BEGIN
-    IF EXISTS (
-            SELECT 1
-            FROM nbp_project.member
-            WHERE id = p_member_id
-        ) THEN
-            INSERT INTO nbp_project.offer (requirements, responsibilities, benefits,
-                               salary, field, start_date, duration_in_weeks, member_id, company_id,is_active)
-            VALUES (p_requirements, p_responsibilities, p_benefits,
-                    p_salary, p_field, p_start_date, p_duration_in_weeks, p_member_id, p_company_id,true);
-    END IF;
+        INSERT INTO nbp_project.offer (requirements, responsibilities, benefits,
+                           salary, field, start_date, duration_in_weeks, member_id, company_id,is_active)
+        VALUES (p_requirements, p_responsibilities, p_benefits,
+                p_salary, p_field, p_start_date, p_duration_in_weeks, p_member_id, p_company_id,true);
     COMMIT;
 
 END;
@@ -38,14 +29,21 @@ create or replace procedure nbp_project.update_offer(
     p_salary integer,
     p_field varchar,
     p_start_date date,
-    p_duration_in_weeks integer,
-    p_member_id integer,
-    p_company_id integer
+    p_duration_in_weeks integer
 )
 as
 $$
     begin
-        --Код за aжурирање на  update_offer
+        -- Update existing offer
+        UPDATE nbp_project.offer
+        SET requirements = p_requirements,
+            responsibilities = p_responsibilities,
+            benefits = p_benefits,
+            salary = p_salary,
+            field = p_field,
+            start_date = p_start_date,
+            duration_in_weeks = p_duration_in_weeks
+        WHERE offer.id = p_offer_id;
     end;
 
 $$ language plpgsql;
@@ -53,6 +51,7 @@ $$ language plpgsql;
 --update existing offer with accommodation with offer_id
 create or replace procedure nbp_project.update_offer_accommodation(
     p_offer_id integer,
+    p_accomodation_id integer,
     p_requirements varchar,
     p_responsibilities varchar,
     p_benefits varchar,
@@ -68,7 +67,22 @@ create or replace procedure nbp_project.update_offer_accommodation(
 as
 $$
 begin
-    --Код за aжурирање на offer и неков accommodation
+    UPDATE nbp_project.offer
+    SET requirements = p_requirements,
+        responsibilities = p_responsibilities,
+        benefits = p_benefits,
+        salary = p_salary,
+        field = p_field,
+        start_date = p_start_date,
+        duration_in_weeks = p_duration_in_weeks
+    WHERE offer.id = p_offer_id;
+
+    UPDATE nbp_project.accommodation
+    SET phone_number = p_acc_phone,
+        email_address = p_acc_email,
+        address = p_acc_address,
+        description = p_acc_description
+    WHERE offer_id = p_offer_id and id = p_accomodation_id;
 end;
 
 $$ language plpgsql;

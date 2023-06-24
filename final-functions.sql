@@ -1,4 +1,3 @@
---all languages known by student
 create or replace function nbp_project.lang_known_by_student(
     p_student_id integer
 ) returns table(id integer,name varchar, level nbp_project.lang_level)
@@ -120,11 +119,11 @@ $$
         return query
             select o.id, cn.name, c.name, c.address, o.requirements, o.responsibilities,
                    o.benefits, o.salary, o.field, o.start_date, o.duration_in_weeks, c.phone_number,
-                   c.email_address, c.address ,'test' as description
+                   c.email_address, c.address, a.description
             from nbp_project.offer o join member m on o.member_id = m.id
                 join company c on o.company_id = c.id
-                join country cn on c.country_id = cn.id;
-			where offer_id = o.id
+                join country cn on c.country_id = cn.id
+                join accommodation a on a.offer_id = o.id;
     end;
 $$ language plpgsql;
 
@@ -138,3 +137,4 @@ $$ language plpgsql;
 --      --join applies_for as app on app.offer_id = o.id
 --      --join acceptance_status as acc on acc.id = app.acceptance_status
 -- order by o.start_date desc
+
