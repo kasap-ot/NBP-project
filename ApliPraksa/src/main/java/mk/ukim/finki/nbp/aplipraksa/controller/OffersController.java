@@ -6,6 +6,7 @@ import mk.ukim.finki.nbp.aplipraksa.model.OfferEditView;
 import mk.ukim.finki.nbp.aplipraksa.model.OfferShortView;
 import mk.ukim.finki.nbp.aplipraksa.repository.GlobalRepository;
 import mk.ukim.finki.nbp.aplipraksa.repository.MemberRepository;
+import mk.ukim.finki.nbp.aplipraksa.repository.OfferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,10 +20,13 @@ import java.time.LocalDate;
 public class OffersController {
     private final GlobalRepository globalRepository;
     private final MemberRepository memberRepository;
+    private final OfferRepository offerRepository;
     @Autowired
-    public OffersController(GlobalRepository globalRepository, MemberRepository memberRepository) {
+    public OffersController(GlobalRepository globalRepository, MemberRepository memberRepository,
+                            OfferRepository offerRepository) {
         this.globalRepository = globalRepository;
         this.memberRepository = memberRepository;
+        this.offerRepository = offerRepository;
     }
 
     @GetMapping(value={"","/{pageNumber}"})
