@@ -13,18 +13,18 @@
     </thead>
     <tbody>
     <!-- Offer rows -->
-    <tr>
-      <td>Lainmomomwid</td>
-      <td>city: ercotnazuwji street: vinbiifetetzuf number: 0251</td>
-      <td>Macedonia</td>
-      <td>240</td>
-      <td>10</td>
+    <tr th:each="companyView : ${companiesView}">
+      <td th:text="${companyView.getName()}">Lainmomomwid</td>
+      <td th:text="${companyView.getAddress()}">city: ercotnazuwji street: vinbiifetetzuf number: 0251</td>
+      <td th:text="${companyView.getCountryName()}">Macedonia</td>
+      <td th:text="${companyView.getNumberOfEmployees()}">240</td>
+      <td th:text="${companyView.getOffersCount()}">10</td>
       <td>
         <th:block sec:authorize="hasRole('ROLE_MEMBER')">
           <!--          <a th:href="@{'/offers/delete/{id}' (id=${product.getId()})}" th:method="DELETE"
           todo: ID-to na company
           -->
-          <a class="btn btn-sm btn-info" href="/companies/3/add-offer"><i class="fa fa-trash">Add offer</i></a>
+          <a class="btn btn-sm btn-info" th:href="@{/companies/{id}/add-offer(id=${companyView.getId()})}"><i class="fa fa-trash">Add offer</i></a>
         </th:block>
       </td>
     </tr>

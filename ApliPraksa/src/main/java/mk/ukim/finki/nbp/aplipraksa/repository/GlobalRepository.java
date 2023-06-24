@@ -1,9 +1,6 @@
 package mk.ukim.finki.nbp.aplipraksa.repository;
 
-import mk.ukim.finki.nbp.aplipraksa.model.Country;
-import mk.ukim.finki.nbp.aplipraksa.model.Faculty;
-import mk.ukim.finki.nbp.aplipraksa.model.Major;
-import mk.ukim.finki.nbp.aplipraksa.model.OfferView;
+import mk.ukim.finki.nbp.aplipraksa.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -30,5 +27,16 @@ public class GlobalRepository {
     }
     public Iterable<OfferView> findAllActiveOffers(Integer pageNumber){
         return jdbc.query("select * from nbp_project.active_offers(?)",OfferView::mapRowToOfferView,pageNumber);
+    }
+    public Iterable<CompanyView> findAllCompaniesViewOnPage(Integer pageNumber){
+        return jdbc.query("select * from nbp_project.companies_view_on_page(?)",CompanyView::mapRowToCompanyView,pageNumber);
+    }
+
+    public Offer findOfferById(Integer id) {
+        return jdbc.queryForObject("select * from nbp_project.offer",Offer::mapRowToOffer);
+    }
+
+    public Iterable<Company> findAllCompanies() {
+        return jdbc.query("select * from nbp_project.company",Company::mapRowToCompany);
     }
 }
