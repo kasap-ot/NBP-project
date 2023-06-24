@@ -118,9 +118,13 @@ as
 $$
     begin
         return query
-            --implementacija: Treba da se vrativ infoрмации за држава, понуда и сместување
-            --според имиња на колоне на табела што се враќа како резултат, може да се заклучи кои
-            --точно иформации треба да се вратат.
+            select o.id, cn.name, c.name, c.address, o.requirements, o.responsibilities,
+                   o.benefits, o.salary, o.field, o.start_date, o.duration_in_weeks, c.phone_number,
+                   c.email_address, c.address ,'test' as description
+            from nbp_project.offer o join member m on o.member_id = m.id
+                join company c on o.company_id = c.id
+                join country cn on c.country_id = cn.id;
+			where offer_id = o.id
     end;
 $$ language plpgsql;
 
