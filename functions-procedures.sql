@@ -449,35 +449,7 @@ $$;
 
 
 
---Procedure for inserting a row into the knows_language table
-CREATE OR REPLACE PROCEDURE insert_or_update_knows_language(
-    p_student_id INTEGER,
-    p_lang_id INTEGER,
-    p_level VARCHAR
-)
-AS $$
-BEGIN
-    -- Check if the language knowledge exists based on the provided student_id and lang_id
-    IF EXISTS (
-        SELECT 1
-        FROM knows_language
-        WHERE student_id = p_student_id
-            AND lang_id = p_lang_id
-    ) THEN
-        -- Update existing language knowledge
-        UPDATE knows_language
-        SET level = p_level
-        WHERE student_id = p_student_id
-            AND lang_id = p_lang_id;
-    ELSE
-        -- Insert a new language knowledge
-        INSERT INTO knows_language (student_id, lang_id, level)
-        VALUES (p_student_id, p_lang_id, p_level);
-    END IF;
 
-    COMMIT;
-END;
-$$;
 
 
 

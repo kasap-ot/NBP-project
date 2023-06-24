@@ -50,6 +50,30 @@ $$
 
 $$ language plpgsql;
 
+--update existing offer with accommodation with offer_id
+create or replace procedure nbp_project.update_offer_accommodation(
+    p_offer_id integer,
+    p_requirements varchar,
+    p_responsibilities varchar,
+    p_benefits varchar,
+    p_salary integer,
+    p_field varchar,
+    p_start_date date,
+    p_duration_in_weeks integer,
+    p_acc_phone varchar,
+    p_acc_email varchar,
+    p_acc_address varchar,
+    p_acc_description varchar
+)
+as
+$$
+begin
+    --Код за aжурирање на offer и неков accommodation
+end;
+
+$$ language plpgsql;
+
+
 --insert new Student
 create or replace procedure insert_end_user_student (
     p_username varchar,
