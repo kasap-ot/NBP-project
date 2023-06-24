@@ -13,16 +13,18 @@ start_time = time.time()
 
 completed_offers: List[Dict[str, int]] = list()
 
-with open('csv_files/applies_for.csv', 'r') as applications_file:
-    reader = csv.reader(applications_file)
+with open('csv_files/applications.csv', 'r') as file:
+    reader = csv.reader(file)
+    
+    # Each row is: [date of application, status, student id, offer id]
     for row in reader:
-        status = row[2]
+        status = row[1]
         
         if status != 'completed':
             continue
         
-        student_id = row[0]
-        offer_id = row[1]
+        student_id = row[2]
+        offer_id = row[3]
 
         completed_offers.append(
             {
@@ -31,22 +33,37 @@ with open('csv_files/applies_for.csv', 'r') as applications_file:
             }
         )
 
+completed_offers = random.sample(completed_offers, len(completed_offers))
+
+salaries = [
+    500, 600, 700, 800, 900, 
+    1000, 1200, 1500, 1800, 2000, 
+    2200, 2500, 2800, 3000, 3200, 
+    3500, 3800, 4000, 4200, 4500, 
+    4800, 5000,
+]
+
+bonuses = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
+
+print('time for setup: ', time.time() - start_time)
+
 # ______________________________________________________________
 
-total_rows = len(completed_offers)
+num_completed_offers = len(completed_offers)
+print('num of completed offers: ', num_completed_offers)
 
-with open('csv_files/internship.csv', 'w', newline='') as file:
+with open('csv_files/internships.csv', 'w', newline='') as file:
     writer = csv.writer(file)
 
-    for i in range(0, total_rows):
+    for i in range(num_completed_offers):
         grade_work = random.randint(1, 10)
         grade_accommodation = random.randint(1, 10)
-        grade_student = random.randint(1, 10)
-        comment_student = 'none' # utils.random_word_sequence(3)
-        comment_company = 'none' # utils.random_word_sequence(3)
+        grade_student = 0 # Filler value. Don't need this column
+        comment_student = utils.random_word_sequence(3).capitalize()
+        comment_company = 'none'
         duration_in_weeks = random.randint(4, 52)
-        salary = random.randint(500, 5000)
-        bonus_pay = random.randint(100, 1000)
+        salary = random.choice(salaries)
+        bonus_pay = random.choice(bonuses)
         applies_for_student_id = completed_offers[i]['student_id']
         applies_for_offer_id = completed_offers[i]['offer_id']
 
@@ -64,8 +81,7 @@ with open('csv_files/internship.csv', 'w', newline='') as file:
         ]
 
         writer.writerow(new_row)
-        # print(i, new_row)
 
-end_time = time.time()
-duration = end_time - start_time
-print(duration)
+
+print('time to complete: ', time.time() - start_time)
+
