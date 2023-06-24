@@ -51,9 +51,15 @@
                     <a class="btn btn-success btn-sm ml-3" href="/login">
                         <i class="fa fa-shopping-cart"></i> Login
                     </a>
-                    <a class="btn btn-primary btn-sm ml-3" href="/register">
-                        <i class="fa fa-shopping-cart"></i> Register
-                    </a>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Register
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/register-as-student">as Student</a></li>
+                            <li><a class="dropdown-item" href="/register-as-member">as Member</a></li>
+                        </ul>
+                    </div>
                 </form>
             </div>
         </div>
