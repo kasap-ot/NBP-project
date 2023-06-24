@@ -20,7 +20,7 @@ with open('csv_files/applications.csv', 'r') as file:
     for row in reader:
         status = row[1]
         
-        if status != 'completed':
+        if status != '5':
             continue
         
         student_id = row[2]
@@ -34,6 +34,8 @@ with open('csv_files/applications.csv', 'r') as file:
         )
 
 completed_offers = random.sample(completed_offers, len(completed_offers))
+
+print('completed offers: ', len(completed_offers))
 
 salaries = [
     500, 600, 700, 800, 900, 

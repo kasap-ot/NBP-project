@@ -5,8 +5,6 @@ import time
 
 start_time = time.time()
 
-status_types = ['applied', 'accepted', 'rejected', 'ongoing', 'completed']
-
 # _________________________________________________________________
 
 student_ids = []
@@ -31,6 +29,7 @@ with open('csv_files/offers.csv', 'r') as file:
 # _________________________________________________________________
 
 
+num_application_statuses = u.num_rows_in_file('csv_files/acceptance_statuses.csv')
 num_offers = len(offer_start_dates)
 num_applications = 10_000_000
 
@@ -46,7 +45,7 @@ with open('csv_files/applications.csv', 'w', newline='') as file:
         # The date of application must be before the start date of the offer!
         date_of_application = u.random_date('2023-01-01', curr_offer_start_date)
         
-        acceptance_status = r.choice(status_types)
+        acceptance_status = r.randint(1, num_application_statuses)
         student_id = r.choice(student_ids)
 
         # Write columns in correct order
