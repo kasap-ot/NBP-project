@@ -38,7 +38,7 @@ public class OfferRepository {
                             Date start_date,
                             Integer duration_in_weeks){
         jdbc.update("call nbp_project.update_offer(?,?,?,?,?,?,?,?)",
-                offer_id, requirements, responsibilities, benefits, salary, field, start_date, duration_in_weeks)''
+                offer_id, requirements, responsibilities, benefits, salary, field, start_date, duration_in_weeks);
     }
 
     public void updateOfferAccomodation(Integer offer_id,

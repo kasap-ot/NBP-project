@@ -28,7 +28,7 @@
             <td class="text-right">
                 <th:block sec:authorize="hasRole('ROLE_MEMBER')">
                     <!--          <form th:action="@{'/offers/{id}/edit-offer' (id=${product.getId()})}">-->
-                    <button type="submit" class="btn btn-sm btn-info" th:href="@{/offers/{id}/edit-offer(id=${offerView.getOfferId()})}"><i class="fa fa-trash">Edit</i></button>
+                    <a class="btn btn-sm btn-info" th:href="@{/offers/{id}/edit-offer(id=${offerView.getOfferId()})}"><i class="fa fa-trash">Edit</i></a>
                     <!--          </form>-->
                 </th:block>
                 <th:block sec:authorize="hasRole('ROLE_MEMBER')">

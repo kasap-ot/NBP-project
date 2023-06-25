@@ -22,7 +22,7 @@ public class OfferDetailView {
     private String accAddress;
     private String accDescription;
 
-    public OfferEditView(Integer offerId, String countryName, String companyName, String companyAddress, String requirements, String responsibilities, String benefits, String salary, String field, String startingDate, String durationInWeeks, String accPhone, String accEmail, String accAddress, String accDescription) {
+    public OfferDetailView(Integer offerId, String countryName, String companyName, String companyAddress, String requirements, String responsibilities, String benefits, String salary, String field, String startingDate, String durationInWeeks, String accPhone, String accEmail, String accAddress, String accDescription) {
         this.offerId = offerId;
         this.countryName = countryName;
         this.companyName = companyName;
