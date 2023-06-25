@@ -183,4 +183,93 @@ $$ language plpgsql;
 --drop function student_application(p_student_id integer)
 
 
+create or replace function nbp_project.offers_created_by_member(
+    p_member_id integer,
+    p_page_number integer
+) returns table(offer_id integer,country_name varchar,field varchar, start_date date
+    , duration_in_weeks nbp_project.pos_int,company_name varchar)
+as
+$$
+declare
+    v_page_number integer = p_page_number;
+begin
+    if v_page_number < 1 then
+        v_page_number = 1;
+    end if;
+    return query
+        select o.id as offer_id, cou.name as country_name, o.field, o.start_date,o.duration_in_weeks, com.name as company_name
+        from nbp_project.offer as o
+                 join nbp_project.company as com on o.company_id= com.id
+                 join nbp_project.country as cou on com.country_id = cou.id
+        where o.member_id = p_member_id
+        order by o.start_date desc
+        limit 20 offset (p_page_number -1)*20;
+end;
+$$ language plpgsql;
 
+create or replace function nbp_project.find_user_credentials_with_username_and_password(
+    p_username varchar,
+    p_password varchar
+) returns table(id integer,username varchar, password varchar, name varchar, surname varchar,
+    type varchar)
+as
+$$
+    begin
+        if(nbp_project.is_student(p_username) is true) then
+            return query
+                    select eu.id,eu.username,eu.password,eu.name,eu.surname,'student'::varchar
+                    from nbp_project.end_user as eu
+                    where eu.username = p_username and eu.password = p_password;
+        end if;
+        if(nbp_project.is_member(p_username) is true) then
+            return query
+                select eu.id,eu.username,eu.password,eu.name,eu.surname,'member'::varchar
+                from nbp_project.end_user as eu
+                where eu.username = p_username and eu.password = p_password;
+        end if;
+    end;
+$$ language plpgsql;
+
+--drop function nbp_project.find_user_credentials_with_username_and_password(p_username varchar, p_password varchar);
+
+
+create or replace function nbp_project.is_student(
+    p_username varchar ) returns boolean
+as
+$$
+    begin
+        if exists(
+                select 1
+                from nbp_project.end_user as eu
+                    join nbp_project.student as st on eu.id = st.id
+                where eu.username = p_username
+            )
+        then
+            return true;
+        else
+            return false;
+        end if;
+
+    end;
+$$ language plpgsql;
+--drop function is_student(p_username varchar);
+
+create or replace function nbp_project.is_member(
+    p_username varchar ) returns boolean
+as
+$$
+begin
+    if exists(
+            select 1
+            from nbp_project.end_user as eu
+                     join nbp_project.member as mem on eu.id = mem.id
+            where eu.username = p_username
+        )
+    then
+        return true;
+    else
+        return false;
+    end if;
+
+end;
+$$ language plpgsql;
