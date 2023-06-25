@@ -136,4 +136,8 @@ public class StudentRepository {
         return jdbc.query("select * from nbp_project.student_application(?)",StudentApplication::mapRowStudentApplicaiton, id);
 //        return null;
     }
+
+    public void applyForOffer(Integer studentId, Integer offerId) {
+        jdbc.update("call nbp_project.student_apply_for_offer(?, ?)", studentId, offerId);
+    }
 }

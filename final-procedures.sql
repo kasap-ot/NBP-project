@@ -298,3 +298,17 @@ BEGIN
     COMMIT;
 END;
 $$ language plpgsql;
+
+
+create or replace procedure nbp_project.student_apply_for_offer(
+    p_student_id integer,
+    p_offer_id integer
+)
+AS $$
+BEGIN
+    INSERT INTO nbp_project.applies_for (student_id, offer_id, date_of_app_submission, acceptance_status)
+    VALUES (p_student_id, p_offer_id, now(), 1);
+    COMMIT;
+
+END;
+$$ language plpgsql;

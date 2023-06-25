@@ -1,12 +1,12 @@
 package mk.ukim.finki.nbp.aplipraksa.controller;
 
 import mk.ukim.finki.nbp.aplipraksa.model.Company;
-import mk.ukim.finki.nbp.aplipraksa.model.Offer;
 import mk.ukim.finki.nbp.aplipraksa.model.OfferEditView;
 import mk.ukim.finki.nbp.aplipraksa.model.OfferShortView;
 import mk.ukim.finki.nbp.aplipraksa.repository.GlobalRepository;
 import mk.ukim.finki.nbp.aplipraksa.repository.MemberRepository;
 import mk.ukim.finki.nbp.aplipraksa.repository.OfferRepository;
+import mk.ukim.finki.nbp.aplipraksa.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,12 +21,14 @@ public class OffersController {
     private final GlobalRepository globalRepository;
     private final MemberRepository memberRepository;
     private final OfferRepository offerRepository;
+    private final StudentRepository studentRepository;
     @Autowired
     public OffersController(GlobalRepository globalRepository, MemberRepository memberRepository,
-                            OfferRepository offerRepository) {
+                            OfferRepository offerRepository, StudentRepository studentRepository) {
         this.globalRepository = globalRepository;
         this.memberRepository = memberRepository;
         this.offerRepository = offerRepository;
+        this.studentRepository = studentRepository;
     }
 
     @GetMapping(value={"","/{pageNumber}"})
@@ -137,6 +139,11 @@ public class OffersController {
     }
 
 
-    //PostMapping DELETE, EDIT, NUMBER OF APPLICATIONS
+    @GetMapping("/{id}/apply")
+    public String applyForOffer(@PathVariable Integer id) {
+        Integer studentId = 3;
+        this.studentRepository.applyForOffer(studentId, id);
+        return "redirect:/"+studentId.toString()+"/applications";
+    }
 
 }
