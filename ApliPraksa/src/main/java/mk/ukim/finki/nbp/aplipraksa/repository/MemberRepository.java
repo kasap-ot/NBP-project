@@ -31,8 +31,12 @@ public class MemberRepository {
                         Integer companyId){
         jdbc.update("call nbp_project.insert_offer(?, ?,?,?,?,?,?,?,?)", requirements,responsibilities,benefits,salary,field,startDate,durationInWeeks,memberId,companyId);
     }
-    public void deleteOffer(Integer offerId){
+    public void deleteOffer1(Integer offerId){
         jdbc.update("delete from nbp_project.offer where id=?",offerId);
+    }
+
+    public void deleteOffer(Integer offerId){
+        jdbc.update("call nbp_project.delete_offer(?)",offerId);
     }
     public void updateOffer(Integer offerId,
                             String requirements,
@@ -47,6 +51,7 @@ public class MemberRepository {
         jdbc.update("call nbp_project.update_offer(?, ?,?,?,?,?,?,?,?,?)",offerId,requirements,responsibilities,benefits,salary,field,startDate,durationInWeeks,memberId,companyId);
     }
     public void updateOfferAndAccommodation(
+            Integer memberId,
             Integer offerId,
             String requirements,
             String responsibilities,
@@ -59,8 +64,8 @@ public class MemberRepository {
             String accEmail,
             String accAddress,
             String accDescription){
-        jdbc.update("call nbp_project.update_offer_accommodation(?,?,?,?,?,?,?,?,?,?,?,?)",
-                offerId,requirements,responsibilities,benefits,salary,field,startDate,
+        jdbc.update("call nbp_project.update_offer_accommodation(?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                memberId,offerId,requirements,responsibilities,benefits,salary,field,startDate,
                 durationInWeeks,accPhone,accEmail,accAddress,accDescription);
     }
 //    @PostConstruct

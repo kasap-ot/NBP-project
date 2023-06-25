@@ -38,6 +38,13 @@ public class OffersController {
         model.addAttribute("memberId",6976); // treba od sesija da se vidi dali e member ili student.
         return "master-template";
     }
+    @GetMapping("/{id}/detail-offer")
+    public String detailOfferSummaryPage(@PathVariable Integer id,Model model){
+        model.addAttribute("bodyContent", "detail-offer");
+        OfferEditView offerDetailView = this.memberRepository.findOfferEditView(id);
+        model.addAttribute("offerDetailView",offerDetailView);
+        return "master-template";
+    }
 
 //    @GetMapping("/add-offer")
 ////    @PreAuthorize("hasRole('ROLE_MEMBER')") - So security delot ke bide ovozmozeno
@@ -81,7 +88,8 @@ public class OffersController {
                             @RequestParam(name="acc-address") String accAddress,
                             @RequestParam(name="acc-description") String accDescription,
                             Model model){
-        this.memberRepository.updateOfferAndAccommodation(id,requirements,responsibilities,benefits,salary,
+        Integer memberId = 7205;
+        this.memberRepository.updateOfferAndAccommodation(memberId,id,requirements,responsibilities,benefits,salary,
                 field,startDate,duration,accPhone,accEmail,accAddress,accDescription);
         return "redirect:/offers";
     }
@@ -112,6 +120,11 @@ public class OffersController {
                            Model model) {
         Integer memberId = 7205;
         this.memberRepository.createOffer(requirements,responsibilities,benefits,salary,field,startDate,duration,memberId,companyId);
+        return "redirect:/offers";
+    }
+    @GetMapping("/{id}/delete-offer")
+    public String deleteOffer(@PathVariable Integer id){
+        this.memberRepository.deleteOffer(id);
         return "redirect:/offers";
     }
 

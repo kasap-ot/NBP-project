@@ -39,7 +39,7 @@
                     <!--          <a th:href="@{'/offers/{id}/delete' (id=${product.getId()})}" th:method="DELETE"-->
                     <a class="btn btn-sm btn-success" href="#"><i class="fa fa-trash">Apply</i></a>
                     <!--            <a class="btn btn-sm btn-info" th:href="@{'/offers/{id}'}"><i class="fa fa-trash">View offer</i></a>-->
-                    <a class="btn btn-sm btn-info"><i class="fa fa-trash">View offer</i></a>
+                    <a class="btn btn-sm btn-info" th:href="@{/offers/{id}/detail-offer(id=${offerView.getOfferId()})}"><i class="fa fa-trash">View offer</i></a>
                 </th:block>
             </td>
 <!--            <th:block sec:authorize="hasRole('ROLE_MEMBER')">-->
