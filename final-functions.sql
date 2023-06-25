@@ -159,3 +159,28 @@ $$ language plpgsql;
 --      --join acceptance_status as acc on acc.id = app.acceptance_status
 -- order by o.start_date desc
 
+create or replace function nbp_project.student_application(
+    p_student_id integer)
+    returns table(offer_id integer, country_name varchar, field varchar, start_date date,
+                  duration_in_weeks nbp_project.pos_int , company_name varchar, acceptance_status varchar)
+as
+$$
+begin
+    return query
+        select af.offer_id as offer_id, c2.name as country_name, o.field as field,
+               o.start_date as start_date, o.duration_in_weeks as duration_in_weeks,
+               c.name as company_name, aas.status as acceptance_status
+        from nbp_project.applies_for af
+            join nbp_project.acceptance_status aas on aas.id = af.acceptance_status
+    join nbp_project.offer o on af.offer_id = o.id
+    join nbp_project.company c on o.company_id = c.id
+    join nbp_project.country c2 on c.country_id = c2.id
+    where af.student_id = p_student_id;
+
+end;
+$$ language plpgsql;
+
+--drop function student_application(p_student_id integer)
+
+
+

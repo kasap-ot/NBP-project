@@ -25,7 +25,7 @@ public class StudentApplication {
         this.status = status;
     }
 
-    public static StudentApplication mapRowToOfferView(ResultSet resultSet, int rowNum) throws SQLException {
+    public static StudentApplication mapRowStudentApplicaiton(ResultSet resultSet, int rowNum) throws SQLException {
         return new StudentApplication(
                 Integer.parseInt(resultSet.getString("offer_id")),
                 resultSet.getString("country_name"),

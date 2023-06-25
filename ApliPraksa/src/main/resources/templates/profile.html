@@ -32,7 +32,7 @@
             <p th:text="'Job type: ' + ${ex.getJobType()}">Position: Web Developer</p>
             <p th:text="'Duration: ' + ${ex.getDurationInWeeks()}">Duration: 2019 - Present</p>
             <p th:text="'Description: '+ ${ex.getDescription()}">Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a felis non odio tincidunt scelerisque. Mauris eget turpis magna.</p>
-            <a class="btn btn-xs btn-info" th:href="@{'/profile/{stId}/delete-experience/{exId}' (stId=${profile.getStudentId()},exId=${ex.getId()})}">delete</a>
+            <a class="btn btn-xs btn-danger" th:href="@{'/profile/{stId}/delete-experience/{exId}' (stId=${profile.getStudentId()},exId=${ex.getId()})}">delete</a>
             <hr>
         </th:block>
         </div>
@@ -44,7 +44,7 @@
             <p th:text="'Name: ' +${pr.getName()}">Project 1: Example Project</p>
             <p th:text="'Description: ' +${pr.getDescription()}">Project 2: Another Project</p>
             <p th:text="'Completeness: ' + ${pr.getCompleteness()}">Project 3: Personal Portfolio Website</p>
-            <a class="btn btn-xs btn-info"  th:href="@{'/profile/{stId}/delete-project/{prId}' (stId=${profile.getStudentId()},prId=${pr.getId()})}">delete</a>
+            <a class="btn btn-xs btn-danger"  th:href="@{'/profile/{stId}/delete-project/{prId}' (stId=${profile.getStudentId()},prId=${pr.getId()})}">delete</a>
             <hr>
         </th:block>
 
@@ -58,7 +58,7 @@
             <p th:text="'Description: ' +${cert.getDescription()}">Certificate 1</p>
             <p th:text="'Date of issue: ' + ${cert.getDateOfIssue()}">Certificate 1</p>
             <p th:text="'Publisher: ' + ${cert.getPublisher()}">Certificate 1</p>
-            <a class="btn btn-xs btn-info"  th:href="@{'/profile/{stId}/delete-certificate/{crId}' (stId=${profile.getStudentId()},crId=${cert.getId()})}">delete</a><hr>
+            <a class="btn btn-xs btn-danger"  th:href="@{'/profile/{stId}/delete-certificate/{crId}' (stId=${profile.getStudentId()},crId=${cert.getId()})}">delete</a><hr>
         </th:block>
     </div>
         <hr>
@@ -68,7 +68,7 @@
             <th:block th:each="lang : ${languages}">
                 <p th:text="'Name: ' +${lang.getName()}">Name 1</p>
                 <p th:text="'Level: ' +${lang.getLevel()}">Level 1</p>
-                <a class="btn btn-xs btn-info" th:href="@{'/profile/{stId}/delete-language/{laId}' (stId=${profile.getStudentId()},laId=${lang.getId()})}">delete</a>
+                <a class="btn btn-xs btn-danger" th:href="@{'/profile/{stId}/delete-language/{laId}' (stId=${profile.getStudentId()},laId=${lang.getId()})}">delete</a>
                 <hr>
             </th:block>
         </div>
