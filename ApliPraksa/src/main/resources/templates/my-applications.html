@@ -14,26 +14,19 @@
     </thead>
     <tbody>
     <!-- Offer rows -->
-    <tr>
-      <td>France</td>
-      <td>Business Administration</td>
-      <td>July 15, 2023</td>
-      <td>8</td>
-      <td>XYZ Corporation</td>
-      <!--    </tr>-->
-      <!--    <tr th:each="offer : ${offers}">-->
-      <!--      <td th:text="${offer.getName()}"></td>-->
-      <!--      <td th:text="${offer.getPrice()}"></td>-->
-      <!--      <td th:text="${offer.getManufacturer() != null}-->
-      <!--                            ? ${product.getManufacturer().getName()} : 'No Manufacturer'"></td>-->
-      <!--      <td th:text="${product.getCategory() != null}-->
-      <!--                            ? ${product.getCategory().getName()} : 'No Category'"></td>-->
-      <td>STATUS</td>
+    <tr th:each="studentApp : ${studentApps}">
+      <td th:text="${studentApp.getCountryName()}"></td>
+      <td th:text="${studentApp.getFieldOfStudy()}"></td>
+      <td th:text="${studentApp.getStartingDate()}"></td>
+      <td th:text="${studentApp.getLengthsInWeeks()}"></td>
+      <td th:text="${studentApp.getCompanyName()}"></td>
+      <td th:text="${studentApp.getStatus()}"></td>
+
       <td class="text-right">
 
         <th:block sec:authorize="hasRole('ROLE_STUDENT')">
           <!--          <a th:href="@{'/offers/delete/{id}' (id=${product.getId()})}" th:method="DELETE"-->
-          <a class="btn btn-sm btn-danger"><i class="fa fa-trash">Cancel</i></a>
+          <a class="btn btn-sm btn-danger" th:href="@{'/application/cancel/{id}' (id=${studentApp.getOfferId()})}" th:method="POST"><i class="fa fa-trash">Cancel</i></a>
         </th:block>
       </td>
     </tr>

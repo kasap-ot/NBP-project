@@ -25,7 +25,8 @@ public class ApplicationController {
     public String myAppliocationsPage(@PathVariable Integer id, Model model) {
         //id-to na student
         model.addAttribute("bodyContent", "my-applications");
-        Iterable<StudentApplication> studentApplications=this.studentRepository.findMyApplications(id);
+        Iterable<StudentApplication> studentApplications = this.studentRepository.findMyApplications(id);
+        model.addAttribute("studentApps", studentApplications);
         return "master-template";
     }
 
