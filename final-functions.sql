@@ -128,24 +128,25 @@ $$ language plpgsql;
 
 create or replace function nbp_project.offer_edit_view(
     p_offer_id integer
-) returns table(offer_id integer,country_name varchar,company_name varchar,company_address varchar,
-    requirements varchar, responsibilities varchar, benefits varchar, salary nbp_project.pos_int,
-     field varchar, start_date date, duration_in_weeks nbp_project.pos_int, acc_phone nbp_project.phone,
-     acc_email nbp_project.email, acc_address nbp_project.address, acc_description varchar)
+) returns table(offer_id integer,country_name varchar,company_name varchar,company_address nbp_project.address,
+                requirements varchar, responsibilities varchar, benefits varchar, salary nbp_project.pos_int,
+                field varchar, start_date date, duration_in_weeks nbp_project.pos_int, acc_phone nbp_project.phone,
+                acc_email nbp_project.email, acc_address nbp_project.address, acc_description varchar)
 as
 $$
-    begin
-        return query
-            select o.id, cn.name, c.name, c.address, o.requirements, o.responsibilities,
-                   o.benefits, o.salary, o.field, o.start_date, o.duration_in_weeks, c.phone_number,
-                   c.email_address, c.address, a.description
-            from nbp_project.offer o join member m on o.member_id = m.id
-                join company c on o.company_id = c.id
-                join country cn on c.country_id = cn.id
-                join accommodation a on a.offer_id = o.id
-			where o.id = p_offer_id;
-    end;
+begin
+    return query
+        select o.id as offer_id, cn.name as country_name, c.name as company_name, c.address as company_address, o.requirements, o.responsibilities,
+               o.benefits, o.salary, o.field, o.start_date, o.duration_in_weeks, a.phone_number as acc_phone,
+               a.email_address as acc_email, a.address as acc_address, a.description as acc_description
+        from nbp_project.offer o join nbp_project.member m on o.member_id = m.id
+                                 join nbp_project.company c on o.company_id = c.id
+                                 join nbp_project.country cn on c.country_id = cn.id
+                                 left outer join nbp_project.accommodation a on a.offer_id = o.id
+        where o.id = p_offer_id;
+end;
 $$ language plpgsql;
+
 
 --drop function nbp_project.companies_view_on_page(p_page_number integer);
 

@@ -51,7 +51,6 @@ $$ language plpgsql;
 --update existing offer with accommodation with offer_id
 create or replace procedure nbp_project.update_offer_accommodation(
     p_offer_id integer,
-    p_accomodation_id integer,
     p_requirements varchar,
     p_responsibilities varchar,
     p_benefits varchar,
@@ -77,12 +76,25 @@ begin
         duration_in_weeks = p_duration_in_weeks
     WHERE offer.id = p_offer_id;
 
-    UPDATE nbp_project.accommodation
-    SET phone_number = p_acc_phone,
-        email_address = p_acc_email,
-        address = p_acc_address,
-        description = p_acc_description
-    WHERE offer_id = p_offer_id and id = p_accomodation_id;
+    IF EXISTS (
+            SELECT 1
+            FROM nbp_project.accommodation as a
+            where a.offer_id = p_offer_id
+        )
+    THEN
+        --if exists update
+        UPDATE nbp_project.accommodation
+        SET phone_number = p_acc_phone,
+            email_address = p_acc_email,
+            address = p_acc_address,
+            description = p_acc_description
+        WHERE offer_id = p_offer_id;
+    ELSE
+        --Accommodation doesn't exists for this offer, insert the accommodation
+        INSERT INTO  nbp_project.accommodation(phone_number,email_address,address,description,offer_id)
+        VALUES (p_acc_phone,p_acc_email,p_acc_address,p_acc_description,p_offer_id);
+    end if;
+commit;
 end;
 
 $$ language plpgsql;
