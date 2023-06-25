@@ -39,4 +39,9 @@ public class GlobalRepository {
     public Iterable<Company> findAllCompanies() {
         return jdbc.query("select * from nbp_project.company",Company::mapRowToCompany);
     }
+
+    public UserCredentials findUserCredentialsByUserNameAndPassword(String username, String password) {
+        return jdbc.queryForObject("select * from nbp_project.find_user_credentials_with_username_and_password(?,?)"
+                ,UserCredentials::mapRowToUserCredentials,username,password);
+    }
 }

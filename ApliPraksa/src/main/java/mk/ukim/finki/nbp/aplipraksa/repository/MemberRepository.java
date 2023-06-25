@@ -35,8 +35,8 @@ public class MemberRepository {
         jdbc.update("delete from nbp_project.offer where id=?",offerId);
     }
 
-    public void deleteOffer(Integer offerId){
-        jdbc.update("call nbp_project.delete_offer(?)",offerId);
+    public void deleteOffer(Integer memberId,Integer offerId){
+        jdbc.update("call nbp_project.delete_offer(?,?)",memberId,offerId);
     }
     public void updateOffer(Integer offerId,
                             String requirements,
@@ -79,5 +79,8 @@ public class MemberRepository {
 
     public OfferEditView findOfferEditView(Integer offerId){
         return jdbc.queryForObject("select * from nbp_project.offer_edit_view(?)",OfferEditView::mapRowToOfferEditView,offerId);
+    }
+    public Iterable<OfferShortView> findAllOffersByMember(Integer memberId,Integer pageNumber){
+        return jdbc.query("select * from nbp_project.offers_created_by_member(?,?)",OfferShortView::mapRowToOfferView,memberId,pageNumber);
     }
 }

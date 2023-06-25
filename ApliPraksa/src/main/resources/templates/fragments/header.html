@@ -45,7 +45,7 @@
                     <!--            <th:block th:if="${#request.getRemoteUser()!=null}"-->
                     <!--                      th:text="${#request.getRemoteUser()}"/>-->
                     <!--          </a>-->
-                    <a class="btn btn-success btn-sm ml-3" href="/profile/{id}">
+                    <a th:text="${userCredentials !=null} ? ${userCredentials.getType()}+' '+${userCredentials.getName()}+' '+${userCredentials.getSurname()}: Profile" class="btn btn-success btn-sm ml-3" href="/profile/{id}">
                         <i class="fa fa-shopping-cart"></i> Profile
                     </a>
                     <a class="btn btn-success btn-sm ml-3" href="/login">Login</a>

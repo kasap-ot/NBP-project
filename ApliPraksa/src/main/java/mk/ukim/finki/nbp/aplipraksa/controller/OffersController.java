@@ -1,9 +1,7 @@
 package mk.ukim.finki.nbp.aplipraksa.controller;
 
-import mk.ukim.finki.nbp.aplipraksa.model.Company;
-import mk.ukim.finki.nbp.aplipraksa.model.Offer;
-import mk.ukim.finki.nbp.aplipraksa.model.OfferEditView;
-import mk.ukim.finki.nbp.aplipraksa.model.OfferShortView;
+import jakarta.servlet.http.HttpSession;
+import mk.ukim.finki.nbp.aplipraksa.model.*;
 import mk.ukim.finki.nbp.aplipraksa.repository.GlobalRepository;
 import mk.ukim.finki.nbp.aplipraksa.repository.MemberRepository;
 import mk.ukim.finki.nbp.aplipraksa.repository.OfferRepository;
@@ -30,12 +28,19 @@ public class OffersController {
     }
 
     @GetMapping(value={"","/{pageNumber}"})
-    public String offersPage(@PathVariable(required = false) Integer pageNumber, Model model) {
+    public String offersPage(@PathVariable(required = false) Integer pageNumber, Model model, HttpSession session) {
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        Integer pageNum = (pageNumber == null)?Integer.valueOf(1):pageNumber;
         model.addAttribute("bodyContent", "offers");
-        Iterable<OfferShortView> offerViews = this.globalRepository.findAllActiveOffers((pageNumber == null)?Integer.valueOf(1):pageNumber);
+        Iterable<OfferShortView> offerViews = null;
+        if(userCredentials.getType().equals("student")){
+            offerViews = this.globalRepository.findAllActiveOffers(pageNum);
+        }else{
+            offerViews = this.memberRepository.findAllOffersByMember(userCredentials.getId(),pageNum);
+        }
         model.addAttribute("offerViews",offerViews);
-        model.addAttribute("pageNumber",(pageNumber == null)?Integer.valueOf(1):pageNumber);
-        model.addAttribute("memberId",6976); // treba od sesija da se vidi dali e member ili student.
+        model.addAttribute("pageNumber",pageNum);
+        model.addAttribute("userCredentials",userCredentials);
         return "master-template";
     }
     @GetMapping("/{id}/detail-offer")
@@ -124,7 +129,8 @@ public class OffersController {
     }
     @GetMapping("/{id}/delete-offer")
     public String deleteOffer(@PathVariable Integer id){
-        this.memberRepository.deleteOffer(id);
+        Integer memberId = 7205;
+        this.memberRepository.deleteOffer(memberId,id);
         return "redirect:/offers";
     }
 
