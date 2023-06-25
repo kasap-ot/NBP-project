@@ -22,6 +22,7 @@ $$ language plpgsql;
 
 --update existing offer with offer_id
 create or replace procedure nbp_project.update_offer(
+    p_member_id integer,
     p_offer_id integer,
     p_requirements varchar,
     p_responsibilities varchar,
@@ -43,13 +44,14 @@ $$
             field = p_field,
             start_date = p_start_date,
             duration_in_weeks = p_duration_in_weeks
-        WHERE offer.id = p_offer_id;
+        WHERE id = p_offer_id and member_id = p_member_id;
     end;
 
 $$ language plpgsql;
 
 --update existing offer with accommodation with offer_id
 create or replace procedure nbp_project.update_offer_accommodation(
+    p_member_id integer,
     p_offer_id integer,
     p_requirements varchar,
     p_responsibilities varchar,
@@ -74,7 +76,7 @@ begin
         field = p_field,
         start_date = p_start_date,
         duration_in_weeks = p_duration_in_weeks
-    WHERE offer.id = p_offer_id;
+    WHERE id = p_offer_id and member_id = p_member_id;
 
     IF EXISTS (
             SELECT 1
