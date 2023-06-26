@@ -97,7 +97,7 @@ begin
                  join nbp_project.company as com on o.company_id= com.id
                  join nbp_project.country as cou on com.country_id = cou.id
         order by o.start_date desc
-        limit 20 offset (p_page_number -1)*20;
+        limit 20 offset (v_page_number -1)*20;
 end;
 $$ language plpgsql;
 --drop function nbp_project.active_offers(p_page_number integer);
@@ -160,22 +160,31 @@ $$ language plpgsql;
 -- order by o.start_date desc
 
 create or replace function nbp_project.student_application(
-    p_student_id integer)
+    p_student_id integer,
+    p_page_number integer
+    )
     returns table(offer_id integer, country_name varchar, field varchar, start_date date,
                   duration_in_weeks nbp_project.pos_int , company_name varchar, acceptance_status varchar)
 as
 $$
+declare
+    v_page_number integer = p_page_number;
 begin
+    if v_page_number < 1 then
+        v_page_number = 1;
+    end if;
     return query
         select af.offer_id as offer_id, c2.name as country_name, o.field as field,
                o.start_date as start_date, o.duration_in_weeks as duration_in_weeks,
                c.name as company_name, aas.status as acceptance_status
         from nbp_project.applies_for af
             join nbp_project.acceptance_status aas on aas.id = af.acceptance_status
-    join nbp_project.offer o on af.offer_id = o.id
-    join nbp_project.company c on o.company_id = c.id
-    join nbp_project.country c2 on c.country_id = c2.id
-    where af.student_id = p_student_id;
+            join nbp_project.offer o on af.offer_id = o.id
+            join nbp_project.company c on o.company_id = c.id
+            join nbp_project.country c2 on c.country_id = c2.id
+            where af.student_id = p_student_id;
+            order by o.start_date
+            limit 20 offset (v_page_number -1)*20;
 
 end;
 $$ language plpgsql;
@@ -203,7 +212,7 @@ begin
                  join nbp_project.country as cou on com.country_id = cou.id
         where o.member_id = p_member_id
         order by o.start_date desc
-        limit 20 offset (p_page_number -1)*20;
+        limit 20 offset (v_page_number -1)*20;
 end;
 $$ language plpgsql;
 
