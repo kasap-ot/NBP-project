@@ -1,7 +1,6 @@
 package mk.ukim.finki.nbp.aplipraksa.repository;
 
-import mk.ukim.finki.nbp.aplipraksa.model.OfferEditView;
-import mk.ukim.finki.nbp.aplipraksa.model.OfferShortView;
+import mk.ukim.finki.nbp.aplipraksa.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -82,5 +81,26 @@ public class MemberRepository {
     }
     public Iterable<OfferShortView> findAllOffersByMember(Integer memberId,Integer pageNumber){
         return jdbc.query("select * from nbp_project.offers_created_by_member(?,?)",OfferShortView::mapRowToOfferView,memberId,pageNumber);
+    }
+
+    public MemberProfileView findProfileByMemberId(Integer memberId) {
+        return jdbc.queryForObject("select * from nbp_project.member_profile_view(?)",MemberProfileView::mapRowToMemberProfileView,memberId);
+    }
+
+    public MemberProfileEditView findProfileEditByMemberId(Integer memberId) {
+        return jdbc.queryForObject("select * from nbp_project.member_profile_edit_view(?)",MemberProfileEditView::mapRowToMemberProfileEditView,memberId);
+    }
+
+    public void updateMember(Integer id,
+                             String password,
+                             String name,
+                             String surname,
+                             LocalDate dateOfBirth,
+                             String address,
+                             String phoneNumber,
+                             String email,
+                             Integer countryId) {
+        jdbc.update("call nbp_project.update_end_user(?,?,?,?,?,?,?,?,?)",
+                id,password,name,surname,dateOfBirth,address,phoneNumber,email,countryId);
     }
 }
