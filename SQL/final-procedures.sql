@@ -312,3 +312,29 @@ BEGIN
 
 END;
 $$ language plpgsql;
+
+create or replace procedure update_end_user(
+    p_id integer,
+    p_password varchar,
+    p_name varchar,
+    p_surname varchar,
+    p_date_of_birth date,
+    p_address varchar,
+    p_phone_number varchar,
+    p_email_address varchar,
+    p_country_id integer
+)
+AS $$
+BEGIN
+    UPDATE nbp_project.end_user
+    SET password = p_password,
+        name = p_name,
+        surname = p_surname,
+        date_of_birth = p_date_of_birth,
+        address = p_address,
+        phone_number = p_phone_number,
+        email_address = p_email_address,
+        country_id = p_country_id
+    WHERE id = p_id;
+END;
+$$ language plpgsql;

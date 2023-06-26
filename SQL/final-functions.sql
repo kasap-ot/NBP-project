@@ -273,3 +273,51 @@ begin
 
 end;
 $$ language plpgsql;
+
+
+create or replace function nbp_project.member_profile_edit_view(
+    p_member_id integer
+)returns table(id integer, name varchar,surname varchar, date_of_birth date,username varchar,password varchar,
+               address nbp_project.address,phone_number nbp_project.phone,email_address nbp_project.email,country_id integer,
+               org_name varchar,comm_phone_number nbp_project.phone,comm_email nbp_project.email,
+               comm_address nbp_project.address,comm_country_name varchar)
+as
+$$
+begin
+    return query
+        select  eu.id, eu.name, eu.surname,eu.date_of_birth,eu.username,eu.password,eu.address,eu.phone_number,eu.email_address,eu.country_id
+            ,org.name as org_name, com.phone_number as comm_phone_number, com.email_address as comm_email
+            ,com.address as comm_address,com_cou.name as  comm_country_name
+        from nbp_project.end_user as eu
+                 join nbp_project.member as mem on eu.id = mem.id
+                 join nbp_project.committee as com on mem.committee_id = com.id
+                 join nbp_project.country as com_cou on com.country_id =com_cou.id
+                 join nbp_project.organization as org on com.org_id = org.id
+        where mem.id = p_member_id;
+end;
+$$ language plpgsql;
+
+
+
+create or replace function nbp_project.member_profile_view(
+    p_member_id integer
+)returns table(id integer, name varchar,surname varchar, age integer,country_name varchar,
+                org_name varchar,comm_phone_number nbp_project.phone, comm_email nbp_project.email,
+                comm_address nbp_project.address,comm_country_name varchar)
+as
+$$
+begin
+    return query
+        select  eu.id, eu.name, eu.surname,date_part('year',age(NOW(),eu.date_of_birth))::integer as age,eu_cou.name as country_name,
+                org.name as org_name,com.phone_number as comm_phone_number, com.email_address as comm_email,
+                com.address as comm_address,com_cou.name as comm_country_name
+        from nbp_project.end_user as eu
+             join nbp_project.country as eu_cou on eu.country_id = eu_cou.id
+             join nbp_project.member as mem on eu.id = mem.id
+             join nbp_project.committee as com on mem.committee_id = com.id
+             join nbp_project.country as com_cou on com_cou.id = com.country_id
+             join nbp_project.organization as org on com.org_id = org.id
+        where mem.id = p_member_id;
+end;
+$$ language plpgsql;
+
