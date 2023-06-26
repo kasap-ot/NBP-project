@@ -49,5 +49,13 @@ public class ApplicationController {
         return "redirect:/applications";
     }
 
+    @GetMapping("/give-feedback")
+    public String giveFeedbackForApplication(HttpSession session) {
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        return null;
+    }
+
+
     //@PostMapping za CANCEL
 }
+

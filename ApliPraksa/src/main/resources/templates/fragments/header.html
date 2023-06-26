@@ -45,11 +45,14 @@
                     <!--            <th:block th:if="${#request.getRemoteUser()!=null}"-->
                     <!--                      th:text="${#request.getRemoteUser()}"/>-->
                     <!--          </a>-->
-                    <a th:text="${userCredentials !=null} ? ${userCredentials.getType()}+' '+${userCredentials.getName()}+' '+${userCredentials.getSurname()}: Profile" class="btn btn-success btn-sm ml-3" href="/profile">
+                    <a th:text="${userCredentials !=null} ? ${userCredentials.getType()}+' '+${userCredentials.getName()}+' '+${userCredentials.getSurname()}: Profile" class="btn btn-success btn-sm ml-3"
+                       href="/profile">
                         <i class="fa fa-shopping-cart"></i> Profile
                     </a>
-                    <a class="btn btn-success btn-sm ml-3" href="/login">Login</a>
-                    <a class="btn btn-primary btn-sm ml-3" href="/home">Register</a>
+                    <th:block>
+                        <a th:if="${userCredentials == null}" class="btn btn-success btn-sm ml-3" href="/login">Login</a>
+                        <a th:if="${userCredentials != null}" class="btn btn-success btn-sm ml-3" href="/logout">Logout</a>
+                    </th:block>
                 </form>
             </div>
         </div>
