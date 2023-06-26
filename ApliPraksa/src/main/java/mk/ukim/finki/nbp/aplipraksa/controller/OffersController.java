@@ -41,7 +41,7 @@ public class OffersController {
     public String offersPage(@PathVariable(required = false) Integer pageNumber, Model model, HttpSession session) {
         //Zemi gi kredencijalite na korisnikot od sesijata
         UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
-        Integer pageNum = (pageNumber == null)?Integer.valueOf(1):pageNumber;
+        Integer pageNum = (pageNumber == null || pageNumber <= 0)?Integer.valueOf(1):pageNumber;
 
         Iterable<OfferShortView> offerViews = null;
         if(userCredentials.getType().equals("student")){
@@ -128,7 +128,7 @@ public class OffersController {
         //Samo member mozhe da pristapi na ovoj method
         UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
         if(!userCredentials.getType().equals("member"))
-            return "redirect:/offer";
+            return "redirect:/offers";
 
         Iterable<Company> companies = this.globalRepository.findAllCompanies();
         model.addAttribute("companies",companies);
@@ -180,7 +180,7 @@ public class OffersController {
         if(!userCredentials.getType().equals("student"))
             return "redirect:/offers";
         this.studentRepository.applyForOffer(userCredentials.getId(), id);
-        return "redirect:/"+userCredentials.getId().toString()+"/applications";
+        return "redirect:/applications";
     }
 
 }

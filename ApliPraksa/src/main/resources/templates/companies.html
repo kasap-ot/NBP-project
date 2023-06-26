@@ -30,4 +30,6 @@
     </tr>
     </tbody>
   </table>
+  <a  class="btn btn-sm btn-info" th:href="@{'/companies/'+${pageNumber -1}}"><i class="fa fa-trash">prev</i></a>
+  <a  class="btn btn-sm btn-info" th:href="@{'/companies/'+${pageNumber +1}}"><i class="fa fa-trash">next</i></a>
 </div>

@@ -22,9 +22,12 @@ public class CompaniesController {
     @GetMapping(value={"","/{pageNumber}"})
     public String companiesPage(@PathVariable(required = false) Integer pageNumber, Model model) {
         //NEZ DALI TREBA ID
-        model.addAttribute("bodyContent", "companies");
-        Iterable<CompanyView> companies = this.globalRepository.findAllCompaniesViewOnPage(pageNumber);
+
+        Integer pageNum = (pageNumber == null || pageNumber <= 0) ? Integer.valueOf(1) : pageNumber;
+        Iterable<CompanyView> companies = this.globalRepository.findAllCompaniesViewOnPage(pageNum);
+        model.addAttribute("pageNumber",pageNum);
         model.addAttribute("companiesView",companies);
+        model.addAttribute("bodyContent", "companies");
         return "master-template";
     }
 

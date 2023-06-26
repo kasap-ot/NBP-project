@@ -26,10 +26,12 @@
 
         <th:block sec:authorize="hasRole('ROLE_STUDENT')">
           <!--          <a th:href="@{'/offers/delete/{id}' (id=${product.getId()})}" th:method="DELETE"-->
-          <a class="btn btn-sm btn-danger" th:href="@{'/application/cancel/{id}' (id=${studentApp.getOfferId()})}" th:method="POST"><i class="fa fa-trash">Cancel</i></a>
+          <a class="btn btn-sm btn-danger" th:href="@{'/applications/cancel/{id}' (id=${studentApp.getOfferId()})}" th:method="POST"><i class="fa fa-trash">Cancel</i></a>
         </th:block>
       </td>
     </tr>
     </tbody>
   </table>
+  <a  class="btn btn-sm btn-info" th:href="@{'/applications/'+${pageNumber -1}}"><i class="fa fa-trash">prev</i></a>
+  <a  class="btn btn-sm btn-info" th:href="@{'/applications/'+${pageNumber +1}}"><i class="fa fa-trash">next</i></a>
 </div>

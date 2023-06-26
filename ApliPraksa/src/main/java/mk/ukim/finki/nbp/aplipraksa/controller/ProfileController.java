@@ -7,7 +7,7 @@ import mk.ukim.finki.nbp.aplipraksa.model.enumerations.LangLevel;
 import mk.ukim.finki.nbp.aplipraksa.model.enumerations.StudyType;
 import mk.ukim.finki.nbp.aplipraksa.repository.GlobalRepository;
 import mk.ukim.finki.nbp.aplipraksa.repository.StudentRepository;
-import org.apache.catalina.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -95,7 +95,7 @@ public class ProfileController {
                               @RequestParam(name="major-id") Integer majorId,
                               @RequestParam(name="start-of-studies") Integer startOfStudies,
                               @RequestParam Float gpa,
-                              @RequestParam Integer credits, Model model,HttpSession session){
+                              @RequestParam Integer credits,HttpSession session){
         UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
         if(userCredentials.getType().equals("student")){
             this.studentRepository.updateStudent(id,password,name,surname,dateOfBirth,address,phoneNumber,email,countryId,typeOfStudy,gpa,credits,majorId,facultyId,startOfStudies);
@@ -125,7 +125,7 @@ public class ProfileController {
     public String addProject(@RequestParam String name,
                              @RequestParam String description,
                              @RequestParam String completeness,
-                             Model model,HttpSession session){
+                             HttpSession session){
         //Samo student mozhe da pristapi
         UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
         if(!userCredentials.getType().equals("student"))
@@ -158,7 +158,7 @@ public class ProfileController {
                              @RequestParam String description,
                              @RequestParam(name = "date-of-issue",required = false) LocalDate dateOfIssue,
                              @RequestParam String publisher,
-                             Model model,HttpSession session){
+                             HttpSession session){
         //Samo student mozhe da pristapi
         UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
         if(!userCredentials.getType().equals("student"))
@@ -167,7 +167,7 @@ public class ProfileController {
         return "redirect:/profile";
     }
     @GetMapping("/delete-certificate/{crId}")
-    public String deleteCertificate( @PathVariable Integer crId, Model model,HttpSession session) {
+    public String deleteCertificate( @PathVariable Integer crId,HttpSession session) {
         //samo student
         UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
         if(!userCredentials.getType().equals("student"))
@@ -178,51 +178,73 @@ public class ProfileController {
 
 
 
-    @GetMapping("/{id}/add-language")
-    public String addLanguagePage(@PathVariable String id,Model model){
-        model.addAttribute("bodyContent", "add-language");
-        model.addAttribute("langLevels", LangLevel.values());
-        model.addAttribute("languages",this.studentRepository.findAllLanguages());
-        model.addAttribute("studentId",id);
-        return "master-template";
-
-    }
-    @PostMapping("/{id}/add-language")
-    public String addLanguage(@PathVariable Integer id,
-                              @RequestParam(name = "lang-id") Integer langId,
-                              @RequestParam String level,
-                              Model model){
-        this.studentRepository.addLanguage(id,langId,level);
-        return "redirect:/profile/"+id.toString();
-    }
-    @GetMapping("/{stId}/delete-language/{laId}")
-    public String deleteLanguage(@PathVariable Integer stId, @PathVariable Integer laId, Model model) {
-        this.studentRepository.deleteLanguage(laId,stId);
-        return "redirect:/profile/"+stId;
-    }
-    @GetMapping("/add-experience")
-    public String addExperiencePage( Model model,HttpSession session) {
+    @GetMapping("/add-language")
+    public String addLanguagePage(Model model,HttpSession session){
+        //samo student
         UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
         if(!userCredentials.getType().equals("student"))
             return "redirect:/profile";
-        model.addAttribute("bodyContent", "add-experience");
-        model.addAttribute("jobTypes",JobType.values());
 
+        model.addAttribute("langLevels", LangLevel.values());
+        model.addAttribute("languages",this.studentRepository.findAllLanguages());
+        model.addAttribute("userCredentials",userCredentials);
+        model.addAttribute("bodyContent", "add-language");
+        return "master-template";
+
+    }
+    @PostMapping("/add-language")
+    public String addLanguage(@RequestParam(name = "lang-id") Integer langId,
+                              @RequestParam String level,
+                              HttpSession session){
+        //samo student
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(!userCredentials.getType().equals("student"))
+            return "redirect:/profile";
+        this.studentRepository.addLanguage(userCredentials.getId(),langId,level);
+        return "redirect:/profile";
+    }
+    @GetMapping("/delete-language/{laId}")
+    public String deleteLanguage(@PathVariable Integer laId,HttpSession session) {
+        //samo student
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(!userCredentials.getType().equals("student"))
+            return "redirect:/profile";
+        this.studentRepository.deleteLanguage(laId,userCredentials.getId());
+        return "redirect:/profile";
+    }
+    @GetMapping("/add-experience")
+    public String addExperiencePage( Model model,HttpSession session) {
+        //samo student
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(!userCredentials.getType().equals("student"))
+            return "redirect:/profile";
+
+        model.addAttribute("jobTypes",JobType.values());
+        model.addAttribute("userCredentials",userCredentials);
+        model.addAttribute("bodyContent", "add-experience");
         return "master-template";
     }
-    @PostMapping("/{id}/add-experience")
-    public String addExperience(@PathVariable Integer id,
-                                @RequestParam(name = "job-type") String jobType,
+    @PostMapping("/add-experience")
+    public String addExperience(@RequestParam(name = "job-type") String jobType,
                                 @RequestParam(required = false) String description,
                                 @RequestParam(name="start-date",required = false) LocalDate startDate,
-                                @RequestParam(name="duration",required = false) Integer durationInWeeks, Model model){
-        this.studentRepository.addExperience(id, jobType,description,startDate,durationInWeeks);
-        return "redirect:/profile/"+id.toString();
+                                @RequestParam(name="duration",required = false) Integer durationInWeeks,
+                                HttpSession session){
+        //samo student
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(!userCredentials.getType().equals("student"))
+            return "redirect:/profile";
+        this.studentRepository.addExperience(userCredentials.getId(), jobType,description,startDate,durationInWeeks);
+        return "redirect:/profile";
     }
-    @GetMapping("/{stId}/delete-experience/{exId}")
-    public String deleteExperience(@PathVariable Integer stId, @PathVariable Integer exId, Model model) {
+    @GetMapping("/delete-experience/{exId}")
+    public String deleteExperience(@PathVariable Integer exId,HttpSession session) {
+        //samo student
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(!userCredentials.getType().equals("student"))
+            return "redirect:/profile";
         this.studentRepository.deleteExperience(exId);
-        return "redirect:/profile/"+stId;
+        return "redirect:/profile";
     }
 
 }

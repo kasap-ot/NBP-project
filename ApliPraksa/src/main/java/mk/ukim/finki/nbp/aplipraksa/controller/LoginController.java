@@ -25,7 +25,7 @@ public class LoginController {
     public String getHomePage(HttpSession session, Model model){
         //check wheather the user is already logged in.
         if(session.getAttribute("userCredentials")!=null)
-            return "redirect:/home";
+            return "redirect:/offers";
 
         model.addAttribute("bodyContent", "login");
         return "master-template";
@@ -42,7 +42,7 @@ public class LoginController {
             //Postoi takov korisnik
             //Dodaj go vo HttpSession
             session.setAttribute("userCredentials",userCredentials);
-            return "redirect:/home";
+            return "redirect:/offers";
         }else{
             //Ne postoi takov korisnik, neka se obide povtorno
             return "redirect:/login";

@@ -131,13 +131,17 @@ public class StudentRepository {
     }
 
 
-    public Iterable<StudentApplication> findMyApplications(Integer id) {
+    public Iterable<StudentApplication> findMyApplications(Integer id,Integer pageNumber) {
         //TODO: Implement
-        return jdbc.query("select * from nbp_project.student_application(?)",StudentApplication::mapRowStudentApplicaiton, id);
+        return jdbc.query("select * from nbp_project.student_application(?,?)",StudentApplication::mapRowStudentApplicaiton, id,pageNumber);
 //        return null;
     }
 
     public void applyForOffer(Integer studentId, Integer offerId) {
         jdbc.update("call nbp_project.student_apply_for_offer(?, ?)", studentId, offerId);
+    }
+
+    public void deleteMyApplication(Integer id, Integer appId) {
+        jdbc.update("delete from nbp_project.applies_for as ap where ap.student_id = ? and ap.offer_id = ?",id,appId);
     }
 }
