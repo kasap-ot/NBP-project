@@ -132,7 +132,6 @@ public class StudentRepository {
 
 
     public Iterable<StudentApplication> findMyApplications(Integer id,Integer pageNumber) {
-        //TODO: Implement
         return jdbc.query("select * from nbp_project.student_application(?,?)",StudentApplication::mapRowStudentApplicaiton, id,pageNumber);
 //        return null;
     }

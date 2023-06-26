@@ -329,28 +329,54 @@ begin
         select 1
         from nbp_project.applies_for
         where offer_id = p_offer_id and
-              student_id = p_student_id and
-              applies_for.acceptance_status = 1 -- 1 means 'waiting'
+            student_id = p_student_id and
+            applies_for.acceptance_status = 1 -- 1 means 'waiting'
     )
     then
+        -- change status of the selected applicant to 'accepted'
+        update nbp_project.applies_for
+        set acceptance_status = 2       -- 2 means 'accepted'
+        where offer_id = p_offer_id and
+              student_id = p_student_id;
 
-    -- change status of the selected applicant to 'accepted'
-    update nbp_project.applies_for
-    set acceptance_status = 2       -- 2 means 'accepted'
-    where offer_id = p_offer_id and
-          student_id = p_student_id;
+        -- set the offer as not active anymore
+        update nbp_project.offer as offer
+        set is_active = false
+        where offer.id = p_offer_id;
 
-    -- set the offer as not active anymore
-    update nbp_project.offer as offer
-    set is_active = false
-    where offer.id = p_offer_id;
-
-    -- reject all other applicants for the offer
-    update nbp_project.applies_for
-    set acceptance_status = 3       -- 3 means 'rejected'
-    where offer_id = p_offer_id and
-          student_id != p_student_id;
+        -- reject all other applicants for the offer
+        update nbp_project.applies_for
+        set acceptance_status = 3       -- 3 means 'rejected'
+        where offer_id = p_offer_id and
+              student_id != p_student_id;
 
     end if;
 end;
+$$ language plpgsql;
+
+
+create or replace procedure nbp_project.update_end_user(
+    p_id integer,
+    p_password varchar,
+    p_name varchar,
+    p_surname varchar,
+    p_date_of_birth date,
+    p_address varchar,
+    p_phone_number varchar,
+    p_email_address varchar,
+    p_country_id integer
+)
+AS $$
+BEGIN
+    UPDATE nbp_project.end_user
+    SET password = p_password,
+        name = p_name,
+        surname = p_surname,
+        date_of_birth = p_date_of_birth,
+        address = p_address,
+        phone_number = p_phone_number,
+        email_address = p_email_address,
+        country_id = p_country_id
+    WHERE id = p_id;
+END;
 $$ language plpgsql;

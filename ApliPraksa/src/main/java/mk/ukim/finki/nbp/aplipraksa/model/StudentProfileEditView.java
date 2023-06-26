@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 @Data
 public class StudentProfileEditView {
-    private Integer studentId;
+    private Integer id;
     private String username;
     private String password;
 
@@ -30,7 +30,7 @@ public class StudentProfileEditView {
             , String email, Integer countryId, String degree, Integer majorId
             , Integer facultyId, String startYear, String gpa,String ectsCredits) {
         this.address=address;
-        this.studentId = studentId;
+        this.id = studentId;
         this.name = name;
         this.surname = surname;
         this.dateOfBirth = dateOfBirth;

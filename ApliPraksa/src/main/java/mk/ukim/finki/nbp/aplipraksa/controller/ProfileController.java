@@ -6,6 +6,7 @@ import mk.ukim.finki.nbp.aplipraksa.model.enumerations.JobType;
 import mk.ukim.finki.nbp.aplipraksa.model.enumerations.LangLevel;
 import mk.ukim.finki.nbp.aplipraksa.model.enumerations.StudyType;
 import mk.ukim.finki.nbp.aplipraksa.repository.GlobalRepository;
+import mk.ukim.finki.nbp.aplipraksa.repository.MemberRepository;
 import mk.ukim.finki.nbp.aplipraksa.repository.StudentRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +22,13 @@ public class ProfileController {
 
     private final StudentRepository studentRepository;
     private final GlobalRepository globalRepository;
+    private final MemberRepository memberRepository;
 
     @Autowired
-    public ProfileController(StudentRepository studentRepository, GlobalRepository globalRepository) {
+    public ProfileController(StudentRepository studentRepository, GlobalRepository globalRepository, MemberRepository memberRepository) {
         this.studentRepository = studentRepository;
         this.globalRepository = globalRepository;
+        this.memberRepository = memberRepository;
     }
 
     @GetMapping()
@@ -46,9 +49,9 @@ public class ProfileController {
             model.addAttribute("certificates",certificates);
             model.addAttribute("languages",languages);
         }else{
-            //za member
-            //TODO: IMPLEMENTACIJZA ZA MEMBER
-            return "redirect:/offers";
+            Integer memberId = userCredentials.getId();
+            MemberProfileView memberProfileView = this.memberRepository.findProfileByMemberId(memberId);
+            model.addAttribute("profile",memberProfileView);
         }
         model.addAttribute("userCredentials",userCredentials);
         model.addAttribute("bodyContent", "profile");
@@ -72,8 +75,11 @@ public class ProfileController {
             model.addAttribute("majors",majors);
         }else{
             //za member
-            //TODO: IMPLEMENTACIJZA ZA MEMBER
-            return "redirect:/offers";
+            Integer memberId = userCredentials.getId();
+            MemberProfileEditView memberProfileEditView = this.memberRepository.findProfileEditByMemberId(memberId);
+            Iterable<Country> countries = this.globalRepository.findAllCountries();
+            model.addAttribute("profile",memberProfileEditView);
+            model.addAttribute("countries",countries);
         }
 
         model.addAttribute("userCredentials",userCredentials);
@@ -89,17 +95,20 @@ public class ProfileController {
                               @RequestParam(name="phone-number") String phoneNumber,
                               @RequestParam String email,
                               @RequestParam(name="country-id") Integer countryId,
-                              @RequestParam(name="type-of-study") String typeOfStudy,
-                              @RequestParam (name="faculty-id") Integer facultyId,
-                              @RequestParam(name="major-id") Integer majorId,
-                              @RequestParam(name="start-of-studies") Integer startOfStudies,
-                              @RequestParam Float gpa,
-                              @RequestParam Integer credits,HttpSession session){
+                              @RequestParam(name="type-of-study",required = false) String typeOfStudy,
+                              @RequestParam (name="faculty-id",required = false) Integer facultyId,
+                              @RequestParam(name="major-id",required = false) Integer majorId,
+                              @RequestParam(name="start-of-studies",required = false) Integer startOfStudies,
+                              @RequestParam(required = false) Float gpa,
+                              @RequestParam(required = false) Integer credits,HttpSession session){
         UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
         if(userCredentials.getType().equals("student")){
-            this.studentRepository.updateStudent(userCredentials.getId(),password,name,surname,dateOfBirth,address,phoneNumber,email,countryId,typeOfStudy,gpa,credits,majorId,facultyId,startOfStudies);
+            this.studentRepository.updateStudent(userCredentials.getId(),password,name,surname,dateOfBirth,address,phoneNumber,email
+                    ,countryId,typeOfStudy,gpa,credits,majorId,facultyId,startOfStudies);
         }else{
             //TODO: IMPLEMENTACIJA ZA MEMBER
+            this.memberRepository.updateMember(userCredentials.getId(),password,name,surname,dateOfBirth,address,phoneNumber,email
+                    ,countryId);
 
         }
 
