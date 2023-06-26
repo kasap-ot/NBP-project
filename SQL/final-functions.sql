@@ -96,6 +96,7 @@ begin
         from nbp_project.offer as o
                  join nbp_project.company as com on o.company_id= com.id
                  join nbp_project.country as cou on com.country_id = cou.id
+        where o.is_active = true
         order by o.start_date desc
         limit 20 offset (p_page_number -1)*20;
 end;
