@@ -24,7 +24,7 @@ public class LoginController {
     @GetMapping("/login")
     public String getHomePage(HttpSession session, Model model){
         //check wheather the user is already logged in.
-        if(session.getAttribute("username")!=null)
+        if(session.getAttribute("userCredentials")!=null)
             return "redirect:/home";
 
         model.addAttribute("bodyContent", "login");
@@ -35,7 +35,7 @@ public class LoginController {
                               @RequestParam String username,
                               @RequestParam String password, Model model){
         //check wheather the user is already logged in.
-        if(session.getAttribute("username")!=null)
+        if(session.getAttribute("userCredentials")!=null)
             return "redirect:/home";
         UserCredentials userCredentials = this.globalRepository.findUserCredentialsByUserNameAndPassword(username,password);
         if(userCredentials!=null){

@@ -4,7 +4,7 @@
     <th:block sec:authorize="hasRole('ROLE_STUDENT')">
         <!--    th:href="@{'/profile/{id}' (id=${student.getId()})}">-->
 <!--        <a type="submit" class="btn btn-sm btn-info" href="/profile/{id}/edit"><i class="fa fa-trash">Edit</i></a>-->
-        <a type="submit" class="btn btn-sm btn-info" th:href="@{'/profile/{id}/edit' (id=${profile.getStudentId()})}"><i class="fa fa-trash">Edit</i></a>
+        <a type="submit" class="btn btn-sm btn-info" th:href="@{/profile/edit}"><i class="fa fa-trash">Edit</i></a>
     </th:block>
     <hr>
     <div class="profile-section">
@@ -24,7 +24,7 @@
     <hr>
     <div class="profile-section">
         <h2>Experience</h2>
-        <a class="btn btn-xs btn-info" th:href="@{/profile/{id}/add-experience(id=${profile.getStudentId()})}">+</a>
+        <a class="btn btn-xs btn-info" th:href="@{/profile/add-experience}">+</a>
 
         <!--  TODO: for each -->
         <th:block th:each="ex : ${experiences}">
@@ -32,19 +32,19 @@
             <p th:text="'Job type: ' + ${ex.getJobType()}">Position: Web Developer</p>
             <p th:text="'Duration: ' + ${ex.getDurationInWeeks()}">Duration: 2019 - Present</p>
             <p th:text="'Description: '+ ${ex.getDescription()}">Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a felis non odio tincidunt scelerisque. Mauris eget turpis magna.</p>
-            <a class="btn btn-xs btn-danger" th:href="@{'/profile/{stId}/delete-experience/{exId}' (stId=${profile.getStudentId()},exId=${ex.getId()})}">delete</a>
+            <a class="btn btn-xs btn-danger" th:href="@{'/profile/delete-experience/{exId}' (exId=${ex.getId()})}">delete</a>
             <hr>
         </th:block>
         </div>
     <hr>
     <div class="profile-section">
         <h2>Projects</h2>
-        <a class="btn btn-xs btn-info" th:href="@{/profile/{id}/add-project(id=${profile.getStudentId()})}">+</a>
+        <a class="btn btn-xs btn-info" th:href="@{/profile/add-project}">+</a>
         <th:block th:each="pr : ${projects}">
             <p th:text="'Name: ' +${pr.getName()}">Project 1: Example Project</p>
             <p th:text="'Description: ' +${pr.getDescription()}">Project 2: Another Project</p>
             <p th:text="'Completeness: ' + ${pr.getCompleteness()}">Project 3: Personal Portfolio Website</p>
-            <a class="btn btn-xs btn-danger"  th:href="@{'/profile/{stId}/delete-project/{prId}' (stId=${profile.getStudentId()},prId=${pr.getId()})}">delete</a>
+            <a class="btn btn-xs btn-danger"  th:href="@{'/profile/delete-project/{prId}' (prId=${pr.getId()})}">delete</a>
             <hr>
         </th:block>
 
@@ -52,23 +52,23 @@
     <hr>
     <div class="profile-section">
         <h2>Certificate</h2>
-        <a class="btn btn-xs btn-info" th:href="@{/profile/{id}/add-certificate(id=${profile.getStudentId()})}">+</a>
+        <a class="btn btn-xs btn-info" th:href="@{/profile/add-certificate}">+</a>
         <th:block th:each="cert : ${certificates}">
             <p th:text="'Name: ' +${cert.getName()}">Certificate 1</p>
             <p th:text="'Description: ' +${cert.getDescription()}">Certificate 1</p>
             <p th:text="'Date of issue: ' + ${cert.getDateOfIssue()}">Certificate 1</p>
             <p th:text="'Publisher: ' + ${cert.getPublisher()}">Certificate 1</p>
-            <a class="btn btn-xs btn-danger"  th:href="@{'/profile/{stId}/delete-certificate/{crId}' (stId=${profile.getStudentId()},crId=${cert.getId()})}">delete</a><hr>
+            <a class="btn btn-xs btn-danger"  th:href="@{'/profile/delete-certificate/{crId}' (crId=${cert.getId()})}">delete</a><hr>
         </th:block>
     </div>
         <hr>
         <div class="profile-section">
             <h2>Language</h2>
-            <a class="btn btn-xs btn-info" th:href="@{/profile/{id}/add-language(id=${profile.getStudentId()})}">+</a>
+            <a class="btn btn-xs btn-info" th:href="@{/profile/add-language}">+</a>
             <th:block th:each="lang : ${languages}">
                 <p th:text="'Name: ' +${lang.getName()}">Name 1</p>
                 <p th:text="'Level: ' +${lang.getLevel()}">Level 1</p>
-                <a class="btn btn-xs btn-danger" th:href="@{'/profile/{stId}/delete-language/{laId}' (stId=${profile.getStudentId()},laId=${lang.getId()})}">delete</a>
+                <a class="btn btn-xs btn-danger" th:href="@{'/profile/delete-language/{laId}' (laId=${lang.getId()})}">delete</a>
                 <hr>
             </th:block>
         </div>

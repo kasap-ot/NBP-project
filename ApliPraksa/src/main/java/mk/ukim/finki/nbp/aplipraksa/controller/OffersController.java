@@ -12,6 +12,7 @@ import mk.ukim.finki.nbp.aplipraksa.repository.GlobalRepository;
 import mk.ukim.finki.nbp.aplipraksa.repository.MemberRepository;
 import mk.ukim.finki.nbp.aplipraksa.repository.OfferRepository;
 import mk.ukim.finki.nbp.aplipraksa.repository.StudentRepository;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,25 +39,31 @@ public class OffersController {
 
     @GetMapping(value={"","/{pageNumber}"})
     public String offersPage(@PathVariable(required = false) Integer pageNumber, Model model, HttpSession session) {
+        //Zemi gi kredencijalite na korisnikot od sesijata
         UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
         Integer pageNum = (pageNumber == null)?Integer.valueOf(1):pageNumber;
-        model.addAttribute("bodyContent", "offers");
+
         Iterable<OfferShortView> offerViews = null;
         if(userCredentials.getType().equals("student")){
             offerViews = this.globalRepository.findAllActiveOffers(pageNum);
         }else{
             offerViews = this.memberRepository.findAllOffersByMember(userCredentials.getId(),pageNum);
         }
+
         model.addAttribute("offerViews",offerViews);
         model.addAttribute("pageNumber",pageNum);
         model.addAttribute("userCredentials",userCredentials);
+        model.addAttribute("bodyContent", "offers");
         return "master-template";
     }
     @GetMapping("/{id}/detail-offer")
-    public String detailOfferSummaryPage(@PathVariable Integer id,Model model){
-        model.addAttribute("bodyContent", "detail-offer");
+    public String detailOfferSummaryPage(@PathVariable Integer id,Model model,HttpSession session){
+        //metodov mozhe da se pristapi od bilo koj user
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
         OfferEditView offerDetailView = this.memberRepository.findOfferEditView(id);
+        model.addAttribute("bodyContent", "detail-offer");
         model.addAttribute("offerDetailView",offerDetailView);
+        model.addAttribute("userCredentials",userCredentials);
         return "master-template";
     }
 
@@ -73,7 +80,11 @@ public class OffersController {
 //    }
 
     @GetMapping("/{id}/edit-offer")
-    public String editOfferPage(@PathVariable Integer id, Model model) {
+    public String editOfferPage(@PathVariable Integer id, Model model,HttpSession session) {
+        //Samo member mozhe da pristapi do ovoj metod
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(!userCredentials.getType().equals("member"))
+            return "redirect:/offers";
 //        if(this.productService.findById(id).isPresent()){
 //            Product product = this.productService.findById(id).get();
 //            List<Manufacturer> manufacturers = this.manufacturerService.findAll();
@@ -82,9 +93,9 @@ public class OffersController {
 //            model.addAttribute("categories", categories);
 //            model.addAttribute("product", product);
 
-        model.addAttribute("bodyContent", "edit-offer");
         OfferEditView offerEditView = this.memberRepository.findOfferEditView(id);
-        model.addAttribute("memberId",7205); //memberId mora od sesija da se zeme
+        model.addAttribute("userCredentials",userCredentials);
+        model.addAttribute("bodyContent", "edit-offer");
         model.addAttribute("offerEditView",offerEditView);
         return "master-template";
     }
@@ -101,24 +112,27 @@ public class OffersController {
                             @RequestParam(name="acc-email") String accEmail,
                             @RequestParam(name="acc-address") String accAddress,
                             @RequestParam(name="acc-description") String accDescription,
-                            Model model){
-        Integer memberId = 7205;
-        this.memberRepository.updateOfferAndAccommodation(memberId,id,requirements,responsibilities,benefits,salary,
+                            Model model,
+                            HttpSession session){
+        //Samo member mozhe da pristapi na ovoj method
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(!userCredentials.getType().equals("member"))
+            return "redirect:/offers";
+        this.memberRepository.updateOfferAndAccommodation(userCredentials.getId(),id,requirements,responsibilities,benefits,salary,
                 field,startDate,duration,accPhone,accEmail,accAddress,accDescription);
+        model.addAttribute("userCredentials",userCredentials);
         return "redirect:/offers";
     }
     @GetMapping("/add-offer")
-    public String addOfferPage(Model model) {
-//        if(this.productService.findById(id).isPresent()){
-//            Product product = this.productService.findById(id).get();
-//            List<Manufacturer> manufacturers = this.manufacturerService.findAll();
-//            List<Category> categories = this.categoryService.listCategories();
-//            model.addAttribute("manufacturers", manufacturers);
-//            model.addAttribute("categories", categories);
-//            model.addAttribute("product", product);
-        model.addAttribute("memberId",7205); //memberId mora od sesija da se zeme
+    public String addOfferPage(Model model,HttpSession session) {
+        //Samo member mozhe da pristapi na ovoj method
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(!userCredentials.getType().equals("member"))
+            return "redirect:/offer";
+
         Iterable<Company> companies = this.globalRepository.findAllCompanies();
         model.addAttribute("companies",companies);
+        model.addAttribute("userCredentials",userCredentials);
         model.addAttribute("bodyContent", "add-offer");
         return "master-template";
     }
@@ -131,15 +145,22 @@ public class OffersController {
                            @RequestParam String benefits,
                            @RequestParam(name = "start-date") LocalDate startDate,
                            @RequestParam Integer duration,
-                           Model model) {
-        Integer memberId = 7205;
-        this.memberRepository.createOffer(requirements,responsibilities,benefits,salary,field,startDate,duration,memberId,companyId);
+                           Model model,
+                           HttpSession session) {
+        //Samo member mozhe da pristapi na ovoj method
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(!userCredentials.getType().equals("member"))
+            return "redirect:/offers";
+        this.memberRepository.createOffer(requirements,responsibilities,benefits,salary,field,startDate,duration,userCredentials.getId(),companyId);
         return "redirect:/offers";
     }
     @GetMapping("/{id}/delete-offer")
-    public String deleteOffer(@PathVariable Integer id){
-        Integer memberId = 7205;
-        this.memberRepository.deleteOffer(memberId,id);
+    public String deleteOffer(@PathVariable Integer id,HttpSession session){
+        //Samo member mozhe da pristapi na ovoj method
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(!userCredentials.getType().equals("member"))
+            return "redirect:/offers";
+        this.memberRepository.deleteOffer(userCredentials.getId(),id);
         return "redirect:/offers";
     }
 
@@ -153,10 +174,13 @@ public class OffersController {
 
 
     @GetMapping("/{id}/apply")
-    public String applyForOffer(@PathVariable Integer id) {
-        Integer studentId = 3;
-        this.studentRepository.applyForOffer(studentId, id);
-        return "redirect:/"+studentId.toString()+"/applications";
+    public String applyForOffer(@PathVariable Integer id,HttpSession session) {
+        //Samo student mozhe da pristapi na ovoj method
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(!userCredentials.getType().equals("student"))
+            return "redirect:/offers";
+        this.studentRepository.applyForOffer(userCredentials.getId(), id);
+        return "redirect:/"+userCredentials.getId().toString()+"/applications";
     }
 
 }

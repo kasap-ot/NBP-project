@@ -1,11 +1,13 @@
 package mk.ukim.finki.nbp.aplipraksa.controller;
 
+import jakarta.servlet.http.HttpSession;
 import mk.ukim.finki.nbp.aplipraksa.model.*;
 import mk.ukim.finki.nbp.aplipraksa.model.enumerations.JobType;
 import mk.ukim.finki.nbp.aplipraksa.model.enumerations.LangLevel;
 import mk.ukim.finki.nbp.aplipraksa.model.enumerations.StudyType;
 import mk.ukim.finki.nbp.aplipraksa.repository.GlobalRepository;
 import mk.ukim.finki.nbp.aplipraksa.repository.StudentRepository;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,39 +28,59 @@ public class ProfileController {
         this.globalRepository = globalRepository;
     }
 
-    @GetMapping("/{id}")
-    public String ProfilePage(@PathVariable String id, Model model) {
+    @GetMapping()
+    public String ProfilePage(Model model, HttpSession session) {
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+
+        if(userCredentials.getType().equals("student")){
+            //za student
+            Integer studentId = userCredentials.getId();
+            StudentProfileView studentProfileView = this.studentRepository.findProfileByStudentId(studentId);
+            Iterable<Project> projects = this.studentRepository.findAllProjectsByStudentId(studentId);
+            Iterable<Experience> experiences = this.studentRepository.findAllExperiencesByStudentId(studentId);
+            Iterable<Certificate> certificates = this.studentRepository.findAllCertificatesByStudentId(studentId);
+            Iterable<LanguageView> languages = this.studentRepository.findAllLanguagesByStudentId(studentId);
+            model.addAttribute("profile",studentProfileView);
+            model.addAttribute("projects",projects);
+            model.addAttribute("experiences",experiences);
+            model.addAttribute("certificates",certificates);
+            model.addAttribute("languages",languages);
+        }else{
+            //za member
+            //TODO: IMPLEMENTACIJZA ZA MEMBER
+            return "redirect:/offers";
+        }
+        model.addAttribute("userCredentials",userCredentials);
         model.addAttribute("bodyContent", "profile");
-        Integer studentId = Integer.parseInt(id);
-        StudentProfileView studentProfileView = this.studentRepository.findProfileByStudentId(studentId);
-        Iterable<Project> projects = this.studentRepository.findAllProjectsByStudentId(studentId);
-        Iterable<Experience> experiences = this.studentRepository.findAllExperiencesByStudentId(studentId);
-        Iterable<Certificate> certificates = this.studentRepository.findAllCertificatesByStudentId(studentId);
-        Iterable<LanguageView> languages = this.studentRepository.findAllLanguagesByStudentId(studentId);
-        model.addAttribute("profile",studentProfileView);
-        model.addAttribute("projects",projects);
-        model.addAttribute("experiences",experiences);
-        model.addAttribute("certificates",certificates);
-        model.addAttribute("languages",languages);
         return "master-template";
     }
 
-    @GetMapping("/{id}/edit")
-    public String editProfilePage(@PathVariable String id, Model model) {
+    @GetMapping("/edit")
+    public String editProfilePage(Model model,HttpSession session) {
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(userCredentials.getType().equals("student")){
+            //za student
+            Integer studentId = userCredentials.getId();
+            StudentProfileEditView studentProfileEditView = this.studentRepository.findProfileEditByStudentId(studentId);
+            Iterable<Faculty> faculties = this.globalRepository.findAllFaculties();
+            Iterable<Country> countries = this.globalRepository.findAllCountries();
+            Iterable<Major> majors = this.globalRepository.findAllMajors();
+            model.addAttribute("profile",studentProfileEditView);
+            model.addAttribute("studyTypes", StudyType.values());
+            model.addAttribute("countries",countries);
+            model.addAttribute("faculties",faculties);
+            model.addAttribute("majors",majors);
+        }else{
+            //za member
+            //TODO: IMPLEMENTACIJZA ZA MEMBER
+            return "redirect:/offers";
+        }
+
+        model.addAttribute("userCredentials",userCredentials);
         model.addAttribute("bodyContent", "edit-profile");
-        Integer studentId = Integer.parseInt(id);
-        StudentProfileEditView studentProfileEditView = this.studentRepository.findProfileEditByStudentId(studentId);
-        Iterable<Faculty> faculties = this.globalRepository.findAllFaculties();
-        Iterable<Country> countries = this.globalRepository.findAllCountries();
-        Iterable<Major> majors = this.globalRepository.findAllMajors();
-        model.addAttribute("profile",studentProfileEditView);
-        model.addAttribute("studyTypes", StudyType.values());
-        model.addAttribute("countries",countries);
-        model.addAttribute("faculties",faculties);
-        model.addAttribute("majors",majors);
         return "master-template";
     }
-    @PostMapping("/{id}/edit")
+    @PostMapping("/edit")
     public String editProfile(@PathVariable Integer id,
                               @RequestParam String name,
                               @RequestParam String surname,
@@ -73,9 +95,15 @@ public class ProfileController {
                               @RequestParam(name="major-id") Integer majorId,
                               @RequestParam(name="start-of-studies") Integer startOfStudies,
                               @RequestParam Float gpa,
-                              @RequestParam Integer credits, Model model){
-        this.studentRepository.updateStudent(id,password,name,surname,dateOfBirth,address,phoneNumber,email,countryId,typeOfStudy,gpa,credits,majorId,facultyId,startOfStudies);
-        return "redirect:/profile/"+id.toString();
+                              @RequestParam Integer credits, Model model,HttpSession session){
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(userCredentials.getType().equals("student")){
+            this.studentRepository.updateStudent(id,password,name,surname,dateOfBirth,address,phoneNumber,email,countryId,typeOfStudy,gpa,credits,majorId,facultyId,startOfStudies);
+        }else{
+            //TODO: IMPLEMENTACIJA ZA MEMBER
+        }
+
+        return "redirect:/profile";
     }
 //    @GetMapping("/{id}/delete")
 //    public String deleteProfile(@PathVariable Integer id){
@@ -83,59 +111,73 @@ public class ProfileController {
 //        return "/home";
 //    }
 
-    @GetMapping("/{id}/add-project")
-    public String addProjectPage(@PathVariable String id, Model model) {
+    @GetMapping("/add-project")
+    public String addProjectPage(Model model,HttpSession session) {
+        //Samo student mozhe da pristapi
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(!userCredentials.getType().equals("student"))
+            return "redirect:/profile";
+        model.addAttribute("userCredentials",userCredentials);
         model.addAttribute("bodyContent", "add-project");
-        model.addAttribute("studentId",id);
         return "master-template";
     }
-    @PostMapping("/{id}/add-project")
-    public String addProject(@PathVariable Integer id,
-                             @RequestParam String name,
+    @PostMapping("/add-project")
+    public String addProject(@RequestParam String name,
                              @RequestParam String description,
                              @RequestParam String completeness,
-                             Model model){
-
-        this.studentRepository.addProject(id,name,description,completeness);
-        return "redirect:/profile/"+id.toString();
+                             Model model,HttpSession session){
+        //Samo student mozhe da pristapi
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(!userCredentials.getType().equals("student"))
+            return "redirect:/profile";
+        this.studentRepository.addProject(userCredentials.getId(),name,description,completeness);
+        return "redirect:/profile";
     }
-    @GetMapping("/{stId}/delete-project/{prId}")
-    public String deleteProject(@PathVariable Integer stId, @PathVariable Integer prId, Model model) {
+    @GetMapping("/delete-project/{prId}")
+    public String deleteProject(@PathVariable Integer prId,HttpSession session) {
+        //Samo student mozhe da pristapi
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(!userCredentials.getType().equals("student"))
+            return "redirect:/profile";
         this.studentRepository.deleteProject(prId);
-        return "redirect:/profile/"+stId;
+        return "redirect:/profile";
     }
 
-    @GetMapping("/{id}/add-certificate")
-    public String addCertificatePage(@PathVariable String id, Model model) {
+    @GetMapping("/add-certificate")
+    public String addCertificatePage(Model model,HttpSession session) {
+        //Samo student mozhe da pristapi
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(!userCredentials.getType().equals("student"))
+            return "redirect:/profile";
+        model.addAttribute("userCredentials",userCredentials);
         model.addAttribute("bodyContent", "add-certificate");
-        model.addAttribute("studentId",id);
         return "master-template";
     }
-    @PostMapping("/{id}/add-certificate")
-    public String addCertificate(@PathVariable Integer id,
-                             @RequestParam String name,
+    @PostMapping("/add-certificate")
+    public String addCertificate(@RequestParam String name,
                              @RequestParam String description,
                              @RequestParam(name = "date-of-issue",required = false) LocalDate dateOfIssue,
                              @RequestParam String publisher,
-                             Model model){
-
-        this.studentRepository.addCertificate(id,name,description,dateOfIssue,publisher);
-        return "redirect:/profile/"+id.toString();
+                             Model model,HttpSession session){
+        //Samo student mozhe da pristapi
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(!userCredentials.getType().equals("student"))
+            return "redirect:/profile";
+        this.studentRepository.addCertificate(userCredentials.getId(),name,description,dateOfIssue,publisher);
+        return "redirect:/profile";
     }
-    @GetMapping("/{stId}/delete-certificate/{crId}")
-    public String deleteCertificate(@PathVariable Integer stId, @PathVariable Integer crId, Model model) {
+    @GetMapping("/delete-certificate/{crId}")
+    public String deleteCertificate( @PathVariable Integer crId, Model model,HttpSession session) {
+        //samo student
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(!userCredentials.getType().equals("student"))
+            return "redirect:/profile";
         this.studentRepository.deleteCertificate(crId);
-        return "redirect:/profile/"+stId;
+        return "redirect:/profile";
     }
 
 
-    @GetMapping("/{id}/add-experience")
-    public String addExperiencePage(@PathVariable String id, Model model) {
-        model.addAttribute("bodyContent", "add-experience");
-        model.addAttribute("jobTypes",JobType.values());
-        model.addAttribute("studentId",id);
-        return "master-template";
-    }
+
     @GetMapping("/{id}/add-language")
     public String addLanguagePage(@PathVariable String id,Model model){
         model.addAttribute("bodyContent", "add-language");
@@ -157,6 +199,16 @@ public class ProfileController {
     public String deleteLanguage(@PathVariable Integer stId, @PathVariable Integer laId, Model model) {
         this.studentRepository.deleteLanguage(laId,stId);
         return "redirect:/profile/"+stId;
+    }
+    @GetMapping("/add-experience")
+    public String addExperiencePage( Model model,HttpSession session) {
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(!userCredentials.getType().equals("student"))
+            return "redirect:/profile";
+        model.addAttribute("bodyContent", "add-experience");
+        model.addAttribute("jobTypes",JobType.values());
+
+        return "master-template";
     }
     @PostMapping("/{id}/add-experience")
     public String addExperience(@PathVariable Integer id,
