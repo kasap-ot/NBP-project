@@ -81,8 +81,7 @@ public class ProfileController {
         return "master-template";
     }
     @PostMapping("/edit")
-    public String editProfile(@PathVariable Integer id,
-                              @RequestParam String name,
+    public String editProfile(@RequestParam String name,
                               @RequestParam String surname,
                               @RequestParam(name = "date-of-birth") LocalDate dateOfBirth,
                               @RequestParam String password,
@@ -98,9 +97,10 @@ public class ProfileController {
                               @RequestParam Integer credits,HttpSession session){
         UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
         if(userCredentials.getType().equals("student")){
-            this.studentRepository.updateStudent(id,password,name,surname,dateOfBirth,address,phoneNumber,email,countryId,typeOfStudy,gpa,credits,majorId,facultyId,startOfStudies);
+            this.studentRepository.updateStudent(userCredentials.getId(),password,name,surname,dateOfBirth,address,phoneNumber,email,countryId,typeOfStudy,gpa,credits,majorId,facultyId,startOfStudies);
         }else{
             //TODO: IMPLEMENTACIJA ZA MEMBER
+
         }
 
         return "redirect:/profile";
