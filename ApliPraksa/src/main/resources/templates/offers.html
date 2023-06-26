@@ -1,7 +1,7 @@
 <div class="container">
     <h1 class="mt-5">Internship Offers</h1>
-    <th:block sec:authorize="hasRole('ROLE_MEMBER')">
-        <a class="btn btn-xs btn-info p-2" th:href="@{/offers/add-offer}">Add offer</a>
+    <th:block>
+        <a th:if="${userCredentials.getType() == 'member'}" class="btn btn-xs btn-info p-2" th:href="@{/offers/add-offer}">Add offer</a>
     </th:block>
     <table class="table mt-4" id="offers">
         <thead class="thead-dark">
