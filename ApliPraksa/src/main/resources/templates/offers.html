@@ -28,16 +28,16 @@
             <td class="text-right">
                 <th:block sec:authorize="hasRole('ROLE_MEMBER')">
                     <!--          <form th:action="@{'/offers/{id}/edit-offer' (id=${product.getId()})}">-->
-                    <a class="btn btn-sm btn-info" th:href="@{/offers/{id}/edit-offer(id=${offerView.getOfferId()})}"><i class="fa fa-trash">Edit</i></a>
+                    <a th:if="${userCredentials.getType() == 'member'}" class="btn btn-sm btn-info" th:href="@{/offers/{id}/edit-offer(id=${offerView.getOfferId()})}"><i class="fa fa-trash">Edit</i></a>
                     <!--          </form>-->
                 </th:block>
                 <th:block sec:authorize="hasRole('ROLE_MEMBER')">
                     <!--          <a th:href="@{'/offers/delete/{id}' (id=${product.getId()})}" th:method="DELETE"-->
-                    <a class="btn btn-sm btn-danger" th:href="@{/offers/{id}/delete-offer(id=${offerView.getOfferId()})}"><i class="fa fa-trash">Delete</i></a>
+                    <a th:if="${userCredentials.getType() == 'member'}" class="btn btn-sm btn-danger" th:href="@{/offers/{id}/delete-offer(id=${offerView.getOfferId()})}"><i class="fa fa-trash">Delete</i></a>
                 </th:block>
-                <th:block sec:authorize="hasRole('ROLE_STUDENT')">
+                <th:block>
                     <!--          <a th:href="@{'/offers/{id}/delete' (id=${product.getId()})}" th:method="DELETE"-->
-                    <a class="btn btn-sm btn-success" th:href="@{/offers/{id}/apply(id=${offerView.getOfferId()})}"><i class="fa fa-trash">Apply</i></a>
+                    <a th:if="${userCredentials.getType() == 'student'}" class="btn btn-sm btn-success" th:href="@{/offers/{id}/apply(id=${offerView.getOfferId()})}"><i class="fa fa-trash">Apply</i></a>
                     <!--            <a class="btn btn-sm btn-info" th:href="@{'/offers/{id}'}"><i class="fa fa-trash">View offer</i></a>-->
                     <a class="btn btn-sm btn-info" th:href="@{/offers/{id}/detail-offer(id=${offerView.getOfferId()})}"><i class="fa fa-trash">View offer</i></a>
                 </th:block>
