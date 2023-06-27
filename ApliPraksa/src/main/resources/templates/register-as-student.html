@@ -9,11 +9,11 @@
 </head>
 <body> -->
     <div class="container w-50">
-        <form class="">
+        <form method="post" action="/register-as-student">
         <h2 class="text-center pt-4">Student Registration Form</h2>
             <div class="form-group py-2">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" class="form-control" required>
+                <input type="text" maxlength="20" id="username" name="username" class="form-control" required>
             </div>
             
             <div class="form-group py-2">
@@ -28,12 +28,12 @@
     
             <div class="form-group py-2">
                 <label for="name">Name</label>
-                <input type="text" id="name" name="name" class="form-control" required>
+                <input type="text" maxlength="20" id="name" name="name" class="form-control" required>
             </div>
     
             <div class="form-group py-2">
                 <label for="surname">Surname</label>
-                <input type="text" id="surname" name="surname" class="form-control" required>
+                <input type="text" maxlength="20" id="surname" name="surname" class="form-control" required>
             </div>
     
             <div class="form-group py-2">
@@ -48,61 +48,50 @@
     
             <div class="form-group py-2">
                 <label for="phone">Phone</label>
-                <input type="text" id="phone" name="phone" class="form-control" required>
+                <input type="text" maxlength="9" id="phone" name="phone" class="form-control" required>
             </div>
     
             <div class="form-group py-2">
                 <label for="country" class="form-label">Country</label> <br>
                 <select class="w-100" name="country" id="country">
-                    <option value="1">МАКЕДОНИЈА</option>
-                    <option value="2">Great Britain</option>
-                    <option value="3">USA</option>
-                    <option value="4">India</option>
+                    <option th:each="country: ${countries}" th:value="${country.getId()}" th:text="${country.getName()}">country name</option>
                 </select>
             </div>
     
             <div class="form-group py-2">
                 <label for="faculty" class="form-label">Faculty</label> <br>
                 <select class="w-100" name="faculty" id="faculty">
-                    <option value="1">FEIT</option>
-                    <option value="2">Faculty of Mechanical Engineering, Skopje</option>
-                    <option value="3">PMF Skopje</option>
-                    <option value="4">Physics Faculty at Cambridge</option>
+                    <option th:each="faculty: ${faculties}" th:value="${faculty.getId()}" th:text="${faculty.getName()}" >faculty name</option>
                 </select>
             </div>
             
             <div class="form-group py-2">
                 <label for="major" class="form-label">Major</label> <br>
                 <select class="w-100" name="major" id="major">
-                    <option value="1">Computer Science</option>
-                    <option value="2">Mechatronics</option>
-                    <option value="3">English Language</option>
-                    <option value="4">Business</option>
+                    <option th:each="major: ${majors}" th:value="${major.getId()}" th:text="${major.getMajor()}">major name</option>
                 </select>
             </div>
             
             <div class="form-group py-2">
                 <label for="study-level" class="form-label">Study level</label> <br>
                 <select class="w-100" name="study-level" id="study-level">
-                    <option value="1">Bachelor</option>
-                    <option value="2">Master</option>
-                    <option value="3">Doctorate</option>
+                    <option th:each="studyType: ${studyTypes}" th:value="${studyType.toString()}" th:text="${studyType.toString()}">study type name</option>
                 </select>
             </div>
             
             <div class="form-group py-2">
                 <label for="gpa">GPA</label>
-                <input type="number" id="gpa" name="gpa" class="form-control" required>
+                <input type="number" min="6" max="10" step="0.1" id="gpa" name="gpa" class="form-control" required>
             </div>
             
             <div class="form-group py-2">
-                <label for="start-date">Start date</label>
-                <input type="number" id="start-date" name="start-date" class="form-control" required>
+                <label for="start-year">Start date</label>
+                <input type="number" id="start-year" name="start-year" class="form-control" required>
             </div>
             
             <div class="form-group py-2">
                 <label for="credits">Number of credits</label>
-                <input type="number" id="credits" name="credits" class="form-control" required>
+                <input type="number" max="240" id="credits" name="credits" class="form-control" required>
             </div>
             
             <div class="container d-flex justify-content-center align-items-center">

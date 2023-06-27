@@ -22,7 +22,7 @@ public class StudentRepository {
                               String password,
                               String name,
                               String surname,
-                              LocalDateTime dateOfBirth,
+                              LocalDate dateOfBirth,
                               String address,
                               String phoneNumber,
                               String emailAddress,
