@@ -1,8 +1,5 @@
 <div class="container p-3" xmlns:th="http://www.w3.org/1999/html">
-  <h2 th:text="">Applied students for offer:</h2>
-  <th:block>
-    <a th:if="${userCredentials.getType() == 'member'}" class="btn btn-xs btn-info p-2" th:href="@{/offers/add-offer}">Add offer</a>
-  </th:block>
+  <h2 th:text="">Applied students</h2>
   <table class="table mt-4" id="offers">
     <thead class="thead-dark">
     <tr>
@@ -13,44 +10,40 @@
       <th>Faculty</th>
       <th>Degree</th>
       <th>Major</th>
+      <th>Status</th>
       <th>Action</th>
     </tr>
     </thead>
     <tbody>
     <!-- Offer rows -->
     <tr th:each="applicant : ${applicants}">
-      <td th:text="${offerView.getCountryName()}"></td>
-      <td th:text="${offerView.getFieldOfStudy()}"></td>
-      <td th:text="${offerView.getStartingDate()}"></td>
-      <td th:text="${offerView.getLengthsInWeeks()}"></td>
-      <td th:text="${offerView.getCompanyName()}"></td>
+      <td th:text="${applicant.getCountryName()}"></td>
+      <td th:text="${applicant.getName()}"></td>
+      <td th:text="${applicant.getSurname()}"></td>
+      <td th:text="${applicant.getAge()}"></td>
+      <td th:text="${applicant.getFaculty()}"></td>
+      <td th:text="${applicant.getDegree()}"></td>
+      <td th:text="${applicant.getMajor()}"></td>
+      <td th:text="${applicant.getStatus()}"></td>
       <td class="text-right">
         <th:block>
-          <a th:if="${userCredentials.getType() == 'member'}" class="btn btn-sm btn-info" th:href="@{/offers/{id}/edit-offer(id=${offerView.getOfferId()})}"><i class="fa fa-trash">Edit</i></a>
-          <!--          </form>-->
-        </th:block>
-        <th:block sec:authorize="hasRole('ROLE_MEMBER')">
-          <!--          <a th:href="@{'/offers/delete/{id}' (id=${product.getId()})}" th:method="DELETE"-->
-          <a th:if="${userCredentials.getType() == 'member'}" class="btn btn-sm btn-danger" th:href="@{/offers/{id}/delete-offer(id=${offerView.getOfferId()})}"><i class="fa fa-trash">Delete</i></a>
+          <a th:if="${userCredentials.getType() == 'member'}"
+             class="btn btn-sm btn-success" th:href="@{'/offers/{offerId}/applicants/{studentId}' (offerId=${applicant.getOfferId()}, studentId=${applicant.getStudentId()}">
+            <i class="fa fa-trash">Accept</i></a>
         </th:block>
         <th:block>
-          <!--          <a th:href="@{'/offers/{id}/delete' (id=${product.getId()})}" th:method="DELETE"-->
-          <a th:if="${userCredentials.getType() == 'student'}" class="btn btn-sm btn-success" th:href="@{/offers/{id}/apply(id=${offerView.getOfferId()})}"><i class="fa fa-trash">Apply</i></a>
-          <!--            <a class="btn btn-sm btn-info" th:href="@{'/offers/{id}'}"><i class="fa fa-trash">View offer</i></a>-->
-          <a class="btn btn-sm btn-info" th:href="@{/offers/{id}/detail-offer(id=${offerView.getOfferId()})}"><i class="fa fa-trash">View offer</i></a>
+          <a th:if="${applicant.getStatus() == 'accepted' || applicant.getStatus() == 'ongoing'}"
+             class="btn btn-sm btn-warning"
+             th:href="@{'/offers/{offerId}/applicants/{studentId}/update_status' (offerId=${applicant.getOfferId()}, studentId=${applicant.getStudentId()}">
+            <i class="fa fa-trash">Update status</i></a>
         </th:block>
       </td>
-      <!--            <th:block sec:authorize="hasRole('ROLE_MEMBER')">-->
-      <!--                &lt;!&ndash;          <a th:href="@{'/offers/{id}/edit-offer' (id=${product.getId()})}" th:method="DELETE"&ndash;&gt;-->
-      <!--                &lt;!&ndash;        todo:KOJ APLICIRAL TUKA DA SE POKAZE HREF KOPCE &ndash;&gt;-->
-      <!--                <td class="text-center"><a href="/offers/3/applications">50</a></td>-->
-      <!--            </th:block>-->
     </tr>
 
 
     </tbody>
   </table>
-  <a  class="btn btn-sm btn-info" th:href="@{'/offers/'+${pageNumber -1}}"><i class="fa fa-trash">prev</i></a>
-  <a  class="btn btn-sm btn-info" th:href="@{'/offers/'+${pageNumber +1}}"><i class="fa fa-trash">next</i></a>
+<!--  <a  class="btn btn-sm btn-info" th:href="@{'/offers/'+${pageNumber -1}}"><i class="fa fa-trash">prev</i></a>-->
+<!--  <a  class="btn btn-sm btn-info" th:href="@{'/offers/'+${pageNumber +1}}"><i class="fa fa-trash">next</i></a>-->
 </div>
 
