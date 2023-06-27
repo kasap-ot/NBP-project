@@ -321,3 +321,18 @@ begin
 end;
 $$ language plpgsql;
 
+create or replace  function nbp_project.countries_of_committees_by_organization(
+    p_org_id integer
+) returns table(id integer,name varchar)
+as
+$$
+    begin
+        return query
+                select cou.id,cou.name
+                from nbp_project.organization as org
+                    join nbp_project.committee as com on org.id = com.org_id
+                    join nbp_project.country as cou on cou.id = com.country_id
+                where org.id = p_org_id;
+    end;
+$$ language plpgsql;
+

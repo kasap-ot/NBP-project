@@ -1,3 +1,53 @@
+create or replace procedure insert_end_user_member(
+    p_username varchar,
+    p_password varchar,
+    p_name varchar,
+    p_surname varchar,
+    p_date_of_birth date,
+    p_address varchar,
+    p_phone_number varchar,
+    p_email_address varchar,
+    p_country_id integer,
+    p_organization_id integer,
+    p_committee_country_id integer
+)
+as
+$$
+declare
+    v_returned_member_id integer;
+    v_returned_committee_id integer = -1; --assign an invalid value;
+begin
+    if exists(
+            select 1
+            from nbp_project.end_user
+            where username = p_username
+        )
+    then
+        --member exists with this username, raise exception or ignore ?
+    else
+        --find the id
+        select com.id
+        from nbp_project.organization as org
+                 join nbp_project.committee as com on org.id = com.org_id
+                 join nbp_project.country as cou on com.country_id = cou.id
+        where com.country_id =p_committee_country_id and org.id = p_organization_id
+        into  v_returned_committee_id;
+
+        if v_returned_committee_id != -1 then
+            -- the username is free, and can be used to create new member
+            -- there is a committee for the organization in the specified country
+            INSERT INTO nbp_project.end_user(username, password, name, surname, date_of_birth, address, phone_number,email_address, country_id)
+            VALUES (p_username, p_password, p_name, p_surname, p_date_of_birth, p_address, p_phone_number, p_email_address, p_country_id)
+            RETURNING id INTO v_returned_member_id;
+
+            insert into nbp_project.member(id, committee_id) values (v_returned_member_id,v_returned_committee_id);
+        end if;
+    end if;
+    commit;
+end
+$$ language  plpgsql;
+
+
 create or replace procedure nbp_project.insert_offer (
     p_requirements varchar,
     p_responsibilities varchar,
