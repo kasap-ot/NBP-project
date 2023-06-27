@@ -1,5 +1,7 @@
 package mk.ukim.finki.nbp.aplipraksa.controller;
 
+import jakarta.servlet.http.HttpSession;
+import mk.ukim.finki.nbp.aplipraksa.model.UserCredentials;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,13 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping
 public class HomeController {
     @GetMapping(value = {"/","/home"})
-    public String getHomePage(Model model){
+    public String getHomePage(Model model, HttpSession session){
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
         model.addAttribute("bodyContent", "home");
+        model.addAttribute("userCredentials", userCredentials);
         return "master-template";
     }
 
     @GetMapping("/about-us")
-    public String getAboutUsPage(Model model){
+    public String getAboutUsPage(Model model, HttpSession session){
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        model.addAttribute("userCredentials", userCredentials);
         model.addAttribute("bodyContent", "about-us");
         return "master-template";
     }
