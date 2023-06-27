@@ -10,7 +10,7 @@ drop procedure nbp_project.insert_or_update_knows_language;
 drop procedure nbp_project.insert_or_update_project;
 drop procedure nbp_project.insert_or_update_certificate;
 drop procedure nbp_project.student_apply_for_offer;
-
+drop procedure nbp_project.accept_applicant;
 
 -- DROP FUNCTIONS
 

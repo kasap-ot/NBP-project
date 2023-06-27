@@ -55,6 +55,9 @@ alter table student drop column start_year;
 alter table student add column start_year integer;
 alter table offer add column is_active boolean;
 
+ALTER TABLE nbp_project.committee
+ADD CONSTRAINT unique_org_and_country UNIQUE (org_id, country_id);
+
 
 --TABLES
 
