@@ -134,7 +134,7 @@ BEGIN
 
     ELSE
         INSERT INTO nbp_project.end_user(username, password, name, surname, date_of_birth, address, phone_number,email_address, country_id)
-        VALUES (p_username, p_password, p_name, p_surname, p_date_of_birth, p_address, p_phone_number, p_email_address, p_country_id);
+        VALUES (p_username, p_password, p_name, p_surname, p_date_of_birth, p_address, p_phone_number, p_email_address, p_country_id)
         RETURNING id INTO v_returned_student_id;
 
         INSERT INTO nbp_project.student(id,study_level, gpa, start_year, ects_credits, major_id, educational_institute_id)
@@ -143,6 +143,7 @@ BEGIN
     COMMIT;
 END;
 $$ language plpgsql;
+
 
 --update existing Student
 create or replace procedure nbp_project.update_end_user_student (
@@ -309,8 +310,15 @@ create or replace procedure nbp_project.student_apply_for_offer(
 )
 AS $$
 BEGIN
-    INSERT INTO nbp_project.applies_for (student_id, offer_id, date_of_app_submission, acceptance_status)
-    VALUES (p_student_id, p_offer_id, now(), 1);
+    if not exists(
+        select 1
+        from nbp_project.applies_for as ap
+        where ap.offer_id = p_offer_id and ap.student_id = student_id
+        )
+    then
+        INSERT INTO nbp_project.applies_for (student_id, offer_id, date_of_app_submission, acceptance_status)
+        VALUES (p_student_id, p_offer_id, now(), 1);
+    end if;
     COMMIT;
 
 END;

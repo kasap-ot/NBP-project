@@ -12,7 +12,6 @@ begin
            where  kw.student_id = p_student_id;
 end;
 $$ language plpgsql;
---drop function nbp_project.lang_known_by_student(p_student_id integer);
 
 
 --function that returns a view for offer
@@ -36,6 +35,7 @@ $$
     end;
 $$ language plpgsql;
 
+
 --function that returns a view for a student's profile
 create or replace function nbp_project.student_profile_view(
     p_student_id integer
@@ -54,8 +54,6 @@ $$
             where p_student_id = eu.id;
     end;
 $$ language plpgsql;
-
--- drop function nbp_project.student_profile_view(p_student_id integer);
 
 
 --view that will be called for populating the edit-profile.html
@@ -76,7 +74,6 @@ begin
 end;
 $$ language plpgsql;
 
---drop function nbp_project.student_profile_edit_view(p_student_id integer);
 
 --active offers
 create or replace function nbp_project.active_offers(
@@ -101,7 +98,7 @@ begin
         limit 20 offset (p_page_number -1)*20;
 end;
 $$ language plpgsql;
---drop function nbp_project.active_offers(p_page_number integer);
+
 
 --function that returns view for path: "/companies"
 create or replace function nbp_project.companies_view_on_page(
@@ -149,8 +146,6 @@ end;
 $$ language plpgsql;
 
 
---drop function nbp_project.companies_view_on_page(p_page_number integer);
-
 -- create  view nbp_project.active_offers_view as
 -- select o.id as offer_id, cou.name as country_name, o.field, o.start_date,o.duration_in_weeks, com.name as company_name
 -- from offer as o
@@ -161,27 +156,34 @@ $$ language plpgsql;
 -- order by o.start_date desc
 
 create or replace function nbp_project.student_application(
-    p_student_id integer)
+    p_student_id integer,
+    p_page_number integer
+    )
     returns table(offer_id integer, country_name varchar, field varchar, start_date date,
                   duration_in_weeks nbp_project.pos_int , company_name varchar, acceptance_status varchar)
 as
 $$
+declare
+    v_page_number integer = p_page_number;
 begin
+    if v_page_number < 1 then
+        v_page_number = 1;
+    end if;
     return query
         select af.offer_id as offer_id, c2.name as country_name, o.field as field,
                o.start_date as start_date, o.duration_in_weeks as duration_in_weeks,
                c.name as company_name, aas.status as acceptance_status
         from nbp_project.applies_for af
             join nbp_project.acceptance_status aas on aas.id = af.acceptance_status
-    join nbp_project.offer o on af.offer_id = o.id
-    join nbp_project.company c on o.company_id = c.id
-    join nbp_project.country c2 on c.country_id = c2.id
-    where af.student_id = p_student_id;
+            join nbp_project.offer o on af.offer_id = o.id
+            join nbp_project.company c on o.company_id = c.id
+            join nbp_project.country c2 on c.country_id = c2.id
+            where af.student_id = p_student_id;
+            order by o.start_date
+            limit 20 offset (v_page_number -1)*20;
 
 end;
 $$ language plpgsql;
-
---drop function student_application(p_student_id integer)
 
 
 create or replace function nbp_project.offers_created_by_member(
@@ -204,7 +206,7 @@ begin
                  join nbp_project.country as cou on com.country_id = cou.id
         where o.member_id = p_member_id
         order by o.start_date desc
-        limit 20 offset (p_page_number -1)*20;
+        limit 20 offset (v_page_number -1)*20;
 end;
 $$ language plpgsql;
 
@@ -231,8 +233,6 @@ $$
     end;
 $$ language plpgsql;
 
---drop function nbp_project.find_user_credentials_with_username_and_password(p_username varchar, p_password varchar);
-
 
 create or replace function nbp_project.is_student(
     p_username varchar ) returns boolean
@@ -253,7 +253,6 @@ $$
 
     end;
 $$ language plpgsql;
---drop function is_student(p_username varchar);
 
 create or replace function nbp_project.is_member(
     p_username varchar ) returns boolean
