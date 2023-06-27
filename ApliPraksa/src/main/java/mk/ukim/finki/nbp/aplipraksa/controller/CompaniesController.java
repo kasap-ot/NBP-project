@@ -1,6 +1,8 @@
 package mk.ukim.finki.nbp.aplipraksa.controller;
 
+import jakarta.servlet.http.HttpSession;
 import mk.ukim.finki.nbp.aplipraksa.model.CompanyView;
+import mk.ukim.finki.nbp.aplipraksa.model.UserCredentials;
 import mk.ukim.finki.nbp.aplipraksa.repository.GlobalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,14 +22,18 @@ public class CompaniesController {
     }
 
     @GetMapping(value={"","/{pageNumber}"})
-    public String companiesPage(@PathVariable(required = false) Integer pageNumber, Model model) {
-        //NEZ DALI TREBA ID
-
+    public String companiesPage(@PathVariable(required = false) Integer pageNumber, HttpSession session, Model model) {
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if (userCredentials.getType().equals("student")) {
+            return "redirect:/offers";
+        }
         Integer pageNum = (pageNumber == null || pageNumber <= 0) ? Integer.valueOf(1) : pageNumber;
         Iterable<CompanyView> companies = this.globalRepository.findAllCompaniesViewOnPage(pageNum);
         model.addAttribute("pageNumber",pageNum);
         model.addAttribute("companiesView",companies);
         model.addAttribute("bodyContent", "companies");
+        model.addAttribute("userCredentials", userCredentials);
+
         return "master-template";
     }
 

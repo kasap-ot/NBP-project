@@ -26,7 +26,7 @@ public class ApplicationController {
         //Samo student mozhe da pristapuva
         UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
         if(!userCredentials.getType().equals("student"))
-            return "redirect:/profile";;
+            return "redirect:/offers";;
         Integer pageNum = (pageNumber == null || pageNumber <= 0) ? Integer.valueOf(1) : pageNumber;
         Iterable<StudentApplication> studentApplications = this.studentRepository.findMyApplications(userCredentials.getId(),pageNum);
         model.addAttribute("studentApps", studentApplications);
