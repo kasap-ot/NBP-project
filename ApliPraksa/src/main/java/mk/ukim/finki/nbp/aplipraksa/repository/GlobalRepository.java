@@ -44,4 +44,12 @@ public class GlobalRepository {
         return jdbc.queryForObject("select * from nbp_project.find_user_credentials_with_username_and_password(?,?)"
                 ,UserCredentials::mapRowToUserCredentials,username,password);
     }
+
+    public Iterable<Organization> findAllOrganizations() {
+        return jdbc.query("select * from nbp_project.organization",Organization::mapRowToOrganization);
+    }
+
+    public Iterable<Country> findAllCountriesThatHaveCommittesByOrganization(Integer orgId) {
+        return jdbc.query("select * from nbp_project.countries_of_committees_by_organization(?)",Country::mapRowToCountry,orgId);
+    }
 }

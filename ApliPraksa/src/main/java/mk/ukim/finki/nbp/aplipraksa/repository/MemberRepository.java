@@ -103,4 +103,14 @@ public class MemberRepository {
         jdbc.update("call nbp_project.update_end_user(?,?,?,?,?,?,?,?,?)",
                 id,password,name,surname,dateOfBirth,address,phoneNumber,email,countryId);
     }
+
+    public void createMember(String username, String password, String name, String surname,
+                             LocalDate dateOfBirth, String address, String phone, String email,
+                             Integer countryId, Integer organizationId,Integer comCountryId) {
+        jdbc.update("call nbp_project.insert_end_user_member(?,?,?,?,?,?,?,?,?,?,?)",
+                username,password,name,surname,dateOfBirth,address,phone,email,countryId
+                ,organizationId,comCountryId );
+
+
+    }
 }

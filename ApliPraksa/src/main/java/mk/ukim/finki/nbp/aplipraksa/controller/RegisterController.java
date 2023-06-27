@@ -1,11 +1,10 @@
 package mk.ukim.finki.nbp.aplipraksa.controller;
 
 import jakarta.servlet.http.HttpSession;
-import mk.ukim.finki.nbp.aplipraksa.model.Country;
-import mk.ukim.finki.nbp.aplipraksa.model.Faculty;
-import mk.ukim.finki.nbp.aplipraksa.model.Major;
+import mk.ukim.finki.nbp.aplipraksa.model.*;
 import mk.ukim.finki.nbp.aplipraksa.model.enumerations.StudyType;
 import mk.ukim.finki.nbp.aplipraksa.repository.GlobalRepository;
+import mk.ukim.finki.nbp.aplipraksa.repository.MemberRepository;
 import mk.ukim.finki.nbp.aplipraksa.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,16 +17,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping
 public class RegisterController {
 
     private final StudentRepository studentRepository;
     private final GlobalRepository globalRepository;
+    private final MemberRepository memberRepository;
 
     @Autowired
-    public RegisterController(StudentRepository studentRepository, GlobalRepository globalRepository) {
+    public RegisterController(StudentRepository studentRepository, GlobalRepository globalRepository, MemberRepository memberRepository) {
         this.studentRepository = studentRepository;
         this.globalRepository = globalRepository;
+        this.memberRepository = memberRepository;
     }
 
     @GetMapping("/register-as-student")
@@ -78,7 +79,65 @@ public class RegisterController {
         //check wheather the user is already logged in.
         if(session.getAttribute("userCredentials")!=null)
             return "redirect:/offers";
+        Iterable<Country> countries = this.globalRepository.findAllCountries();
+        Iterable<Organization> organizations = this.globalRepository.findAllOrganizations();
+        model.addAttribute("countries",countries);
+        model.addAttribute("organizations",organizations);
         model.addAttribute("bodyContent", "register-as-member");
         return "master-template";
     }
+    @PostMapping("/register-as-member")
+    public  String registerAsMember(@RequestParam String username,
+                                    @RequestParam String email,
+                                    @RequestParam String password,
+                                    @RequestParam String name,
+                                    @RequestParam String surname,
+                                    @RequestParam(name = "date-of-birth") LocalDate dateOfBirth,
+                                    @RequestParam String address,
+                                    @RequestParam String phone,
+                                    @RequestParam(name="country") Integer memCountryId,
+                                    @RequestParam(name="organization") Integer organizationId,
+                                    Model model,HttpSession session){
+        //check wheather the user is already logged in.
+        if(session.getAttribute("userCredentials")!=null)
+            return "redirect:/offers";
+
+        session.setAttribute("memberSessionObject"
+                ,new MemberSessionObject(username,email,password,name,surname,dateOfBirth,address
+                        ,phone,memCountryId,organizationId));
+
+//        this.memberRepository.createMember(username,password,name,surname,dateOfBirth,address,phone,
+//                                            email,countryId,organizationId);
+        return "redirect:/register-as-member/second-step";
+    }
+    @GetMapping("/register-as-member/second-step")
+    public String getRegisterAsMemberSecoundStepPage(Model model,HttpSession session) {
+        //check wheather the user is already logged in.
+        if(session.getAttribute("userCredentials")!=null)
+            return "redirect:/offers";
+        MemberSessionObject memberSessionObject = (MemberSessionObject) session.getAttribute("memberSessionObject");
+        if(memberSessionObject == null)
+            return "redirect:/register-as-member";
+        Integer orgId = memberSessionObject.getOrganizationId();
+        Iterable<Country> countries = this.globalRepository.findAllCountriesThatHaveCommittesByOrganization(orgId);
+        model.addAttribute("countries",countries);
+        model.addAttribute("bodyContent", "register-as-member-second-step");
+        return "master-template";
+    }
+    @PostMapping("/register-as-member/second-step")
+    public String registerAsMemberSecoundStepPage(@RequestParam(name = "com-country-id") Integer comCountryId, Model model,HttpSession session) {
+        //check wheather the user is already logged in.
+        if(session.getAttribute("userCredentials")!=null)
+            return "redirect:/offers";
+        MemberSessionObject mem = (MemberSessionObject) session.getAttribute("memberSessionObject");
+        if(mem == null)
+            return "redirect:/register-as-member";
+        this.memberRepository.createMember(mem.getUsername(),mem.getPassword(),mem.getName(),mem.getSurname(),
+                                            mem.getDateOfBirth(),mem.getAddress(),mem.getPhone(),mem.getEmail()
+                                            ,mem.getMemCountryId(),mem.getOrganizationId(),comCountryId);
+
+        return "redirect:/login";
+    }
+
+
 }

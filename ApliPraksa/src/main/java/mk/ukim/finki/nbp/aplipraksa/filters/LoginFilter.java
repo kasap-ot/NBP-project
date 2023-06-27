@@ -14,9 +14,10 @@ import java.util.stream.Stream;
 
 @WebFilter()
 public class LoginFilter implements Filter {
-    static private String[] sessionlessPaths = {
+    static final private String[] sessionlessPaths = {
             "/register-as-student",
             "/register-as-member",
+            "/register-as-member/second-step",
             "/login",
             "/home",
             "/about-us"
