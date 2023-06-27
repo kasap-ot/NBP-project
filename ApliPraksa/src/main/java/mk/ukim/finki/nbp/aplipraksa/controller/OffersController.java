@@ -175,12 +175,24 @@ public class OffersController {
 
     @GetMapping("/{id}/apply")
     public String applyForOffer(@PathVariable Integer id,HttpSession session) {
-        //Samo student mozhe da pristapi na ovoj method
         UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
         if(!userCredentials.getType().equals("student"))
             return "redirect:/offers";
         this.studentRepository.applyForOffer(userCredentials.getId(), id);
         return "redirect:/applications";
     }
+
+    @GetMapping("/{offerId}/applicants")
+    public String viewApplicants(@PathVariable Integer offerId, HttpSession session, Model model) {
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(userCredentials.getType().equals("student"))
+            return "redirect:/offers";
+        Iterable<ApplicantView> applicantView = this.memberRepository.findAllApplicantByOffer(offerId);
+        model.addAttribute("applicants", applicantView);
+        model.addAttribute("bodyContent", "applied-students");
+        return "master-template";
+    }
+
+//    @PostMapping
 
 }
