@@ -113,4 +113,13 @@ public class MemberRepository {
 
 
     }
+
+    public Iterable<ApplicantView> findAllApplicantByOffer(Integer offerId) {
+        return jdbc.query("select * from nbp_project.all_applicant_by_offer(?)",ApplicantView::mapRowToApplicantView,offerId);
+
+    }
+
+    public void updateApplicant(Integer offerId, Integer studentId) {
+        jdbc.update("call nbp_project.update_applicant_status(?,?)",offerId,studentId);
+    }
 }

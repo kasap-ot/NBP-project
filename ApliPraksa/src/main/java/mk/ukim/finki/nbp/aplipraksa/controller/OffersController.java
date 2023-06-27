@@ -188,11 +188,37 @@ public class OffersController {
         if(userCredentials.getType().equals("student"))
             return "redirect:/offers";
         Iterable<ApplicantView> applicantView = this.memberRepository.findAllApplicantByOffer(offerId);
+        model.addAttribute("userCredentials",userCredentials);
         model.addAttribute("applicants", applicantView);
         model.addAttribute("bodyContent", "applied-students");
         return "master-template";
     }
 
-//    @PostMapping
+    @GetMapping("/{offerId}/applicants/{studentId}")
+    public String acceptAplicant(@PathVariable Integer offerId,
+                                 @PathVariable Integer studentId,
+                                Model model, HttpSession session){
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(userCredentials.getType().equals("student")){
+            return "redirect:/offers";
+        }
+        this.memberRepository.acceptApplicant(offerId,studentId);
+        return "redirect:/"+offerId.toString()+"/applicants";
+    }
+
+    @GetMapping("/offers/{offerId}/applicants/{studentId}/update_status")
+    public String updateApplicant(@PathVariable Integer offerId,
+                                 @PathVariable Integer studentId,
+                                 Model model, HttpSession session){
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(userCredentials.getType().equals("student")){
+            return "redirect:/offers";
+        }
+        this.memberRepository.updateApplicant(offerId,studentId);
+        return "redirect:/"+offerId.toString()+"/applicants";
+
+    }
+
+
 
 }

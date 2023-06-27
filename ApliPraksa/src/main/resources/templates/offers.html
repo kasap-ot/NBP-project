@@ -41,57 +41,10 @@
                     <!--            <a class="btn btn-sm btn-info" th:href="@{'/offers/{id}'}"><i class="fa fa-trash">View offer</i></a>-->
                     <a class="btn btn-sm btn-info" th:href="@{/offers/{id}/detail-offer(id=${offerView.getOfferId()})}"><i class="fa fa-trash">View offer</i></a>
                 </th:block>
+
+                <a th:if="${userCredentials.getType() == 'member'}" class="btn btn-sm btn-info" th:href="@{/offers/{offerId}/applicants(offerId=${offerView.getOfferId()})}"><i class="fa fa-trash">View applicants</i></a>
             </td>
-<!--            <th:block sec:authorize="hasRole('ROLE_MEMBER')">-->
-<!--                &lt;!&ndash;          <a th:href="@{'/offers/{id}/edit-offer' (id=${product.getId()})}" th:method="DELETE"&ndash;&gt;-->
-<!--                &lt;!&ndash;        todo:KOJ APLICIRAL TUKA DA SE POKAZE HREF KOPCE &ndash;&gt;-->
-<!--                <td class="text-center"><a href="/offers/3/applications">50</a></td>-->
-<!--            </th:block>-->
         </tr>
-<!--        <tr>-->
-<!--            <td>USA</td>-->
-<!--            <td>Computer Science</td>-->
-<!--            <td>June 1, 2023</td>-->
-<!--            <td>10</td>-->
-<!--            <td>ABC Company</td>-->
-<!--        </tr>-->
-<!--        <tr>-->
-<!--            <td>France</td>-->
-<!--            <td>Business Administration</td>-->
-<!--            <td>July 15, 2023</td>-->
-<!--            <td>8</td>-->
-<!--            <td>XYZ Corporation</td>-->
-<!--            &lt;!&ndash;    </tr>&ndash;&gt;-->
-<!--            &lt;!&ndash;    <tr th:each="offer : ${offers}">&ndash;&gt;-->
-<!--            &lt;!&ndash;      <td th:text="${offer.getName()}"></td>&ndash;&gt;-->
-<!--            &lt;!&ndash;      <td th:text="${offer.getPrice()}"></td>&ndash;&gt;-->
-<!--            &lt;!&ndash;      <td th:text="${offer.getManufacturer() != null}&ndash;&gt;-->
-<!--            &lt;!&ndash;                            ? ${product.getManufacturer().getName()} : 'No Manufacturer'"></td>&ndash;&gt;-->
-<!--            &lt;!&ndash;      <td th:text="${product.getCategory() != null}&ndash;&gt;-->
-<!--            &lt;!&ndash;                            ? ${product.getCategory().getName()} : 'No Category'"></td>&ndash;&gt;-->
-<!--            <td class="text-right">-->
-<!--                <th:block sec:authorize="hasRole('ROLE_MEMBER')">-->
-<!--                    &lt;!&ndash;          <form th:action="@{'/offers/{id}/edit-offer' (id=${product.getId()})}">&ndash;&gt;-->
-<!--                    <button type="submit" class="btn btn-sm btn-info"><i class="fa fa-trash">Edit</i></button>-->
-<!--                    &lt;!&ndash;          </form>&ndash;&gt;-->
-<!--                </th:block>-->
-<!--                <th:block sec:authorize="hasRole('ROLE_MEMBER')">-->
-<!--                    &lt;!&ndash;          <a th:href="@{'/offers/delete/{id}' (id=${product.getId()})}" th:method="DELETE"&ndash;&gt;-->
-<!--                    <a class="btn btn-sm btn-danger"><i class="fa fa-trash">Delete</i></a>-->
-<!--                </th:block>-->
-<!--                <th:block sec:authorize="hasRole('ROLE_STUDENT')">-->
-<!--                    &lt;!&ndash;          <a th:href="@{'/offers/{id}/delete' (id=${product.getId()})}" th:method="DELETE"&ndash;&gt;-->
-<!--                    <a class="btn btn-sm btn-success" href="#"><i class="fa fa-trash">Apply</i></a>-->
-<!--                    &lt;!&ndash;            <a class="btn btn-sm btn-info" th:href="@{'/offers/{id}'}"><i class="fa fa-trash">View offer</i></a>&ndash;&gt;-->
-<!--                    <a class="btn btn-sm btn-info"><i class="fa fa-trash">View offer</i></a>-->
-<!--                </th:block>-->
-<!--            </td>-->
-<!--            <th:block sec:authorize="hasRole('ROLE_MEMBER')">-->
-<!--                &lt;!&ndash;          <a th:href="@{'/offers/{id}/edit-offer' (id=${product.getId()})}" th:method="DELETE"&ndash;&gt;-->
-<!--                &lt;!&ndash;        todo:KOJ APLICIRAL TUKA DA SE POKAZE HREF KOPCE &ndash;&gt;-->
-<!--                <td class="text-center"><a href="/offers/3/applications">50</a></td>-->
-<!--            </th:block>-->
-<!--        </tr>-->
         </tbody>
     </table>
     <a  class="btn btn-sm btn-info" th:href="@{'/offers/'+${pageNumber -1}}"><i class="fa fa-trash">prev</i></a>
