@@ -121,6 +121,8 @@ create or replace procedure nbp_project.insert_end_user_student (
     p_start_year integer
 )
 AS $$
+declare
+    v_returned_student_id integer;
 BEGIN
     IF EXISTS (
         SELECT 1
@@ -131,11 +133,12 @@ BEGIN
     --student exists with this username, raise exception or ignore ?
 
     ELSE
-        INSERT INTO nbp_project.end_user(username, password, name, surname, date_of_birth, address, phone_number, country_id)
+        INSERT INTO nbp_project.end_user(username, password, name, surname, date_of_birth, address, phone_number,email_address, country_id)
         VALUES (p_username, p_password, p_name, p_surname, p_date_of_birth, p_address, p_phone_number, p_email_address, p_country_id);
+        RETURNING id INTO v_returned_student_id;
 
-        INSERT INTO nbp_project.student(study_level, gpa, start_year, ects_credits, major_id, educational_institute_id)
-        VALUES (p_study_level, p_gpa, p_start_year, p_ects_credits, p_major_id, p_educational_institute_id);
+        INSERT INTO nbp_project.student(id,study_level, gpa, start_year, ects_credits, major_id, educational_institute_id)
+        VALUES (v_returned_student_id,p_study_level, p_gpa, p_start_year, p_ects_credits, p_major_id, p_educational_institute_id);
     END IF;
     COMMIT;
 END;
