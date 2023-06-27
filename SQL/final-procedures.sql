@@ -1,3 +1,26 @@
+create or replace procedure nbp_project.delete_offer(
+    p_member_id integer,
+    p_offer_id integer
+)
+as
+$$
+begin
+    IF EXISTS (
+            SELECT 1
+            FROM nbp_project.offer
+            where id = p_offer_id and member_id=p_member_id
+        )
+    THEN
+        delete from nbp_project.internship as i where i.applies_for_offer_id = p_offer_id;
+        delete from nbp_project.applies_for as a where a.offer_id = p_offer_id;
+        delete from nbp_project.accommodation as ac where ac.offer_id = p_offer_id;
+        delete from nbp_project.offer where id=p_offer_id;
+    END IF;
+end;
+$$ language plpgsql;
+
+
+
 create or replace procedure insert_end_user_member(
     p_username varchar,
     p_password varchar,
