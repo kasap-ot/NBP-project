@@ -77,7 +77,7 @@
         <th:block th:if="${userCredentials.getType().equals('member')}">
             <div class="profile-section">
                 <h2>Organization and committee</h2>
-                <p th:text="'Organization: ' +${profile.getOrganizationName()}">Org 1</p>
+                <p  th:text="'Organization: ' +${profile.getOrganizationName()}">Org 1</p>
                 <hr>
                 <p th:text="'Committee country: ' +${profile.getCommCountryName()}"></p>
                 <p th:text="'Committee address: ' +${profile.getCommAddress()}"></p>

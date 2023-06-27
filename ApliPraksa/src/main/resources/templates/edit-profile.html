@@ -40,7 +40,7 @@
       <label for="country-id">Country</label>
       <!--      <input type="text" class="form-control" id="position" placeholder="Enter position name">-->
       <select id="country-id" name="country-id" class="form-control">
-        <option th:each="country: ${countries}" th:value="${country.getId()}" th:text="${country.getName()}">country name</option>
+        <option th:each="country: ${countries}" th:value="${country.getId()}" th:text="${country.getName()}" th:selected="${country.getId().equals(profile.getCountryId())}">country name</option>
       </select>
     </div>
     <th:block th:if="${userCredentials.getType().equals('student')}">
@@ -87,12 +87,12 @@
     <th:block th:if="${userCredentials.getType().equals('member')}">
       <div class="profile-section">
         <h2>Organization and committee</h2>
-        <p th:text="'Organization: ' +${profile.getOrganizationName()}">Org 1</p>
+        <p class="form-group py-2" th:text="'Organization: ' +${profile.getOrganizationName()}">Org 1</p>
         <hr>
-        <p th:text="'Committee country: ' +${profile.getCommCountryName()}"></p>
-        <p th:text="'Committee address: ' +${profile.getCommAddress()}"></p>
-        <p th:text="'Committee phone: ' +${profile.getCommPhone()}"></p>
-        <p th:text="'Committee email: ' +${profile.getCommEmail()}"></p>
+        <p class="form-group py-2" th:text="'Committee country: ' +${profile.getCommCountryName()}"></p>
+        <p class="form-group py-2" th:text="'Committee address: ' +${profile.getCommAddress()}"></p>
+        <p class="form-group py-2" th:text="'Committee phone: ' +${profile.getCommPhoneNumber()}"></p>
+        <p  class="form-group py-2" th:text="'Committee email: ' +${profile.getCommEmail()}"></p>
       </div>
     </th:block>
     <a type="submit" class="btn btn-info" th:href="@{/profile}"><- Back</a>
