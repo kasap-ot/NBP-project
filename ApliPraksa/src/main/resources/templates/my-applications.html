@@ -29,7 +29,7 @@
           <a class="btn btn-sm btn-danger" th:href="@{'/applications/cancel/{id}' (id=${studentApp.getOfferId()})}" th:method="POST"><i class="fa fa-trash">Cancel</i></a>
         </th:block>
         <th:block>
-          <a class="btn btn-sm btn-warning" th:href="@{'/give-feedback'}"
+          <a class="btn btn-sm btn-warning" th:href="@{'/{id}/give-feedback' (id=${studentApp.getOfferId()})}"
              th:if="${studentApp.getStatus() == 'completed'}">
             <i style="color: white">Give feedback</i></a>
         </th:block>

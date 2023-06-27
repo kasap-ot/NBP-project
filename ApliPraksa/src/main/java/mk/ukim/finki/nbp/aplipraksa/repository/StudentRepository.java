@@ -143,4 +143,8 @@ public class StudentRepository {
     public void deleteMyApplication(Integer id, Integer appId) {
         jdbc.update("delete from nbp_project.applies_for as ap where ap.student_id = ? and ap.offer_id = ?",id,appId);
     }
+
+    public void saveFeedback(Integer student_id, Integer offer_id, Integer gradeWork, Integer gradeAccommodation, String commentByStudent) {
+        jdbc.update("call nbp_project.give_feedback(?, ?, ?, ?, ?)", student_id, offer_id, gradeWork, gradeAccommodation, commentByStudent);
+    }
 }

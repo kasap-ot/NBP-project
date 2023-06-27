@@ -7,10 +7,7 @@ import mk.ukim.finki.nbp.aplipraksa.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping
@@ -25,7 +22,7 @@ public class ApplicationController {
     }
 
     @GetMapping(value = {"/applications","/applications/{pageNumber}"})
-    public String myAppliocationsPage(@PathVariable(required = false) Integer pageNumber,Model model, HttpSession session) {
+    public String myApplicationsPage(@PathVariable(required = false) Integer pageNumber,Model model, HttpSession session) {
         //Samo student mozhe da pristapuva
         UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
         if(!userCredentials.getType().equals("student"))
@@ -49,11 +46,31 @@ public class ApplicationController {
         return "redirect:/applications";
     }
 
-    @GetMapping("/give-feedback")
-    public String giveFeedbackForApplication(HttpSession session, Model model) {
+    @GetMapping("/{id}/give-feedback")
+    public String giveFeedbackForm(
+            @PathVariable Integer id,
+            HttpSession session,
+            Model model
+    ) {
         UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
         model.addAttribute("bodyContent", "give-feedback");
+        model.addAttribute("userCredentials", userCredentials);
+        model.addAttribute("offerId", id);
         return "master-template";
+    }
+
+    @PostMapping("/{id}/give-feedback")
+    public String giveFeedbackForApplication(
+            @PathVariable Integer id,
+            @RequestParam Integer gradeWork,
+            @RequestParam Integer gradeAccommodation,
+            @RequestParam String commentByStudent,
+            HttpSession session) {
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        if(!userCredentials.getType().equals("student"))
+            return "redirect:/offers";
+        this.studentRepository.saveFeedback(userCredentials.getId(),id,gradeWork, gradeAccommodation, commentByStudent);
+        return "redirect:/applications";
     }
 
 

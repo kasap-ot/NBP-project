@@ -464,3 +464,38 @@ BEGIN
     WHERE id = p_id;
 END;
 $$ language plpgsql;
+
+
+create or replace procedure nbp_project.give_feedback (
+    p_student_id integer,
+    p_offer_id integer,
+    p_grade_work integer,
+    p_grade_accommodation integer,
+    p_comment varchar
+)
+AS $$
+BEGIN
+    IF NOT EXISTS(
+        select 1 from nbp_project.internship
+        where applies_for_offer_id = p_offer_id and
+              applies_for_student_id = p_student_id
+        ) THEN
+    INSERT INTO nbp_project.internship (grade_work,
+                                        grade_accommodation,
+                                        comment_student,
+                                        applies_for_student_id,
+                                        applies_for_offer_id)
+    VALUES (p_grade_work, p_grade_accommodation, p_comment, p_student_id, p_offer_id);
+    ELSE
+        UPDATE nbp_project.internship SET  grade_work=p_grade_work,
+                                           grade_accommodation = p_grade_accommodation,
+                                           comment_student = p_comment
+                                          WHERE applies_for_offer_id = p_offer_id and
+                                                 applies_for_student_id = p_student_id;
+    END IF;
+    COMMIT;
+
+END
+$$ language plpgsql;
+
+
