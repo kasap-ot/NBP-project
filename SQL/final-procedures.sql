@@ -386,7 +386,7 @@ BEGIN
     if not exists(
         select 1
         from nbp_project.applies_for as ap
-        where ap.offer_id = p_offer_id and ap.student_id = student_id
+        where ap.offer_id = p_offer_id and ap.student_id = p_student_id
         )
     then
         INSERT INTO nbp_project.applies_for (student_id, offer_id, date_of_app_submission, acceptance_status)
