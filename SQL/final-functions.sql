@@ -178,7 +178,7 @@ begin
             join nbp_project.offer o on af.offer_id = o.id
             join nbp_project.company c on o.company_id = c.id
             join nbp_project.country c2 on c.country_id = c2.id
-            where af.student_id = p_student_id;
+            where af.student_id = p_student_id
             order by o.start_date
             limit 20 offset (v_page_number -1)*20;
 
