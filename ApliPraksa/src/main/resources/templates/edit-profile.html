@@ -40,7 +40,11 @@
       <label for="country-id">Country</label>
       <!--      <input type="text" class="form-control" id="position" placeholder="Enter position name">-->
       <select id="country-id" name="country-id" class="form-control">
-        <option th:each="country: ${countries}" th:value="${country.getId()}" th:text="${country.getName()}" th:selected="${country.getId().equals(profile.getCountryId())}">country name</option>
+        <th:block th:each="country: ${countries}">
+          <option th:if="${country.getId().equals(profile.getCountryId())}" th:value="${country.getId()}" th:text="${country.getName()}" selected>country name</option>
+          <option th:if="${!country.getId().equals(profile.getCountryId())}" th:value="${country.getId()}" th:text="${country.getName()}" >country name</option>
+        </th:block>
+
       </select>
     </div>
     <th:block th:if="${userCredentials.getType().equals('student')}">
@@ -49,7 +53,11 @@
           <label for="type-of-study">Type of study</label>
           <!--      <input type="text" class="form-control" id="position" placeholder="Enter position name">-->
           <select id="type-of-study" name="type-of-study" class="form-control">
-            <option th:each="studyType: ${studyTypes}" th:value="${studyType.toString()}" th:text="${studyType.toString()}">study type name</option>
+            <th:block th:each="studyType: ${studyTypes}" >
+              <option  th:if="${studyType.toString().equals(profile.getDegree())}" th:value="${studyType.toString()}" th:text="${studyType.toString()}" selected>study type name</option>
+              <option  th:if="${!studyType.toString().equals(profile.getDegree())}" th:value="${studyType.toString()}" th:text="${studyType.toString()}">study type name</option>
+            </th:block>
+
           </select>
         </div>
     <!--    <div class="form-group py-2">-->
@@ -60,14 +68,21 @@
           <label for="faculty-id">Faculty</label>
           <!--      <input type="text" class="form-control" id="position" placeholder="Enter position name">-->
           <select id="faculty-id" name="faculty-id" class="form-control">
-            <option th:each="faculty: ${faculties}" th:value="${faculty.getId()}" th:text="${faculty.getName()}">faculty name</option>
+            <th:block th:each="faculty: ${faculties}">
+              <option th:if="${faculty.getId().equals(profile.getFacultyId())}" th:value="${faculty.getId()}" th:text="${faculty.getName()}" selected></option>
+              <option th:if="${!faculty.getId().equals(profile.getFacultyId())}" th:value="${faculty.getId()}" th:text="${faculty.getName()}">faculty name</option>
+            </th:block>
+
           </select>
         </div>
         <div class="form-group py-2">
           <label for="major-id">Major</label>
           <!--      <input type="text" class="form-control" id="position" placeholder="Enter position name">-->
           <select id="major-id" name="major-id" class="form-control">
-            <option th:each="major: ${majors}" th:value="${major.getId()}" th:text="${major.getMajor()}">major name</option>
+            <th:block th:each="major: ${majors}">
+              <option th:if="${major.getId().equals(profile.getMajorId())}" th:value="${major.getId()}" th:text="${major.getMajor()}" selected>major name</option>
+              <option  th:if="${!major.getId().equals(profile.getMajorId())}" th:value="${major.getId()}" th:text="${major.getMajor()}" >major name</option>
+            </th:block>
           </select>
         </div>
         <div class="form-group py-2">
