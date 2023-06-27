@@ -50,9 +50,10 @@ public class ApplicationController {
     }
 
     @GetMapping("/give-feedback")
-    public String giveFeedbackForApplication(HttpSession session) {
+    public String giveFeedbackForApplication(HttpSession session, Model model) {
         UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
-        return null;
+        model.addAttribute("bodyContent", "give-feedback");
+        return "master-template";
     }
 
 
