@@ -336,3 +336,25 @@ $$
     end;
 $$ language plpgsql;
 
+create or replace  function nbp_project.all_applicant_by_offer(
+    p_offer_id integer
+) returns table(offer_id integer,student_id integer,status varchar,
+                country varchar, name varchar, surname varchar,age integer,
+                faculty varchar, degree nbp_project.study, major varchar)
+as
+$$
+    begin
+        return query
+            select ap.offer_id,ap.student_id,ac.status,cou.name as country,
+                   eu.name,eu.surname,date_part('year',age(NOW(),eu.date_of_birth))::integer as age
+                   ,edu.name as faculty,st.study_level as degree,ma.major
+            from nbp_project.end_user as eu
+                join nbp_project.country as cou on eu.country_id = cou.id
+                join nbp_project.student as st  on eu.id = st.id
+                join nbp_project.major as ma on st.major_id = ma.id
+                join nbp_project.educational_institute as edu on  edu.id = st.educational_institute_id
+                join nbp_project.applies_for as ap on st.id = ap.student_id
+                join nbp_project.acceptance_status as ac on ap.acceptance_status = ac.id
+            where ap.offer_id = p_offer_id;
+    end;
+$$ language plpgsql;

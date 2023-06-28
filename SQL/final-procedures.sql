@@ -497,5 +497,3 @@ BEGIN
 
 END
 $$ language plpgsql;
-
-
