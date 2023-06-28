@@ -202,7 +202,7 @@ public class OffersController {
         if(userCredentials.getType().equals("student")){
             return "redirect:/offers";
         }
-        this.memberRepository.acceptApplicant(offerId,studentId);
+        this.memberRepository.acceptApplicant(studentId,offerId);
         return "redirect:/offers/"+offerId.toString()+"/applicants";
     }
 

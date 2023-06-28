@@ -123,7 +123,7 @@ public class MemberRepository {
         jdbc.update("call nbp_project.update_applicant_status(?,?)",offerId,studentId);
     }
 
-    public void acceptApplicant(Integer offerId, Integer studentId) {
-        jdbc.update("call nbp_project.accept_applicant(?,?)",offerId,studentId);
+    public void acceptApplicant(Integer studentId,Integer offerId) {
+        jdbc.update("call nbp_project.accept_applicant(?,?)",studentId,offerId);
     }
 }
