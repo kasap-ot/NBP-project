@@ -27,7 +27,7 @@
       <td th:text="${applicant.getStatus()}"></td>
       <td class="text-right">
         <th:block>
-          <a th:if="${userCredentials.getType() == 'member'}"
+          <a th:if="${userCredentials.getType() == 'member' && applicant.getStatus() == 'waiting'}"
              class="btn btn-sm btn-success" th:href="@{/offers/{offerId}/applicants/{studentId}(offerId=${applicant.getOfferId()}, studentId=${applicant.getStudentId()})}">
             <i class="fa fa-trash">Accept</i></a>
         </th:block>

@@ -203,10 +203,10 @@ public class OffersController {
             return "redirect:/offers";
         }
         this.memberRepository.acceptApplicant(offerId,studentId);
-        return "redirect:/"+offerId.toString()+"/applicants";
+        return "redirect:/offers/"+offerId.toString()+"/applicants";
     }
 
-    @GetMapping("/offers/{offerId}/applicants/{studentId}/update_status")
+    @GetMapping("/{offerId}/applicants/{studentId}/update_status")
     public String updateApplicant(@PathVariable Integer offerId,
                                  @PathVariable Integer studentId,
                                  Model model, HttpSession session){
@@ -215,7 +215,7 @@ public class OffersController {
             return "redirect:/offers";
         }
         this.memberRepository.updateApplicant(offerId,studentId);
-        return "redirect:/"+offerId.toString()+"/applicants";
+        return "redirect:/offers/"+offerId.toString()+"/applicants";
 
     }
 
